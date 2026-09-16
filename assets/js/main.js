@@ -1,4 +1,28 @@
 (() => {
+  const cleanRoutes = {
+    'buyer-development.html': '/buyer-development/',
+    'international-markets.html': '/international-markets/',
+    'bangladesh-market-entry.html': '/bangladesh-market-entry/',
+    'industries.html': '/industries/',
+    'how-we-work.html': '/how-we-work/',
+    'about.html': '/about/',
+    'contact.html': '/contact/',
+    'buyer-growth.html': '/buyer-growth/',
+    'privacy.html': '/privacy/',
+    'terms.html': '/terms/'
+  };
+
+  const currentFile = window.location.pathname.split('/').pop();
+  if (cleanRoutes[currentFile]) {
+    history.replaceState(null, '', cleanRoutes[currentFile] + window.location.search + window.location.hash);
+  }
+
+  document.querySelectorAll('a[href]').forEach((link) => {
+    const href = link.getAttribute('href');
+    if (cleanRoutes[href]) link.setAttribute('href', cleanRoutes[href]);
+    if (href === 'index.html') link.setAttribute('href', '/');
+  });
+
   const menuToggle = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.site-nav');
   const headerCta = document.querySelector('.header-cta');
@@ -29,12 +53,10 @@
     });
   }
 
-  const current = window.location.pathname.split('/').pop() || 'index.html';
+  const normalizedPath = window.location.pathname.replace(/\/index\.html$/, '/');
   document.querySelectorAll('.site-nav a').forEach((link) => {
     const href = link.getAttribute('href');
-    if (href === current || (current === '' && href === 'index.html')) {
-      link.setAttribute('aria-current', 'page');
-    }
+    if (href === normalizedPath) link.setAttribute('aria-current', 'page');
   });
 
   const reveals = document.querySelectorAll('.reveal');
