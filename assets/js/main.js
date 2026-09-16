@@ -2,6 +2,7 @@
   const menuToggle = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.site-nav');
   const headerCta = document.querySelector('.header-cta');
+  const siteHeader = document.querySelector('.site-header');
 
   if (menuToggle && nav) {
     const setMenu = (open) => {
@@ -9,6 +10,7 @@
       menuToggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
       nav.classList.toggle('is-open', open);
       if (headerCta) headerCta.classList.toggle('is-open', open);
+      if (siteHeader) siteHeader.classList.toggle('menu-open', open);
     };
 
     menuToggle.addEventListener('click', () => {
