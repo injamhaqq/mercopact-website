@@ -1,0 +1,91 @@
+{
+  "errors": [],
+  "warnings": [],
+  "pages": [
+    {
+      "page": "404.html",
+      "title": "Page Not Found | Mercopact",
+      "description_length": 38,
+      "h1_count": 1,
+      "canonical": "https://mercopact.com/404.html"
+    },
+    {
+      "page": "about.html",
+      "title": "Built around the commercial work between a good product and a new market. | Mercopact",
+      "description_length": 115,
+      "h1_count": 1,
+      "canonical": "https://mercopact.com/about.html"
+    },
+    {
+      "page": "bangladesh-market-entry.html",
+      "title": "Build commercial relationships in Bangladesh. | Mercopact",
+      "description_length": 155,
+      "h1_count": 1,
+      "canonical": "https://mercopact.com/bangladesh-market-entry.html"
+    },
+    {
+      "page": "buyer-development.html",
+      "title": "Develop the right B2B accounts. | Mercopact",
+      "description_length": 126,
+      "h1_count": 1,
+      "canonical": "https://mercopact.com/buyer-development.html"
+    },
+    {
+      "page": "buyer-growth.html",
+      "title": "Buyer Growth Assessment | Mercopact",
+      "description_length": 105,
+      "h1_count": 1,
+      "canonical": "https://mercopact.com/buyer-growth.html"
+    },
+    {
+      "page": "contact.html",
+      "title": "Contact Mercopact | Buyer Development & Market Expansion",
+      "description_length": 91,
+      "h1_count": 1,
+      "canonical": "https://mercopact.com/contact.html"
+    },
+    {
+      "page": "how-we-work.html",
+      "title": "A disciplined approach to market development. | Mercopact",
+      "description_length": 96,
+      "h1_count": 1,
+      "canonical": "https://mercopact.com/how-we-work.html"
+    },
+    {
+      "page": "index.html",
+      "title": "Mercopact | B2B Buyer Development & Market Expansion",
+      "description_length": 167,
+      "h1_count": 1,
+      "canonical": "https://mercopact.com/"
+    },
+    {
+      "page": "industries.html",
+      "title": "Focused where B2B relationships matter. | Mercopact",
+      "description_length": 145,
+      "h1_count": 1,
+      "canonical": "https://mercopact.com/industries.html"
+    },
+    {
+      "page": "international-markets.html",
+      "title": "Develop buyers beyond your home market. | Mercopact",
+      "description_length": 140,
+      "h1_count": 1,
+      "canonical": "https://mercopact.com/international-markets.html"
+    },
+    {
+      "page": "privacy.html",
+      "title": "Privacy Policy | Mercopact",
+      "description_length": 33,
+      "h1_count": 1,
+      "canonical": "https://mercopact.com/privacy.html"
+    },
+    {
+      "page": "terms.html",
+      "title": "Terms | Mercopact",
+      "description_length": 58,
+      "h1_count": 1,
+      "canonical": "https://mercopact.com/terms.html"
+    }
+  ],
+  "page_count": 12
+}

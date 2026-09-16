@@ -1,0 +1,224 @@
+[
+  {
+    "page": "index.html",
+    "status": 200,
+    "title": "Mercopact | B2B Buyer Development & Market Expansion",
+    "h1_count": 1,
+    "horizontal_overflow": false,
+    "local_broken_images": [],
+    "console": [
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      }
+    ]
+  },
+  {
+    "page": "buyer-development.html",
+    "status": 200,
+    "title": "Develop the right B2B accounts. | Mercopact",
+    "h1_count": 1,
+    "horizontal_overflow": false,
+    "local_broken_images": [],
+    "console": [
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      }
+    ]
+  },
+  {
+    "page": "international-markets.html",
+    "status": 200,
+    "title": "Develop buyers beyond your home market. | Mercopact",
+    "h1_count": 1,
+    "horizontal_overflow": false,
+    "local_broken_images": [],
+    "console": [
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      }
+    ]
+  },
+  {
+    "page": "bangladesh-market-entry.html",
+    "status": 200,
+    "title": "Build commercial relationships in Bangladesh. | Mercopact",
+    "h1_count": 1,
+    "horizontal_overflow": false,
+    "local_broken_images": [],
+    "console": [
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      }
+    ]
+  },
+  {
+    "page": "industries.html",
+    "status": 200,
+    "title": "Focused where B2B relationships matter. | Mercopact",
+    "h1_count": 1,
+    "horizontal_overflow": false,
+    "local_broken_images": [],
+    "console": [
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      }
+    ]
+  },
+  {
+    "page": "how-we-work.html",
+    "status": 200,
+    "title": "A disciplined approach to market development. | Mercopact",
+    "h1_count": 1,
+    "horizontal_overflow": false,
+    "local_broken_images": [],
+    "console": [
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      }
+    ]
+  },
+  {
+    "page": "about.html",
+    "status": 200,
+    "title": "Built around the commercial work between a good product and a new market. | Mercopact",
+    "h1_count": 1,
+    "horizontal_overflow": false,
+    "local_broken_images": [],
+    "console": [
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      }
+    ]
+  },
+  {
+    "page": "contact.html",
+    "status": 200,
+    "title": "Contact Mercopact | Buyer Development & Market Expansion",
+    "h1_count": 1,
+    "horizontal_overflow": false,
+    "local_broken_images": [],
+    "console": [
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      }
+    ]
+  },
+  {
+    "page": "buyer-growth.html",
+    "status": 200,
+    "title": "Buyer Growth Assessment | Mercopact",
+    "h1_count": 1,
+    "horizontal_overflow": false,
+    "local_broken_images": [],
+    "console": [
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      }
+    ]
+  },
+  {
+    "page": "privacy.html",
+    "status": 200,
+    "title": "Privacy Policy | Mercopact",
+    "h1_count": 1,
+    "horizontal_overflow": false,
+    "local_broken_images": [],
+    "console": [
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      }
+    ]
+  },
+  {
+    "page": "terms.html",
+    "status": 200,
+    "title": "Terms | Mercopact",
+    "h1_count": 1,
+    "horizontal_overflow": false,
+    "local_broken_images": [],
+    "console": [
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      }
+    ]
+  },
+  {
+    "page": "404.html",
+    "status": 200,
+    "title": "Page Not Found | Mercopact",
+    "h1_count": 1,
+    "horizontal_overflow": false,
+    "local_broken_images": [],
+    "console": [
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      }
+    ]
+  },
+  {
+    "page": "index.html@390",
+    "horizontal_overflow": false,
+    "menu_expanded": "true",
+    "nav_visible": true,
+    "cta_visible": true,
+    "menu_horizontal_overflow": false
+  },
+  {
+    "page": "index.html@390-escape",
+    "menu_expanded": "false"
+  },
+  {
+    "page": "buyer-growth.html@390",
+    "horizontal_overflow": false
+  },
+  {
+    "page": "contact-form",
+    "fallback_status": "Opening your email app to complete the enquiry.",
+    "form_endpoint_empty": true,
+    "required_fields_present": 5
+  }
+]
