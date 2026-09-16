@@ -2,17 +2,62 @@
 @import url("styles-2.css");
 @import url("styles-3.css");
 
-/* Mercopact master-logo lockup: keep the transparent mark optically balanced in the header. */
-.brand img{
-  width:220px!important;
-  max-width:220px!important;
+/* Mercopact header brand lockup
+   -------------------------------------------------------------
+   The previous horizontal PNG included a tiny tagline that produced
+   visible colour/alpha artefacts when Safari scaled it on mobile.
+   The navigation now uses the clean emblem asset plus a crisp live
+   wordmark. The tagline remains part of the brand system, but is not
+   forced into the small navigation header where it is unreadable. */
+.brand{
+  display:inline-flex!important;
+  align-items:center!important;
+  flex:0 0 auto!important;
+  gap:10px!important;
+  width:auto!important;
+  max-width:none!important;
   height:auto!important;
-  object-fit:contain;
+  min-height:50px;
+  overflow:visible!important;
+  background:none!important;
+  line-height:1;
 }
+.brand img{
+  display:none!important;
+}
+.brand::before{
+  content:"";
+  display:block;
+  flex:0 0 48px;
+  width:48px;
+  height:48px;
+  background:url("../images/logo/mercopact-mark.png?v=20260917") center/contain no-repeat;
+}
+.brand::after{
+  content:"MERCOPACT";
+  display:block;
+  color:var(--midnight);
+  font-family:var(--sans);
+  font-size:1.24rem;
+  font-weight:800;
+  line-height:1;
+  letter-spacing:.105em;
+  white-space:nowrap;
+  text-rendering:geometricPrecision;
+  -webkit-font-smoothing:antialiased;
+}
+
 @media (max-width:1180px){
-  .brand img{width:205px!important;max-width:205px!important}
+  .brand{gap:9px!important;min-height:46px}
+  .brand::before{flex-basis:44px;width:44px;height:44px}
+  .brand::after{font-size:1.12rem;letter-spacing:.10em}
 }
+
 @media (max-width:680px){
-  .brand img{width:175px!important;max-width:60vw!important}
-  .landing-header .brand img{width:165px!important;max-width:60vw!important}
+  .brand{gap:8px!important;min-height:42px;max-width:72vw!important}
+  .brand::before{flex-basis:40px;width:40px;height:40px}
+  .brand::after{font-size:1rem;letter-spacing:.09em}
+  .landing-header .brand{min-height:40px}
+  .landing-header .brand::before{flex-basis:38px;width:38px;height:38px}
+  .landing-header .brand::after{font-size:.96rem}
 }
