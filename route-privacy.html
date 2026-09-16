@@ -1,0 +1,22 @@
+---
+permalink: /privacy/
+---
+{% capture page_html %}{% include_relative privacy.html %}{% endcapture %}
+{{ page_html
+  | replace: 'href="index.html"', 'href="/"'
+  | replace: 'href="buyer-development.html"', 'href="/buyer-development/"'
+  | replace: 'href="international-markets.html"', 'href="/international-markets/"'
+  | replace: 'href="bangladesh-market-entry.html"', 'href="/bangladesh-market-entry/"'
+  | replace: 'href="industries.html"', 'href="/industries/"'
+  | replace: 'href="how-we-work.html"', 'href="/how-we-work/"'
+  | replace: 'href="about.html"', 'href="/about/"'
+  | replace: 'href="contact.html"', 'href="/contact/"'
+  | replace: 'href="buyer-growth.html"', 'href="/buyer-growth/"'
+  | replace: 'href="privacy.html"', 'href="/privacy/"'
+  | replace: 'href="terms.html"', 'href="/terms/"'
+  | replace: 'href="favicon.svg"', 'href="/favicon.svg"'
+  | replace: 'href="site.webmanifest"', 'href="/site.webmanifest"'
+  | replace: 'href="assets/', 'href="/assets/'
+  | replace: 'src="assets/', 'src="/assets/'
+  | replace: 'https://mercopact.com/privacy.html', 'https://mercopact.com/privacy/'
+}}
