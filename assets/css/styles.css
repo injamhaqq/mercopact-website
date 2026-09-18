@@ -3,7 +3,7 @@
 @import url("styles-3.css");
 
 :root{
-  --mercopact-logo-final:url("/assets/images/logo/mercopact-primary-lockup-v5.png?v=20260918-final5");
+  --mercopact-logo-final:url("/assets/images/logo/mercopact-primary-lockup-v5.png?v=20260918-final6");
 }
 
 /* =========================================================
@@ -89,35 +89,34 @@
 }
 
 .site-footer .footer-brand{
-  position:relative!important;
+  position:static!important;
   max-width:390px!important;
-  padding-top:82px!important;
+  padding-top:0!important;
   margin:0!important;
   overflow:visible!important;
   background:transparent!important;
 }
 
-.site-footer .footer-brand::before{
-  content:""!important;
-  position:absolute!important;
-  left:0!important;
-  top:0!important;
-  display:block!important;
-  width:310px!important;
-  height:76px!important;
-  background-image:var(--mercopact-logo-final)!important;
-  background-repeat:no-repeat!important;
-  background-position:left center!important;
-  background-size:contain!important;
-}
-
+.site-footer .footer-brand::before,
 .site-footer .footer-brand::after{
   content:none!important;
   display:none!important;
 }
 
 .site-footer .footer-brand > img{
-  display:none!important;
+  display:block!important;
+  position:static!important;
+  width:310px!important;
+  max-width:100%!important;
+  height:auto!important;
+  opacity:1!important;
+  object-fit:contain!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+  padding:0!important;
+  margin:0 0 18px!important;
 }
 
 .site-footer .footer-brand p{
@@ -218,11 +217,10 @@
 
   .site-footer .footer-brand{
     max-width:none!important;
-    padding-top:72px!important;
+    padding-top:0!important;
   }
 
-  .site-footer .footer-brand::before{
+  .site-footer .footer-brand > img{
     width:270px!important;
-    height:66px!important;
   }
 }
