@@ -2,72 +2,65 @@
 @import url("styles-2.css");
 @import url("styles-3.css");
 
-/* =========================================================
-   MERCOPACT — FINAL APPROVED LOGO LOCKUP
-   Uses the approved original artwork as a real repository asset.
-   ========================================================= */
-
+/* FINAL MERCOPACT LOGO LOCKUP — real image elements, no pseudo-images. */
 .brand{
   display:inline-flex!important;
   align-items:center!important;
   flex:0 0 auto!important;
-  width:250px!important;
-  height:64px!important;
+  width:auto!important;
+  height:auto!important;
   min-height:0!important;
-  max-width:29vw!important;
+  max-width:none!important;
   margin:0!important;
   padding:0!important;
   overflow:visible!important;
   background:transparent!important;
 }
 .brand img{
-  display:none!important;
-}
-.brand::before{
-  content:""!important;
   display:block!important;
-  width:100%!important;
-  height:100%!important;
-  flex:0 0 100%!important;
-  background:url("../images/logo/mercopact-horizontal-approved.webp?v=20260918-2") left center/contain no-repeat!important;
+  width:250px!important;
+  max-width:29vw!important;
+  height:auto!important;
+  object-fit:contain!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+  margin:0!important;
 }
-.brand::after{
+.brand::before,.brand::after{
   content:none!important;
   display:none!important;
 }
 
-/* Footer deliberately uses the warm-ivory brand surface so the
-   original navy MERCOPACT wordmark and teal/gold emblem remain
-   exactly in their approved colors. */
+/* Footer uses Warm Ivory so the approved navy wordmark keeps its original color. */
 .site-footer{
   background:#F7F4ED!important;
   color:#0B1F33!important;
   border-top:1px solid #D8D4CA!important;
-  padding-top:52px!important;
-}
-.site-footer .footer-top{
-  align-items:start!important;
 }
 .site-footer .footer-brand{
-  position:relative!important;
+  position:static!important;
   max-width:390px!important;
-  padding-top:90px!important;
+  padding-top:0!important;
   margin:0!important;
   background:transparent!important;
   overflow:visible!important;
 }
 .site-footer .footer-brand > img{
-  display:none!important;
-}
-.site-footer .footer-brand::before{
-  content:""!important;
-  position:absolute!important;
-  left:0!important;
-  top:0!important;
+  display:block!important;
   width:305px!important;
-  height:78px!important;
-  background:url("../images/logo/mercopact-horizontal-approved.webp?v=20260918-2") left center/contain no-repeat!important;
+  max-width:100%!important;
+  height:auto!important;
+  object-fit:contain!important;
+  background:transparent!important;
+  padding:0!important;
+  border:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+  margin:0 0 18px!important;
 }
+.site-footer .footer-brand::before,
 .site-footer .footer-brand::after{
   content:none!important;
   display:none!important;
@@ -78,27 +71,15 @@
   color:#526273!important;
   line-height:1.75!important;
 }
-.site-footer .footer-brand p strong,
-.site-footer .footer-brand p br{
-  display:none!important;
-}
-.site-footer .footer-label{
-  color:#0F766E!important;
-}
-.site-footer .footer-links a{
-  color:#263B4F!important;
-}
-.site-footer .footer-links a:hover{
-  color:#0B1F33!important;
-}
+.site-footer .footer-label{color:#0F766E!important}
+.site-footer .footer-links a{color:#263B4F!important}
+.site-footer .footer-links a:hover{color:#0B1F33!important}
 .site-footer .footer-bottom{
   border-top:1px solid rgba(11,31,51,.14)!important;
   color:#5C6975!important;
 }
 .site-footer .footer-bottom a,
-.site-footer .footer-legal a{
-  color:#5C6975!important;
-}
+.site-footer .footer-legal a{color:#5C6975!important}
 .site-footer .social-row a{
   color:#0B1F33!important;
   border-color:rgba(11,31,51,.22)!important;
@@ -109,47 +90,14 @@
   border-color:#0F766E!important;
 }
 
-/* remove legacy white-box styles */
-.site-footer .footer-brand img{
-  background:transparent!important;
-  padding:0!important;
-  border:0!important;
-  box-shadow:none!important;
-  filter:none!important;
-}
-
 @media (max-width:1180px){
-  .brand{
-    width:225px!important;
-    height:58px!important;
-    max-width:31vw!important;
-  }
+  .brand img{width:225px!important;max-width:31vw!important}
 }
-
 @media (max-width:980px){
-  .brand{
-    width:212px!important;
-    height:54px!important;
-    max-width:62vw!important;
-  }
+  .brand img{width:212px!important;max-width:62vw!important}
 }
-
 @media (max-width:680px){
-  .brand{
-    width:190px!important;
-    height:49px!important;
-    max-width:66vw!important;
-  }
-  .landing-header .brand{
-    width:184px!important;
-    height:47px!important;
-  }
-  .site-footer .footer-brand{
-    max-width:none!important;
-    padding-top:80px!important;
-  }
-  .site-footer .footer-brand::before{
-    width:270px!important;
-    height:69px!important;
-  }
+  .brand img{width:190px!important;max-width:66vw!important}
+  .landing-header .brand img{width:184px!important}
+  .site-footer .footer-brand > img{width:270px!important}
 }
