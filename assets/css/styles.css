@@ -4,11 +4,8 @@
 
 /* Mercopact header brand lockup
    -------------------------------------------------------------
-   The previous horizontal PNG included a tiny tagline that produced
-   visible colour/alpha artefacts when Safari scaled it on mobile.
-   The navigation now uses the clean emblem asset plus a crisp live
-   wordmark. The tagline remains part of the brand system, but is not
-   forced into the small navigation header where it is unreadable. */
+   Use the clean transparent emblem plus a live wordmark so the
+   navigation stays crisp at every size and never shows a white box. */
 .brand{
   display:inline-flex!important;
   align-items:center!important;
@@ -31,7 +28,7 @@
   flex:0 0 48px;
   width:48px;
   height:48px;
-  background:url("../images/logo/mercopact-mark.png?v=20260917") center/contain no-repeat;
+  background:url("../images/logo/mercopact-mark.png?v=20260918") center/contain no-repeat;
 }
 .brand::after{
   content:"MERCOPACT";
@@ -41,23 +38,95 @@
   font-size:1.24rem;
   font-weight:800;
   line-height:1;
-  letter-spacing:.105em;
+  letter-spacing:.095em;
   white-space:nowrap;
   text-rendering:geometricPrecision;
   -webkit-font-smoothing:antialiased;
 }
 
+/* Mercopact footer brand lockup
+   -------------------------------------------------------------
+   The old horizontal PNG has a light/white rectangular background.
+   Hide it completely and rebuild the footer lockup using the same
+   transparent mark with an ivory wordmark that belongs on the dark
+   footer background. */
+.site-footer .footer-brand{
+  position:relative!important;
+  max-width:390px!important;
+  padding-top:76px!important;
+  background:transparent!important;
+  overflow:visible!important;
+}
+.site-footer .footer-brand > img{
+  display:none!important;
+}
+.site-footer .footer-brand::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  width:58px;
+  height:58px;
+  background:url("../images/logo/mercopact-mark.png?v=20260918") center/contain no-repeat;
+}
+.site-footer .footer-brand::after{
+  content:"MERCOPACT";
+  position:absolute;
+  left:72px;
+  top:17px;
+  color:#F7F4ED;
+  font-family:var(--sans);
+  font-size:1.58rem;
+  font-weight:800;
+  line-height:1;
+  letter-spacing:.105em;
+  white-space:nowrap;
+  text-rendering:geometricPrecision;
+  -webkit-font-smoothing:antialiased;
+}
+.site-footer .footer-brand p{
+  margin:0!important;
+  color:rgba(247,244,237,.80)!important;
+}
+.site-footer .footer-brand p strong{
+  color:#FFFFFF!important;
+  font-weight:700!important;
+}
+
+/* Prevent any legacy footer-image styling from reintroducing a box. */
+.site-footer .footer-brand img{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+}
+
 @media (max-width:1180px){
   .brand{gap:9px!important;min-height:46px}
   .brand::before{flex-basis:44px;width:44px;height:44px}
-  .brand::after{font-size:1.12rem;letter-spacing:.10em}
+  .brand::after{font-size:1.12rem;letter-spacing:.09em}
 }
 
 @media (max-width:680px){
   .brand{gap:8px!important;min-height:42px;max-width:72vw!important}
   .brand::before{flex-basis:40px;width:40px;height:40px}
-  .brand::after{font-size:1rem;letter-spacing:.09em}
+  .brand::after{font-size:1rem;letter-spacing:.08em}
   .landing-header .brand{min-height:40px}
   .landing-header .brand::before{flex-basis:38px;width:38px;height:38px}
   .landing-header .brand::after{font-size:.96rem}
+
+  .site-footer .footer-brand{
+    max-width:none!important;
+    padding-top:68px!important;
+  }
+  .site-footer .footer-brand::before{
+    width:52px;
+    height:52px;
+  }
+  .site-footer .footer-brand::after{
+    left:64px;
+    top:15px;
+    font-size:1.28rem;
+    letter-spacing:.09em;
+  }
 }
