@@ -1,0 +1,201 @@
+/* MERCOPACT FINAL BRAND LAYOUT V7
+   Loaded after responsive.css. This file owns only header/footer branding
+   so older logo experiments cannot interfere. */
+
+.site-header .header-inner{
+  overflow:visible!important;
+}
+
+.mercopact-logo-link{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  flex:0 0 260px!important;
+  width:260px!important;
+  min-width:260px!important;
+  height:66px!important;
+  min-height:66px!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:visible!important;
+  background:transparent!important;
+}
+
+.mercopact-logo-link .mercopact-logo-image{
+  display:block!important;
+  position:static!important;
+  width:260px!important;
+  max-width:none!important;
+  height:auto!important;
+  max-height:66px!important;
+  object-fit:contain!important;
+  object-position:left center!important;
+  opacity:1!important;
+  visibility:visible!important;
+  transform:none!important;
+  clip:auto!important;
+  clip-path:none!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+  margin:0!important;
+  padding:0!important;
+}
+
+/* Footer brand surface chosen to preserve the original navy wordmark
+   and teal/gold emblem without recoloring the master logo. */
+.site-footer{
+  background:#F7F4ED!important;
+  color:#0B1F33!important;
+  border-top:1px solid #D8D4CA!important;
+}
+
+.site-footer .footer-top{
+  align-items:start!important;
+}
+
+.site-footer .footer-brand{
+  max-width:400px!important;
+  padding:0!important;
+  margin:0!important;
+  background:transparent!important;
+  overflow:visible!important;
+}
+
+.site-footer .footer-brand::before,
+.site-footer .footer-brand::after{
+  content:none!important;
+  display:none!important;
+}
+
+.site-footer .footer-brand .mercopact-footer-logo{
+  display:block!important;
+  position:static!important;
+  width:320px!important;
+  max-width:100%!important;
+  height:auto!important;
+  opacity:1!important;
+  visibility:visible!important;
+  object-fit:contain!important;
+  object-position:left center!important;
+  transform:none!important;
+  clip:auto!important;
+  clip-path:none!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+  margin:0 0 18px!important;
+  padding:0!important;
+}
+
+.site-footer .footer-brand p{
+  margin:0!important;
+  max-width:360px!important;
+  color:#526273!important;
+  line-height:1.7!important;
+}
+
+.site-footer .footer-label{
+  color:#0F766E!important;
+}
+
+.site-footer .footer-links a{
+  color:#263B4F!important;
+}
+
+.site-footer .footer-links a:hover{
+  color:#0B1F33!important;
+}
+
+.site-footer .footer-bottom{
+  border-top:1px solid rgba(11,31,51,.14)!important;
+  color:#5C6975!important;
+}
+
+.site-footer .footer-bottom a,
+.site-footer .footer-legal a{
+  color:#5C6975!important;
+}
+
+.site-footer .social-row a{
+  color:#0B1F33!important;
+  border-color:rgba(11,31,51,.22)!important;
+  background:transparent!important;
+}
+
+.site-footer .social-row a:hover{
+  color:#0F766E!important;
+  border-color:#0F766E!important;
+}
+
+@media (max-width:1360px) and (min-width:1181px){
+  .mercopact-logo-link{
+    flex-basis:240px!important;
+    width:240px!important;
+    min-width:240px!important;
+    height:61px!important;
+    min-height:61px!important;
+  }
+  .mercopact-logo-link .mercopact-logo-image{
+    width:240px!important;
+    max-height:61px!important;
+  }
+}
+
+@media (max-width:1180px) and (min-width:981px){
+  .mercopact-logo-link{
+    flex-basis:215px!important;
+    width:215px!important;
+    min-width:215px!important;
+    height:55px!important;
+    min-height:55px!important;
+  }
+  .mercopact-logo-link .mercopact-logo-image{
+    width:215px!important;
+    max-height:55px!important;
+  }
+}
+
+@media (max-width:980px){
+  .mercopact-logo-link{
+    flex-basis:220px!important;
+    width:220px!important;
+    min-width:220px!important;
+    height:56px!important;
+    min-height:56px!important;
+  }
+  .mercopact-logo-link .mercopact-logo-image{
+    width:220px!important;
+    max-height:56px!important;
+  }
+}
+
+@media (max-width:680px){
+  .mercopact-logo-link{
+    flex-basis:190px!important;
+    width:190px!important;
+    min-width:190px!important;
+    height:49px!important;
+    min-height:49px!important;
+  }
+  .mercopact-logo-link .mercopact-logo-image{
+    width:190px!important;
+    max-height:49px!important;
+  }
+  .landing-header .mercopact-logo-link{
+    flex-basis:184px!important;
+    width:184px!important;
+    min-width:184px!important;
+    height:47px!important;
+    min-height:47px!important;
+  }
+  .landing-header .mercopact-logo-link .mercopact-logo-image{
+    width:184px!important;
+    max-height:47px!important;
+  }
+  .site-footer .footer-brand .mercopact-footer-logo{
+    width:280px!important;
+  }
+}
