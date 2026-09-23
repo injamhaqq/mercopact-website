@@ -8,6 +8,18 @@
 const FORM_ENDPOINT = '';
 
 (() => {
+  const params = new URLSearchParams(window.location.search);
+  const requestedPackage = params.get('package');
+  const packageMap = {
+    'market-proof': 'Export Market Proof — ৳34,900 one-time',
+    'buyer-development': 'Buyer Development System — ৳64,900/month',
+    'growth-desk': 'Export Growth Desk — ৳109,900/month'
+  };
+  const packageSelect = document.querySelector('#package');
+  if (packageSelect && requestedPackage && packageMap[requestedPackage]) {
+    packageSelect.value = packageMap[requestedPackage];
+  }
+
   const forms = document.querySelectorAll('form[data-static-form]');
   forms.forEach((form) => {
     form.addEventListener('submit', async (event) => {
