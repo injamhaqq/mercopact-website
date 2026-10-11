@@ -12,6 +12,7 @@ const FORM_ENDPOINT = '';
   const requestedPackage = params.get('package');
   const packageMap = {
     'market-proof': 'Export Market Proof — ৳34,900 one-time',
+    'international-pilot': 'International Buyer Development Pilot — scoped proposal',
     'buyer-development': 'Buyer Development System — ৳64,900/month',
     'growth-desk': 'Export Growth Desk — ৳109,900/month'
   };
