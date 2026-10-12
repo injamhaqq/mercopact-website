@@ -52,6 +52,26 @@
 - Reprice, reduce scope, or specialize **only after** the timed test and price conversations; get business-owner approval to update published offer.
 - Do not confuse staff hours with sending throughput; a 90-day plan contains onboarding, research refresh, prospect verification and client meetings.
 
+## Additional international 30-day pilot stress test (USD, illustrative)
+
+The currently published international pilot is **30 days, individually scoped**; there is no verified signed MERCOPACT international price. A testing hypothesis of **US$1,500** is used in the model, **not** as proven willingness to pay.
+
+A deliberately narrower first-market scope uses 25 researched organizations, 10 deep evidence dossiers, approximately 40 role/contact reviews and 25 approved first contacts. Research, follow-up, client report and QA hours are included.
+
+| Input / output | Modeled result |
+|---|---:|
+| Hypothetical 30-day price | US$1,500 |
+| Delivery hours | 104 hours |
+| Economic labor cost | US$886 |
+| Other assumed data/tools/overhead | US$200 |
+| Total economic direct cost | US$1,086 |
+| Contribution before tax and other unallocated overhead | US$414 |
+| Economic contribution margin | 27.6% |
+
+**Important:** USD labor rates ($7–10/hour depending on task), hours, data charges and overhead are assumptions. This scenario is **not** a MERCOPACT customer result or a claim that an international client would pay that price. Actual acquisition costs and overhead are not included in full; net earnings would be lower.
+
+Practical decision: this reduced first-market pilot is *potentially* more economically workable than publishing the full 40-account/100-contact BDT pilot bundle at its existing price. However, do not silently replace the sold service's scope, time horizon or fee without written management approval and a paid pilot delivery test.
+
 ## Capacity formula
 `FTE required = total production hours / productive hours per FTE (120 assumed)`.
 `Break-even service fee = loaded labor + data + infrastructure + allocated overhead`.
