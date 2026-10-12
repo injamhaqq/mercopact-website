@@ -50,7 +50,7 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
       payload._subject = form.dataset.subject || 'MERCOPACT website enquiry';
       payload._url = window.location.href;
       payload._honey = '';
-      const originalText = submit ? submit.textContent.trim() : 'Send enquiry';
+      const originalMarkup = submit ? submit.innerHTML : '';
       try {
         if (submit) { submit.disabled = true; submit.textContent = 'Sending enquiry…'; }
         setStatus('Submitting your enquiry…', true);
@@ -77,7 +77,7 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
         setStatus(err.message && /inbox has not yet been activated|We could not confirm/.test(err.message) ? err.message :
           'We could not verify delivery. Please email hello@mercopact.com or use WhatsApp. No successful submission has been confirmed.');
       } finally {
-        if (submit) { submit.disabled = false; submit.textContent = originalText; }
+        if (submit) { submit.disabled = false; submit.innerHTML = originalMarkup; }
       }
     });
   });
