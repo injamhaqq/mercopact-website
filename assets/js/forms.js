@@ -51,8 +51,41 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
       payload._url = window.location.href;
       payload._honey = '';
       const originalMarkup = submit ? submit.innerHTML : '';
+
+      // If the hosted form is inactive, preserve the typed enquiry and allow
+      // the visitor to CHOOSE an email or WhatsApp handoff instead.
+      const recovery = document.createElement('div');
+      recovery.className = 'mc-recovery';
+      recovery.setAttribute('role', 'region');
+      recovery.setAttribute('aria-label', 'Other ways to send this enquiry');
+      recovery.innerHTML = '<p>Online delivery was not confirmed. Your details are still in the form. Choose a direct channel below; your message will be prefilled, but you must press Send in WhatsApp or your email app.</p>';
+      const recoveryWhatsApp = document.createElement('a');
+      recoveryWhatsApp.target = '_blank';
+      recoveryWhatsApp.rel = 'noopener noreferrer';
+      recoveryWhatsApp.textContent = 'Continue in WhatsApp →';
+      const recoveryEmail = document.createElement('a');
+      recoveryEmail.textContent = 'Continue by email →';
+      recovery.append(recoveryWhatsApp, recoveryEmail);
+      if (status) status.insertAdjacentElement('afterend', recovery);
+      else form.appendChild(recovery);
+      const showRecovery = () => {
+        const lines = ['MERCOPACT — website enquiry (not yet submitted)', ''];
+        for (const [key, value] of new FormData(form).entries()) {
+          if (key.startsWith('_') || !String(value).trim()) continue;
+          lines.push(key + ': ' + String(value).trim().slice(0, 320));
+        }
+        const draft = lines.join('\\n').slice(0, 1750);
+        recoveryWhatsApp.href = 'https://wa.me/8801793122369?text=' + encodeURIComponent(draft);
+        recoveryEmail.href = 'mailto:hello@mercopact.com?subject=' +
+          encodeURIComponent('MERCOPACT buyer development enquiry') + '&body=' +
+          encodeURIComponent(draft);
+        recovery.classList.add('is-visible');
+      };
+      const hideRecovery = () => recovery.classList.remove('is-visible');
+
       try {
         if (submit) { submit.disabled = true; submit.textContent = 'Sending enquiry…'; }
+        hideRecovery();
         setStatus('Submitting your enquiry…', true);
         const response = await fetch(FORM_AJAX_ENDPOINT, {
           method: 'POST',
@@ -72,10 +105,12 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
         if (packageSelect && requestedPackage && packageMap[requestedPackage]) {
           packageSelect.value = packageMap[requestedPackage];
         }
+        hideRecovery();
         setStatus('Your enquiry was accepted by the submission service. We will review it at our business inbox.', true);
       } catch (err) {
         setStatus(err.message && /inbox has not yet been activated|We could not confirm/.test(err.message) ? err.message :
           'We could not verify delivery. Please email hello@mercopact.com or use WhatsApp. No successful submission has been confirmed.');
+        showRecovery();
       } finally {
         if (submit) { submit.disabled = false; submit.innerHTML = originalMarkup; }
       }
