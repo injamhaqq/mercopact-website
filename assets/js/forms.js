@@ -23,10 +23,28 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
   }
 
   document.querySelectorAll('form[data-static-form]').forEach((form) => {
+    // Construct the fallback panel ONCE; repeated failed attempts must not
+    // duplicate controls or create misleading stacks of stale draft links.
+    const status = form.querySelector('.form-status');
+    const recovery = document.createElement('div');
+    recovery.className = 'mc-recovery';
+    recovery.setAttribute('role', 'region');
+    recovery.setAttribute('aria-label', 'Other ways to send this enquiry');
+    const recoveryIntro = document.createElement('p');
+    recoveryIntro.textContent = 'Online delivery was not confirmed. Your details are still in the form. Choose a direct channel; you must press Send in your email app or WhatsApp.';
+    const recoveryWhatsApp = document.createElement('a');
+    recoveryWhatsApp.target = '_blank';
+    recoveryWhatsApp.rel = 'noopener noreferrer';
+    recoveryWhatsApp.textContent = 'Continue in WhatsApp →';
+    const recoveryEmail = document.createElement('a');
+    recoveryEmail.textContent = 'Continue by email →';
+    recovery.append(recoveryIntro, recoveryWhatsApp, recoveryEmail);
+    if (status) status.insertAdjacentElement('afterend', recovery);
+    else form.appendChild(recovery);
+
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       if (!form.reportValidity()) return;
-      const status = form.querySelector('.form-status');
       const submit = form.querySelector('[type="submit"]');
       const setStatus = (message, ok = false) => {
         if (!status) return;
@@ -52,22 +70,6 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
       payload._honey = '';
       const originalMarkup = submit ? submit.innerHTML : '';
 
-      // If the hosted form is inactive, preserve the typed enquiry and allow
-      // the visitor to CHOOSE an email or WhatsApp handoff instead.
-      const recovery = document.createElement('div');
-      recovery.className = 'mc-recovery';
-      recovery.setAttribute('role', 'region');
-      recovery.setAttribute('aria-label', 'Other ways to send this enquiry');
-      recovery.innerHTML = '<p>Online delivery was not confirmed. Your details are still in the form. Choose a direct channel below; your message will be prefilled, but you must press Send in WhatsApp or your email app.</p>';
-      const recoveryWhatsApp = document.createElement('a');
-      recoveryWhatsApp.target = '_blank';
-      recoveryWhatsApp.rel = 'noopener noreferrer';
-      recoveryWhatsApp.textContent = 'Continue in WhatsApp →';
-      const recoveryEmail = document.createElement('a');
-      recoveryEmail.textContent = 'Continue by email →';
-      recovery.append(recoveryWhatsApp, recoveryEmail);
-      if (status) status.insertAdjacentElement('afterend', recovery);
-      else form.appendChild(recovery);
       const showRecovery = () => {
         const lines = ['MERCOPACT — website enquiry (not yet submitted)', ''];
         for (const [key, value] of new FormData(form).entries()) {

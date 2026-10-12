@@ -34,6 +34,11 @@ for(const report of reports)ensure((home.includes('href="/'+report+'"')||home.in
 ensure(f.includes("result.success === true")&&f.includes("result.success === 'true'"),'Must verify FormSubmit explicit success');
 ensure(f.includes('showRecovery();')&&f.includes('recoveryWhatsApp.href')&&f.includes('recoveryEmail.href'),'Failed form must offer a recoverable, user-controlled handoff');
 ensure(f.includes('new FormData(form)'),'Preserve typed form details for handoff');
+ensure((f.match(/recovery.className = 'mc-recovery'/g)||[]).length===1,'Form recovery panel must be created exactly once');
+ensure(f.indexOf("recovery.className = 'mc-recovery'") < f.indexOf("form.addEventListener('submit'"),'Recovery panel must be initialized outside submit handler');
+ensure(source['contact.html'].includes('class="mc-optional-details field full"'),'Contact technical details should be optional');
+ensure(source['global-buyer-pilot.html'].includes('id="mc-handoff-proof"'),'Pilot must describe auditable handoff deliverables');
+ensure(source['about.html'].includes('not a MERCOPACT facility'),'Illustrative photography must be labeled transparently');
 ensure(read('assets/css/trust-conversion-v1.css').includes('@media'),'Responsive trust styles missing');
 const sitemap=read('sitemap.xml');
 for(const file of [...reports,'research-examples.html','trust-and-method.html'])ensure(sitemap.includes('/'+file),'Sitemap missing '+file);
