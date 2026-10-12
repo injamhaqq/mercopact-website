@@ -58,7 +58,7 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
       recovery.className = 'mc-recovery';
       recovery.setAttribute('role', 'region');
       recovery.setAttribute('aria-label', 'Other ways to send this enquiry');
-      recovery.innerHTML = '<p>Online delivery was not confirmed. Your details are still in the form. Choose a direct channel below; your message will be prefilled, but you must press Send in WhatsApp or your email app.</p>';
+      recovery.innerHTML = '<p>Prefer a direct conversation? Your details can be prefilled in WhatsApp or email. Review the message and press Send yourself.</p>';
       const recoveryWhatsApp = document.createElement('a');
       recoveryWhatsApp.target = '_blank';
       recoveryWhatsApp.rel = 'noopener noreferrer';
@@ -68,7 +68,7 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
       recovery.append(recoveryWhatsApp, recoveryEmail);
       if (status) status.insertAdjacentElement('afterend', recovery);
       else form.appendChild(recovery);
-      const showRecovery = () => {
+      const refreshRecoveryLinks = () => {
         const lines = ['MERCOPACT — website enquiry (not yet submitted)', ''];
         for (const [key, value] of new FormData(form).entries()) {
           if (key.startsWith('_') || !String(value).trim()) continue;
@@ -79,9 +79,22 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
         recoveryEmail.href = 'mailto:hello@mercopact.com?subject=' +
           encodeURIComponent('MERCOPACT buyer development enquiry') + '&body=' +
           encodeURIComponent(draft);
+      };
+      const showRecovery = () => {
+        refreshRecoveryLinks();
+        recovery.querySelector('p').textContent =
+          'Online delivery could not be confirmed. Your form details are preserved; use one of these direct options to complete the enquiry.';
         recovery.classList.add('is-visible');
       };
-      const hideRecovery = () => recovery.classList.remove('is-visible');
+      const hideRecovery = () => {
+        recovery.classList.remove('is-visible');
+        recovery.querySelector('p').textContent =
+          'Prefer a direct conversation? Your details can be prefilled in WhatsApp or email. Review the message and press Send yourself.';
+        refreshRecoveryLinks();
+      };
+      form.addEventListener('input', refreshRecoveryLinks);
+      form.addEventListener('change', refreshRecoveryLinks);
+      refreshRecoveryLinks();
 
       try {
         if (submit) { submit.disabled = true; submit.textContent = 'Sending enquiry…'; }
