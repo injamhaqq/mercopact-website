@@ -9,7 +9,8 @@
     'contact.html': '/contact/',
     'buyer-growth.html': '/buyer-growth/',
     'privacy.html': '/privacy/',
-    'terms.html': '/terms/'
+    'terms.html': '/terms/',
+    'global-buyer-pilot.html': '/global-buyer-pilot.html'
   };
 
   const currentFile = window.location.pathname.split('/').pop();
@@ -17,10 +18,17 @@
     history.replaceState(null, '', cleanRoutes[currentFile] + window.location.search + window.location.hash);
   }
 
+  // Resolve relative links from the site root. Clean Jekyll routes (e.g. /packages/)
+  // otherwise turn contact.html?package=... into /packages/contact.html?package=...
+  // and lose qualified enquiries.
   document.querySelectorAll('a[href]').forEach((link) => {
     const href = link.getAttribute('href');
-    if (cleanRoutes[href]) link.setAttribute('href', cleanRoutes[href]);
-    if (href === 'index.html') link.setAttribute('href', '/');
+    if (!href || href.startsWith('#') || href.startsWith('//') ||
+        /^[a-z][a-z0-9+.-]*:/i.test(href)) return;
+    const url = new URL(href, window.location.origin + '/');
+    const path = url.pathname.replace(/^\//, '');
+    const route = path === 'index.html' ? '/' : cleanRoutes[path];
+    if (route) link.setAttribute('href', route + url.search + url.hash);
   });
 
   const menuToggle = document.querySelector('.menu-toggle');
