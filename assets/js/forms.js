@@ -31,7 +31,7 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
     recovery.setAttribute('role', 'region');
     recovery.setAttribute('aria-label', 'Other ways to send this enquiry');
     const recoveryIntro = document.createElement('p');
-    recoveryIntro.textContent = 'Online delivery was not confirmed. Your details are still in the form. Choose a direct channel; you must press Send in your email app or WhatsApp.';
+    recoveryIntro.textContent = 'Prefer direct contact? We can prefill WhatsApp or email from this form. Review the message and press Send yourself.';
     const recoveryWhatsApp = document.createElement('a');
     recoveryWhatsApp.target = '_blank';
     recoveryWhatsApp.rel = 'noopener noreferrer';
@@ -41,6 +41,31 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
     recovery.append(recoveryIntro, recoveryWhatsApp, recoveryEmail);
     if (status) status.insertAdjacentElement('afterend', recovery);
     else form.appendChild(recovery);
+
+    const refreshRecoveryLinks = () => {
+      const lines = ['MERCOPACT — website enquiry (not yet submitted)', ''];
+      for (const [key, value] of new FormData(form).entries()) {
+        if (key.startsWith('_') || !String(value).trim()) continue;
+        lines.push(key + ': ' + String(value).trim().slice(0, 320));
+      }
+      const draft = lines.join('\\n').slice(0, 1750);
+      recoveryWhatsApp.href = 'https://wa.me/8801793122369?text=' + encodeURIComponent(draft);
+      recoveryEmail.href = 'mailto:hello@mercopact.com?subject=' +
+        encodeURIComponent('MERCOPACT buyer development enquiry') + '&body=' + encodeURIComponent(draft);
+    };
+    const showRecovery = () => {
+      refreshRecoveryLinks();
+      recoveryIntro.textContent = 'Online submission could not be confirmed. Your details remain in the form; use either direct option below to finish sending the enquiry.';
+      recovery.classList.add('is-visible');
+    };
+    const hideRecovery = () => {
+      recovery.classList.remove('is-visible');
+      recoveryIntro.textContent = 'Prefer direct contact? We can prefill WhatsApp or email from this form. Review the message and press Send yourself.';
+      refreshRecoveryLinks();
+    };
+    form.addEventListener('input', refreshRecoveryLinks);
+    form.addEventListener('change', refreshRecoveryLinks);
+    refreshRecoveryLinks();
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
@@ -69,21 +94,6 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
       payload._url = window.location.href;
       payload._honey = '';
       const originalMarkup = submit ? submit.innerHTML : '';
-
-      const showRecovery = () => {
-        const lines = ['MERCOPACT — website enquiry (not yet submitted)', ''];
-        for (const [key, value] of new FormData(form).entries()) {
-          if (key.startsWith('_') || !String(value).trim()) continue;
-          lines.push(key + ': ' + String(value).trim().slice(0, 320));
-        }
-        const draft = lines.join('\n').slice(0, 1750);
-        recoveryWhatsApp.href = 'https://wa.me/8801793122369?text=' + encodeURIComponent(draft);
-        recoveryEmail.href = 'mailto:hello@mercopact.com?subject=' +
-          encodeURIComponent('MERCOPACT buyer development enquiry') + '&body=' +
-          encodeURIComponent(draft);
-        recovery.classList.add('is-visible');
-      };
-      const hideRecovery = () => recovery.classList.remove('is-visible');
 
       try {
         if (submit) { submit.disabled = true; submit.textContent = 'Sending enquiry…'; }
