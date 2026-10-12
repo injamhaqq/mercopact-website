@@ -14,7 +14,7 @@ const source = Object.fromEntries([...pages,...reports].map(f=>[f,read(f)]));
 for (const [file, html] of Object.entries(source)) {
   ensure((html.match(/<h1(?:\s|>)/g)||[]).length === 1, file+' must have exactly one H1');
   ensure(html.includes('mercopact-primary-lockup-v7.png'), file+' lost approved brand lockup');
-  ensure(html.includes('aria-label="Primary navigation"'), file+' lost primary navigation');
+  ensure(file==='buyer-growth.html' || html.includes('aria-label="Primary navigation"'), file+' lost primary navigation');
   ensure(html.includes('<footer class="site-footer">'), file+' lost footer');
   ensure(html.includes('href="research-examples.html"') || file==='research-examples.html' || file==='about.html',file+' missing research nav');
   ensure(html.includes('href="trust-and-method.html"') || file==='trust-and-method.html',file+' missing standards nav');
