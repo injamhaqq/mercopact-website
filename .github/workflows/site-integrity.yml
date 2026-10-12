@@ -1,0 +1,21 @@
+name: MERCOPACT site integrity
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  static-qa:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate JavaScript syntax
+        run: |
+          node --check assets/js/forms.js
+          node --check assets/js/main.js
+      - name: Verify site trust, research, links and forms
+        run: node scripts/verify-trust-pages.js
