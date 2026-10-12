@@ -34,6 +34,9 @@ for(const report of reports)ensure((home.includes('href="/'+report+'"')||home.in
 ensure(f.includes("result.success === true")&&f.includes("result.success === 'true'"),'Must verify FormSubmit explicit success');
 ensure(f.includes('showRecovery();')&&f.includes('recoveryWhatsApp.href')&&f.includes('recoveryEmail.href'),'Failed form must offer a recoverable, user-controlled handoff');
 ensure(f.includes('new FormData(form)'),'Preserve typed form details for handoff');
+ensure(f.includes('refreshRecoveryLinks();')&&f.includes("form.addEventListener('input', refreshRecoveryLinks)"),'Direct channels must be prefilled before a server-side error');
+ensure(!read('assets/css/trust-conversion-v1.css').includes('.mc-recovery{display:none'),'Direct choices must be visible without trying FormSubmit');
+ensure(!source['contact.html'].includes('name="Commercial objective" required'),'Goal text field must not block initial enquiry');
 ensure((f.match(/recovery.className = 'mc-recovery'/g)||[]).length===1,'Form recovery panel must be created exactly once');
 ensure(f.indexOf("recovery.className = 'mc-recovery'") < f.indexOf("form.addEventListener('submit'"),'Recovery panel must be initialized outside submit handler');
 ensure(source['contact.html'].includes('class="mc-optional-details field full"'),'Contact technical details should be optional');
