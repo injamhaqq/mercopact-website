@@ -32,8 +32,8 @@
 .mc-contact-assurance{padding:20px 22px;border-left:4px solid #0F766E;background:#EFF5F2;color:#213E3D;margin:22px 0}
 .mc-contact-assurance h3{color:#0B1F33;margin:0 0 7px;font-size:1.09rem}
 .mc-contact-assurance p{font-size:.9rem;line-height:1.65;margin:0}
-.mc-recovery{display:none;margin:12px 0 0;padding:14px 16px;background:#F5F0E5;border:1px solid #C8AE82}
-.mc-recovery.is-visible{display:block}
+.mc-recovery{display:block;margin:12px 0 0;padding:14px 16px;background:#EFF6F3;border:1px solid #A4CFC1}
+.mc-recovery.is-visible{background:#F5F0E5;border-color:#C8AE82}
 .mc-recovery p{font-size:.88rem;line-height:1.6;margin:0 0 12px}
 .mc-recovery a{display:inline-block;margin-right:12px;margin-bottom:6px;text-decoration:underline;font-weight:700;color:#0B5753}
 .mc-recovery a:focus-visible{outline:3px solid #0F766E;outline-offset:3px}
