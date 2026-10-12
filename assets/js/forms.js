@@ -48,7 +48,7 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
         if (key.startsWith('_') || !String(value).trim()) continue;
         lines.push(key + ': ' + String(value).trim().slice(0, 320));
       }
-      const draft = lines.join('\\n').slice(0, 1750);
+      const draft = lines.join('\n').slice(0, 1750);
       recoveryWhatsApp.href = 'https://wa.me/8801793122369?text=' + encodeURIComponent(draft);
       recoveryEmail.href = 'mailto:hello@mercopact.com?subject=' +
         encodeURIComponent('MERCOPACT buyer development enquiry') + '&body=' + encodeURIComponent(draft);
