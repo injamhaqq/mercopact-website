@@ -34,6 +34,9 @@ for(const report of reports)ensure((home.includes('href="/'+report+'"')||home.in
 ensure(f.includes("result.success === true")&&f.includes("result.success === 'true'"),'Must verify FormSubmit explicit success');
 ensure(f.includes('showRecovery();')&&f.includes('recoveryWhatsApp.href')&&f.includes('recoveryEmail.href'),'Failed form must offer a recoverable, user-controlled handoff');
 ensure(f.includes('new FormData(form)'),'Preserve typed form details for handoff');
+ensure(f.includes('refreshRecoveryLinks();')&&f.includes("form.addEventListener('input', refreshRecoveryLinks)"),'Direct channel choices must be prefilled even without failed submission');
+ensure(!read('assets/css/trust-conversion-v1.css').includes('.mc-recovery{display:none'),'Direct channels must not be hidden until error');
+ensure(!source['contact.html'].includes('id="goal" name="Commercial objective" required'),'Initial enquiry objective should be optional');
 ensure(read('assets/css/trust-conversion-v1.css').includes('@media'),'Responsive trust styles missing');
 const sitemap=read('sitemap.xml');
 for(const file of [...reports,'research-examples.html','trust-and-method.html'])ensure(sitemap.includes('/'+file),'Sitemap missing '+file);
