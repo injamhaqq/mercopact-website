@@ -39,7 +39,7 @@ const FORM_ENDPOINT = '';
         data.forEach((value, key) => {
           if (String(value).trim()) lines.push(`${key}: ${value}`);
         });
-        const href = `mailto:${encodeURIComponent(fallbackEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
+        const href = `mailto:${fallbackEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
         if (status) status.textContent = 'Opening your email app to complete the enquiry.';
         window.location.href = href;
         return;
