@@ -1,0 +1,41 @@
+/* MERCOPACT trust and conversion layer | 2026-10-12
+   Scoped classes, existing official brand assets and approved palette retained. */
+.mc-trust-signal{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;margin-top:20px;font-size:.83rem;color:#DAE9E7}
+.mc-trust-signal span{display:inline-flex;align-items:center;gap:7px}
+.mc-trust-signal span:before{content:"✓";color:#EDCB77;font-weight:800}
+.mc-trust-shell{padding:68px 0}
+.mc-trust-shell .mc-eyebrow{font-size:.73rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#0E766E;margin:0 0 12px}
+.mc-trust-shell h2{font-size:clamp(1.7rem,3.2vw,2.85rem);line-height:1.16;max-width:870px;color:#0B1F33}
+.mc-trust-shell .mc-lead{font-size:1.04rem;line-height:1.75;max-width:840px;color:#425568;margin:16px 0 30px}
+.mc-trust-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:26px}
+.mc-trust-card{display:flex;flex-direction:column;background:#fff;border:1px solid #D9E0DC;min-width:0;padding:25px 23px;gap:12px}
+.mc-trust-card .mc-label{color:#0F766E;font-size:.75rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase}
+.mc-trust-card h3{font-size:1.28rem;line-height:1.3;color:#0B1F33;margin:0}
+.mc-trust-card p{font-size:.93rem;line-height:1.7;color:#425568;margin:0;flex:1}
+.mc-trust-card a{color:#0A6663;font-weight:700;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+.mc-trust-card a:focus-visible{outline:3px solid #0F766E;outline-offset:3px}
+.mc-note{margin-top:18px;border-left:3px solid #BA9457;padding:12px 18px;background:#F6F3EA;font-size:.86rem;line-height:1.65;color:#3E4C57}
+.mc-outcome-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.mc-outcome{border-top:3px solid #0E766E;background:#fff;padding:24px}
+.mc-outcome h3{color:#0B1F33;font-size:1.15rem;margin:0 0 10px}
+.mc-outcome p{font-size:.92rem;line-height:1.68;color:#425568;margin:0}
+.mc-step-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-top:24px}
+.mc-step{background:#fff;border:1px solid #D8DEDA;padding:20px 19px}
+.mc-step .mc-n{color:#0F766E;font-size:.77rem;font-weight:800;margin-bottom:12px}
+.mc-step h3{font-size:1.07rem;margin:0 0 8px;color:#0B1F33}
+.mc-step p{margin:0;line-height:1.6;color:#425568;font-size:.88rem}
+.mc-proof-strip{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px;background:#0B1F33;color:#F0F3F4;padding:24px 27px;margin-top:23px}
+.mc-proof-strip div{max-width:650px}
+.mc-proof-strip strong{color:#F6DB9D;display:block;font-size:1.01rem;margin-bottom:5px}
+.mc-proof-strip p{font-size:.89rem;line-height:1.65;margin:0}
+.mc-proof-strip .btn{white-space:normal;text-align:center}
+.mc-contact-assurance{padding:20px 22px;border-left:4px solid #0F766E;background:#EFF5F2;color:#213E3D;margin:22px 0}
+.mc-contact-assurance h3{color:#0B1F33;margin:0 0 7px;font-size:1.09rem}
+.mc-contact-assurance p{font-size:.9rem;line-height:1.65;margin:0}
+.mc-recovery{display:none;margin:12px 0 0;padding:14px 16px;background:#F5F0E5;border:1px solid #C8AE82}
+.mc-recovery.is-visible{display:block}
+.mc-recovery p{font-size:.88rem;line-height:1.6;margin:0 0 12px}
+.mc-recovery a{display:inline-block;margin-right:12px;margin-bottom:6px;text-decoration:underline;font-weight:700;color:#0B5753}
+.mc-recovery a:focus-visible{outline:3px solid #0F766E;outline-offset:3px}
+@media(max-width:980px){.mc-step-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.mc-trust-grid,.mc-outcome-grid{grid-template-columns:1fr}.mc-trust-shell{padding:42px 0}.mc-step-grid{grid-template-columns:1fr}.mc-proof-strip{padding:20px 18px}.mc-trust-card,.mc-outcome{padding:20px}.mc-trust-signal{gap:7px 14px;font-size:.76rem}}
