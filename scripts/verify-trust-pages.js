@@ -16,8 +16,8 @@ for (const [file, html] of Object.entries(source)) {
   ensure(html.includes('mercopact-primary-lockup-v7.png'), file+' lost approved brand lockup');
   ensure(file==='buyer-growth.html' || html.includes('aria-label="Primary navigation"'), file+' lost primary navigation');
   ensure(html.includes('<footer class="site-footer">'), file+' lost footer');
-  ensure(html.includes('href="research-examples.html"') || file==='research-examples.html' || file==='about.html',file+' missing research nav');
-  ensure(html.includes('href="trust-and-method.html"') || file==='trust-and-method.html',file+' missing standards nav');
+  ensure((html.includes('href="/research-examples.html"')||html.includes('href="research-examples.html"')) || file==='research-examples.html' || file==='about.html',file+' missing research nav');
+  ensure((html.includes('href="/trust-and-method.html"')||html.includes('href="trust-and-method.html"')) || file==='trust-and-method.html',file+' missing standards nav');
   for (const m of html.matchAll(/\bhref="([^"]+)"/g)) {
     const href = m[1];
     if (!href || /^(#|\/|https?:|mailto:|tel:|javascript:)/i.test(href)) continue;
@@ -30,7 +30,7 @@ for (const file of pages) {
   ensure(source[file].includes('trust-conversion-v1.css'),file+' must load scoped trust styles');
 }
 const home=source['index.html'],f=read('assets/js/forms.js');
-for(const report of reports)ensure(home.includes('href="'+report+'"'),'Homepage missing research '+report);
+for(const report of reports)ensure((home.includes('href="/'+report+'"')||home.includes('href="'+report+'"')),'Homepage missing research '+report);
 ensure(f.includes("result.success === true")&&f.includes("result.success === 'true'"),'Must verify FormSubmit explicit success');
 ensure(f.includes('showRecovery();')&&f.includes('recoveryWhatsApp.href')&&f.includes('recoveryEmail.href'),'Failed form must offer a recoverable, user-controlled handoff');
 ensure(f.includes('new FormData(form)'),'Preserve typed form details for handoff');

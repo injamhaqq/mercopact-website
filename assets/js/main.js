@@ -29,6 +29,7 @@
     const path = url.pathname.replace(/^\//, '');
     const route = path === 'index.html' ? '/' : cleanRoutes[path];
     if (route) link.setAttribute('href', route + url.search + url.hash);
+    else if (path.endsWith('.html')) link.setAttribute('href', '/' + path + url.search + url.hash);
   });
 
   const menuToggle = document.querySelector('.menu-toggle');
