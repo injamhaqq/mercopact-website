@@ -28,7 +28,7 @@ async function load(page, file) {
   await page.waitForSelector('h1', { timeout: 15000 });
 }
 try {
-  for (const width of [320,375,390,768,1024,1440]) {
+  for (const width of [320,375,390,768,1024,1180,1200,1280,1440]) {
     const page = await browser.newPage({ viewport:{ width, height:800 }, reducedMotion:'reduce' });
     const errors = [];
     page.on('pageerror', err => errors.push(err.message));
