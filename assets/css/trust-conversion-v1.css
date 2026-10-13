@@ -53,3 +53,8 @@
 .mc-illustrative-photo{margin:0;position:relative}
 .mc-illustrative-photo figcaption{font-size:.76rem;background:#F8F6EF;color:#47586A;padding:9px 5vw}
 @media(max-width:760px){.mc-handoff-grid{grid-template-columns:1fr}.mc-handoff{padding:22px 18px}}
+
+/* Status and prepared-enquiry fallback must be legible without relying on color alone. */
+.form-status[role="alert"]{font-weight:650;line-height:1.6}
+.mc-recovery.is-visible{outline:1px solid #92744C;outline-offset:2px}
+.mc-recovery a{min-height:44px;display:inline-flex;align-items:center;padding:5px 0}

@@ -32,6 +32,25 @@
     else if (path.endsWith('.html')) link.setAttribute('href', '/' + path + url.search + url.hash);
   });
 
+  // Carry opted-in campaign URL labels across our own pilot/contact pages, without cookies.
+  const campaign = new URLSearchParams(window.location.search);
+  const campaignKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
+  if (campaignKeys.some(key => campaign.has(key))) {
+    document.querySelectorAll('a[href]').forEach(link => {
+      const href = link.getAttribute('href');
+      if (!href || href.startsWith('#') || /^(mailto:|tel:|javascript:|https?:\/\/(?!mercopact\.com))/i.test(href)) return;
+      const target = new URL(href, window.location.origin);
+      if (target.origin !== window.location.origin ||
+          !/^\/(contact\/|global-buyer-pilot\.html|international-markets\/)/.test(target.pathname)) return;
+      for (const key of campaignKeys) {
+        const value = campaign.get(key);
+        if (value && /^[a-zA-Z0-9 _.-]{1,80}$/.test(value) && !target.searchParams.has(key))
+          target.searchParams.set(key, value);
+      }
+      link.setAttribute('href', target.pathname + target.search + target.hash);
+    });
+  }
+
   const menuToggle = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.site-nav');
   const headerCta = document.querySelector('.header-cta');

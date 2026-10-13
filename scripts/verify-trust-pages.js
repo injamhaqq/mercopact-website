@@ -54,18 +54,39 @@ for (const page of ['index.html','global-buyer-pilot.html','about.html','how-we-
 }
 ensure(read('packages.html').includes('Bangladesh Buyer Development Packages'), 'Existing Bangladesh prices must remain a distinct published offer');
 ensure(home.includes('Develop qualified B2B buyers beyond your home market'), 'Global-first homepage hero must be present');
-ensure(home.indexOf('International Buyer Development</h3>') < home.indexOf('Bangladesh Corporate Buyers</h3>'), 'International-first service ordering missing');
+ensure(!home.includes('aria-labelledby="bd-title"') && !home.includes('aria-labelledby="entry-title"'), 'Global homepage must not feature Bangladesh domestic or entry sections');
 ensure(source['global-buyer-pilot.html'].includes('Europe, North America, Asia'), 'Global source-country positioning missing');
 ensure(source['contact.html'].includes('name="Company headquarters country"'), 'Separate client and destination countries in enquiry');
 
 const rootHtmlPages = fs.readdirSync(process.cwd()).filter(f => f.endsWith('.html') && !f.startsWith('route-') && f !== 'buyer-growth.html');
 for (const file of rootHtmlPages) {
   const html = read(file);
-  const nav = html.match(/<nav class="site-nav" aria-label="Primary navigation">([\s\S]*?)<\/nav>/);
+  const nav = html.match(/<nav id="primary-navigation" class="site-nav" aria-label="Primary navigation">([\s\S]*?)<\/nav>/);
   if (!nav) continue;
   ensure(!nav[0].includes('>Bangladesh Market Entry</a>'), file+' must keep Bangladesh service as secondary footer navigation');
   const marketsAt = nav[0].indexOf('>International Markets</a>');
   const pilotAt = nav[0].indexOf('>30-Day Pilot</a>');
   ensure(marketsAt >= 0 && pilotAt > marketsAt && pilotAt < nav[0].indexOf('>Industries</a>'), file+' international pilot navigation ordering');
 }
+
+const businessPages = fs.readdirSync(process.cwd()).filter(file => file.endsWith('.html') && !file.startsWith('route-'));
+const titles = new Set();
+for (const file of businessPages) {
+  const html = read(file);
+  const title = html.match(/<title>([^<]+)<\/title>/i)?.[1] || '';
+  const description = html.match(/<meta name="description" content="([^"]+)"/i)?.[1] || '';
+  ensure(title.length > 8 && title.length <= 65, file+' needs a concise title');
+  ensure(description.length > 25 && description.length <= 165, file+' needs a concise description');
+  ensure(!titles.has(title.toLowerCase()), file+' has a duplicate title');
+  titles.add(title.toLowerCase());
+  ensure((html.match(/<h1(?:\s|>)/g)||[]).length === 1, file+' needs one H1');
+  if (file !== 'buyer-growth.html') {
+    ensure(html.includes('id="primary-navigation"') && html.includes('aria-controls="primary-navigation"'), file+' toggle must control its navigation');
+  }
+}
+ensure(f.includes('const FORM_DELIVERY_READY = false'), 'Do not post to unverified FormSubmit inbox');
+ensure(f.includes('showRecovery();'), 'Offline form must preserve WhatsApp handoff');
+ensure(!read('assets/css/responsive.css').includes('top:calc(100% + 339px)'), 'Brittle mobile CTA offset found');
+ensure(!home.includes('aria-labelledby="paths-title"'), 'Homepage must not reintroduce three competing services');
+ensure((sitemap.match(/<lastmod>2026-10-13<\/lastmod>/g)||[]).length === urls.length, 'Sitemap must show actual content update dates');
 console.log('MERCOPACT trust-integrity checks passed:',checks);
