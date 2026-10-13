@@ -19,3 +19,27 @@ jobs:
           node --check assets/js/main.js
       - name: Verify site trust, research, links and forms
         run: node scripts/verify-trust-pages.js
+
+  browser-qa:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser QA runner
+        run: |
+          npm install --no-save --package-lock=false playwright@1.55.1
+          npx playwright install --with-deps chromium
+      - name: Verify responsive browser journeys
+        run: node scripts/verify-browser.mjs
+      - name: Upload browser QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mercopact-browser-qa
+          path: .qa-screenshots/
+          if-no-files-found: ignore
+          retention-days: 7
