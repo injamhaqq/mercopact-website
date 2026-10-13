@@ -7,6 +7,9 @@
   For non-JS users, form[action] uses the provider's normal form POST.
 */
 const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
+ // A working MX record, activated FormSubmit recipient and inbox receipt test must all pass before enabling.
+ // Keep this false during the verified email DNS outage. Do not infer delivery from a website deploy.
+ const FORM_DELIVERY_READY = false;
 
 (() => {
   const params = new URLSearchParams(window.location.search);
@@ -23,6 +26,17 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
   }
 
   document.querySelectorAll('form[data-static-form]').forEach((form) => {
+    // Context stays in this request only; no cookies, external tracking pixels or long-term storage.
+    for (const key of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content']) {
+      const value = params.get(key);
+      if (value && /^[a-zA-Z0-9 _.-]{1,80}$/.test(value)) {
+        const field = document.createElement('input');
+        field.type = 'hidden';
+        field.name = key;
+        field.value = value;
+        form.appendChild(field);
+      }
+    }
     // Construct the fallback panel ONCE; repeated failed attempts must not
     // duplicate controls or create misleading stacks of stale draft links.
     const status = form.querySelector('.form-status');
@@ -84,6 +98,12 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
         recovery.classList.add('is-visible');
       };
       const hideRecovery = () => recovery.classList.remove('is-visible');
+
+      if (!FORM_DELIVERY_READY) {
+        showRecovery();
+        setStatus('The website email form is temporarily offline. Select “Continue in WhatsApp” below and press Send there to contact MERCOPACT. Your enquiry has not been submitted.');
+        return;
+      }
 
       try {
         if (submit) { submit.disabled = true; submit.textContent = 'Sending enquiry…'; }
