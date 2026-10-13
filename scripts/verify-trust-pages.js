@@ -44,4 +44,13 @@ const sitemap=read('sitemap.xml');
 for(const file of [...reports,'research-examples.html','trust-and-method.html'])ensure(sitemap.includes('/'+file),'Sitemap missing '+file);
 const urls=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);
 ensure(urls.length===new Set(urls).size,'Duplicate sitemap URLs');
+ensure(home.includes('Find relevant industrial buyers'), 'Homepage positioning not applied');
+ensure(home.includes('href="/pilot-deliverables.html"'), 'Homepage proof CTA missing');
+ensure(source['global-buyer-pilot.html'].includes('id="international-commercial-terms"'), 'International commercial terms missing');
+ensure(source['contact.html'].includes('Email your project brief'), 'International email-first contact CTA missing');
+ensure(read('bangladesh-market-entry.html').includes('wits.worldbank.org'), 'Bangladesh machinery corridor source missing');
+for (const page of ['index.html','global-buyer-pilot.html','about.html','how-we-work.html','trust-and-method.html','research-examples.html','contact.html']) {
+  ensure(source[page].includes('>30-Day Pilot</a>'), page+' must link to the international pilot in its navigation');
+}
+ensure(read('packages.html').includes('Bangladesh Buyer Development Packages'), 'Existing Bangladesh prices must remain a distinct published offer');
 console.log('MERCOPACT trust-integrity checks passed:',checks);
