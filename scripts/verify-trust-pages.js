@@ -53,4 +53,8 @@ for (const page of ['index.html','global-buyer-pilot.html','about.html','how-we-
   ensure(source[page].includes('>30-Day Pilot</a>'), page+' must link to the international pilot in its navigation');
 }
 ensure(read('packages.html').includes('Bangladesh Buyer Development Packages'), 'Existing Bangladesh prices must remain a distinct published offer');
+ensure(home.includes('Develop qualified B2B buyers beyond your home market'), 'Global-first homepage hero must be present');
+ensure(home.indexOf('International Buyer Development</h3>') < home.indexOf('Bangladesh Corporate Buyers</h3>'), 'International-first service ordering missing');
+ensure(source['global-buyer-pilot.html'].includes('Europe, North America, Asia'), 'Global source-country positioning missing');
+ensure(source['contact.html'].includes('name="Company headquarters country"'), 'Separate client and destination countries in enquiry');
 console.log('MERCOPACT trust-integrity checks passed:',checks);
