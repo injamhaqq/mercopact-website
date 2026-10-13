@@ -47,7 +47,7 @@ ensure(urls.length===new Set(urls).size,'Duplicate sitemap URLs');
 ensure(home.includes('Develop qualified B2B buyers beyond your home market'), 'Homepage positioning not applied');
 ensure(home.includes('href="/pilot-deliverables.html"'), 'Homepage proof CTA missing');
 ensure(source['global-buyer-pilot.html'].includes('id="international-commercial-terms"'), 'International commercial terms missing');
-ensure(source['contact.html'].includes('Email your project brief'), 'International email-first contact CTA missing');
+ensure(source['contact.html'].includes('Send an enquiry via WhatsApp') && source['contact.html'].includes('Email routing is under verification'), 'A reachable fallback must be visible during DNS email outage');
 ensure(read('bangladesh-market-entry.html').includes('wits.worldbank.org'), 'Bangladesh machinery corridor source missing');
 for (const page of ['index.html','global-buyer-pilot.html','about.html','how-we-work.html','trust-and-method.html','research-examples.html','contact.html']) {
   ensure(source[page].includes('>30-Day Pilot</a>'), page+' must link to the international pilot in its navigation');
