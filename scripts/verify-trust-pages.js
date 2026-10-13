@@ -57,4 +57,15 @@ ensure(home.includes('Develop qualified B2B buyers beyond your home market'), 'G
 ensure(home.indexOf('International Buyer Development</h3>') < home.indexOf('Bangladesh Corporate Buyers</h3>'), 'International-first service ordering missing');
 ensure(source['global-buyer-pilot.html'].includes('Europe, North America, Asia'), 'Global source-country positioning missing');
 ensure(source['contact.html'].includes('name="Company headquarters country"'), 'Separate client and destination countries in enquiry');
+
+const rootHtmlPages = fs.readdirSync(process.cwd()).filter(f => f.endsWith('.html') && !f.startsWith('route-') && f !== 'buyer-growth.html');
+for (const file of rootHtmlPages) {
+  const html = read(file);
+  const nav = html.match(/<nav class="site-nav" aria-label="Primary navigation">([\s\S]*?)<\/nav>/);
+  if (!nav) continue;
+  ensure(!nav[0].includes('>Bangladesh Market Entry</a>'), file+' must keep Bangladesh service as secondary footer navigation');
+  const marketsAt = nav[0].indexOf('>International Markets</a>');
+  const pilotAt = nav[0].indexOf('>30-Day Pilot</a>');
+  ensure(marketsAt >= 0 && pilotAt > marketsAt && pilotAt < nav[0].indexOf('>Industries</a>'), file+' international pilot navigation ordering');
+}
 console.log('MERCOPACT trust-integrity checks passed:',checks);
