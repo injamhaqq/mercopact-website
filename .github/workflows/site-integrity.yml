@@ -43,3 +43,4 @@ jobs:
           path: .qa-screenshots/
           if-no-files-found: ignore
           retention-days: 7
+          include-hidden-files: true
