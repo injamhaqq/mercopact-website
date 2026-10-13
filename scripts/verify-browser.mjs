@@ -34,9 +34,15 @@ try {
     page.on('pageerror', err => errors.push(err.message));
     await load(page, 'index.html');
     ensure((await page.locator('h1').innerText()).includes('B2B buyers'), 'Global hero missing at '+width);
-    const sizes = await page.evaluate(() => ({ scroll:document.documentElement.scrollWidth, client:document.documentElement.clientWidth }));
+    const sizes = await page.evaluate(() => ({ 
+      scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth,
+      offenders: [...document.querySelectorAll('body *')].filter(el => {
+        const r = el.getBoundingClientRect();
+        return r.width > 0 && (r.right > innerWidth + 3 || r.left < -3);
+      }).slice(0, 8).map(el => ({ tag: el.tagName, cls: String(el.className).slice(0, 70), right: Math.round(el.getBoundingClientRect().right) }))
+    }));
     ensure(sizes.scroll <= sizes.client + 2, 'Horizontal overflow at '+width+'px: '+JSON.stringify(sizes));
-    if (width <= 980) {
+    if (width <= 1180) {
       const menu = page.locator('.menu-toggle');
       ensure(await menu.isVisible(), 'Missing mobile menu toggle '+width);
       await menu.click();
