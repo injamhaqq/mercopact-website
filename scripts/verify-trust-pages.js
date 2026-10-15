@@ -99,4 +99,9 @@ ensure(source['capabilities.html'].includes('These are competencies and review r
 ensure(source['capabilities.html'].includes('No certifications, authorized foreign mandates'), 'Certification and third-party authority must not be invented');
 for (const file of ['index.html','about.html','global-buyer-pilot.html','trust-and-method.html']) ensure(source[file].includes('href="/capabilities.html"'), file+' must surface real capability review');
 for (const f of ['operations/CAPABILITY-AND-SKILLS-FRAMEWORK.md','operations/CORPORATE-CREDENTIALS-AND-DUE-DILIGENCE.md','operations/INTERNATIONAL-PILOT-SOW-TEMPLATE.md','operations/QUALIFICATION-AND-READINESS-TRACKER.md']) ensure(fs.existsSync(path.join(process.cwd(),f)), f+' missing actual operating framework');
+ensure(source['capabilities.html'].includes('Professional Capabilities &amp; Commercial Assurance'), 'Approved professional assurance copy missing');
+for (const term of ['Professional competence','Quality assurance','Corporate accountability','Qualified project delivery','International business standards']) {
+  ensure(source['capabilities.html'].includes('<h3>'+term+'</h3>'), 'Approved assurance characteristic missing: '+term);
+}
+ensure(source['capabilities.html'].includes('not independently certified compliance'), 'Assurance copy must not imply unverified credentials or current staffing');
 console.log('MERCOPACT trust-integrity checks passed:',checks);
