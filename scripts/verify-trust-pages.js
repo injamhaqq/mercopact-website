@@ -89,4 +89,8 @@ ensure(f.includes('showRecovery();'), 'Offline form must preserve WhatsApp hando
 ensure(!read('assets/css/responsive.css').includes('top:calc(100% + 339px)'), 'Brittle mobile CTA offset found');
 ensure(!home.includes('aria-labelledby="paths-title"'), 'Homepage must not reintroduce three competing services');
 ensure((sitemap.match(/<lastmod>2026-10-13<\/lastmod>/g)||[]).length === urls.length, 'Sitemap must show actual content update dates');
+ensure(home.includes('Your next export market needs more than a list of company names.'), 'Homepage must explain the buyer-development pain');
+ensure(source['global-buyer-pilot.html'].includes('Two starting routes, scoped separately:'), 'Pilot must separate warm enquiry recovery from new account research');
+ensure(source['global-buyer-pilot.html'].includes('where further contact is permitted'), 'Warm contact recovery must have an authorization gate');
+ensure(!source['global-buyer-pilot.html'].includes('>View Bangladesh packages</a>'), 'Global pilot must not link to domestic prices at its final CTA');
 console.log('MERCOPACT trust-integrity checks passed:',checks);
