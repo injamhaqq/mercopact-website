@@ -4,7 +4,7 @@ const path = require('node:path');
 const pages = [
   'index.html', 'global-buyer-pilot.html', 'about.html',
   'how-we-work.html', 'trust-and-method.html', 'research-examples.html',
-  'contact.html', 'buyer-growth.html'
+  'contact.html', 'buyer-growth.html', 'capabilities.html'
 ];
 const reports = ['sample-market-access.html','sample-uae-packaging.html','sample-india-packaging.html'];
 let checks = 0;
@@ -88,9 +88,15 @@ ensure(f.includes('const FORM_DELIVERY_READY = false'), 'Do not post to unverifi
 ensure(f.includes('showRecovery();'), 'Offline form must preserve WhatsApp handoff');
 ensure(!read('assets/css/responsive.css').includes('top:calc(100% + 339px)'), 'Brittle mobile CTA offset found');
 ensure(!home.includes('aria-labelledby="paths-title"'), 'Homepage must not reintroduce three competing services');
-ensure((sitemap.match(/<lastmod>2026-10-13<\/lastmod>/g)||[]).length === urls.length, 'Sitemap must show actual content update dates');
+ensure((sitemap.match(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g)||[]).length === urls.length, 'All sitemap URLs need valid update-date elements');
+ensure(sitemap.includes('https://mercopact.com/capabilities.html</loc><lastmod>2026-10-15</lastmod>'), 'Capabilities page missing from sitemap or date incorrect');
 ensure(home.includes('Your next export market needs more than a list of company names.'), 'Homepage must explain the buyer-development pain');
 ensure(source['global-buyer-pilot.html'].includes('Two starting routes, scoped separately:'), 'Pilot must separate warm enquiry recovery from new account research');
 ensure(source['global-buyer-pilot.html'].includes('where further contact is permitted'), 'Warm contact recovery must have an authorization gate');
 ensure(!source['global-buyer-pilot.html'].includes('>View Bangladesh packages</a>'), 'Global pilot must not link to domestic prices at its final CTA');
+ensure(source['capabilities.html'].includes('Examine the capability behind the commercial promise.'), 'Professional capability and assurance page absent');
+ensure(source['capabilities.html'].includes('These are competencies and review responsibilities'), 'Do not imply listed competencies equal verified staff skills');
+ensure(source['capabilities.html'].includes('No certifications, authorized foreign mandates'), 'Certification and third-party authority must not be invented');
+for (const file of ['index.html','about.html','global-buyer-pilot.html','trust-and-method.html']) ensure(source[file].includes('href="/capabilities.html"'), file+' must surface real capability review');
+for (const f of ['operations/CAPABILITY-AND-SKILLS-FRAMEWORK.md','operations/CORPORATE-CREDENTIALS-AND-DUE-DILIGENCE.md','operations/INTERNATIONAL-PILOT-SOW-TEMPLATE.md','operations/QUALIFICATION-AND-READINESS-TRACKER.md']) ensure(fs.existsSync(path.join(process.cwd(),f)), f+' missing actual operating framework');
 console.log('MERCOPACT trust-integrity checks passed:',checks);

@@ -57,6 +57,20 @@ try {
       await page.screenshot({ path:path.join(screenshots,'homepage-'+width+'.png'), fullPage:true, timeout:20000 });
     await page.close();
   }
+  for (const width of [320,390,768,1440]) {
+    const capabilitiesPage = await browser.newPage({ viewport:{width,height:820}, reducedMotion:'reduce' });
+    const capabilityErrors = [];
+    capabilitiesPage.on('pageerror', error => capabilityErrors.push(error.message));
+    await load(capabilitiesPage, 'capabilities.html');
+    ensure((await capabilitiesPage.locator('h1').innerText()).includes('capability'), 'Capabilities heading missing '+width);
+    ensure(await capabilitiesPage.locator('a[href="/research-examples.html"]').count() > 0, 'Evidence library link missing '+width);
+    ensure(await capabilitiesPage.locator('a[href="/trust-and-method.html"]').count() > 0, 'Operating standards link missing '+width);
+    const size = await capabilitiesPage.evaluate(() => ({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
+    ensure(size.scroll <= size.client+2, 'Capabilities horizontal overflow '+width+':'+JSON.stringify(size));
+    ensure(capabilityErrors.length === 0, 'Capabilities JavaScript errors at '+width+':'+capabilityErrors.join(';'));
+    if (width === 390 || width === 1440) await capabilitiesPage.screenshot({path:path.join(screenshots,'capabilities-'+width+'.png'),fullPage:true,timeout:20000});
+    await capabilitiesPage.close();
+  }
   const page = await browser.newPage({ viewport:{width:390,height:844}, reducedMotion:'reduce' });
   await load(page, 'contact.html');
   await page.locator('#name').fill('Synthetic Browser QA');
