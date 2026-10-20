@@ -71,6 +71,26 @@ try {
     if (width === 390 || width === 1440) await capabilitiesPage.screenshot({path:path.join(screenshots,'capabilities-'+width+'.png'),fullPage:true,timeout:20000});
     await capabilitiesPage.close();
   }
+  for (const file of ['packages.html','contact.html','global-buyer-pilot.html']) {
+    for (const width of [390,1440]) {
+      const pricingPage = await browser.newPage({viewport:{width,height:844},reducedMotion:'reduce'});
+      await load(pricingPage, file);
+      const content = await pricingPage.locator('body').innerText();
+      ensure(!/৳|\b(?:USD|BDT)\b|(?:US\$|\$)\s*\d|\b(?:prices|pricing|fee|fees)\b/i.test(content), 'Monetary text was rendered on '+file+' at '+width);
+      const scroll = await pricingPage.evaluate(() => document.documentElement.scrollWidth-document.documentElement.clientWidth);
+      ensure(scroll <= 2, 'Overflow after pricing removal: '+file+' at '+width+' over='+scroll);
+      if (file === 'packages.html') {
+        ensure(await pricingPage.locator('.package-card').count() === 3, 'Three service cards were not preserved');
+        ensure(await pricingPage.locator('.package-summary').count() === 3, 'Service summaries not rendered');
+      }
+      if (file === 'contact.html') {
+        const options=await pricingPage.locator('select option').allInnerTexts();
+        ensure(!options.some(o=>/৳|\b(?:USD|BDT)\b|(?:US\$|\$)\s*\d/.test(o)), 'Contact options disclose rates');
+      }
+      if(width===390 && file==='packages.html') await pricingPage.screenshot({path:path.join(screenshots,'services-no-public-rates-mobile.png'),fullPage:true,timeout:20000});
+      await pricingPage.close();
+    }
+  }
   const page = await browser.newPage({ viewport:{width:390,height:844}, reducedMotion:'reduce' });
   await load(page, 'contact.html');
   await page.locator('#name').fill('Synthetic Browser QA');

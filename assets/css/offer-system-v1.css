@@ -12,3 +12,7 @@
 .form-help{font-size:.78rem;color:#63717B;line-height:1.55;margin-top:8px}
 @media(max-width:980px){.mechanism-grid{grid-template-columns:repeat(2,1fr)}.mechanism-step:nth-child(2n){border-right:0}.package-grid{grid-template-columns:1fr}.package-card.featured{transform:none}.quality-grid{grid-template-columns:1fr 1fr}.cost-grid,.qualify-grid{grid-template-columns:1fr}.whatsapp-strip .container{align-items:flex-start;flex-direction:column}}
 @media(max-width:680px){.offer-hero{padding:70px 0 54px}.mechanism-grid{grid-template-columns:1fr}.mechanism-step{border-right:0;border-bottom:1px solid var(--line);min-height:auto}.mechanism-step:last-child{border-bottom:0}.quality-grid{grid-template-columns:1fr}.package-card{padding:24px 18px}.package-price{font-size:2rem}.offer-flow{font-size:.72rem}}
+
+/* No monetary offer cards: preserve commercial hierarchy with service summaries instead. */
+.package-summary{font-size:.91rem;line-height:1.55;min-height:3em;font-weight:650;color:#486072;margin:14px 0 6px}
+.package-card.featured .package-summary{color:#DCE7EC}
