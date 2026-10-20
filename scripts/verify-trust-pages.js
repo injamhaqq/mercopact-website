@@ -134,4 +134,20 @@ ensure(source['buyer-growth.html'].includes('Looking for relevant B2B buyers in 
 ensure(source['buyer-growth.html'].includes('name="Company headquarters country"') && source['buyer-growth.html'].includes('name="Target country or market"'), 'Enquiry must separate customer HQ from buyer destination');
 ensure(!source['buyer-growth.html'].includes('lang="bn"'), 'International landing page should not revert to Bangladesh-only Bangla hero');
 for(const file of businessPages) ensure(!read(file).includes('>Bangladesh Services</a>'), file+' must label its international program nav correctly');
+// Sitewide conversion, accessibility and no-fabrication regressions audited 2026-10-20.
+const offerValues = ['Export Market Proof — focused one-market pilot','Buyer Development System — ongoing program','Export Growth Desk — coordinated expansion','International Buyer Development — recommend a scope'];
+const formSelect = source['contact.html'].match(/<select id="package"[^>]*>([\s\S]*?)<\/select>/)?.[1] || '';
+for(const value of offerValues) ensure(formSelect.includes('<option>'+value+'</option>'), 'Contact option missing: '+value);
+for(const slug of ['market-proof','international-pilot','buyer-development','growth-desk']) ensure(f.includes("'"+slug+"': "), 'Program preselection key missing: '+slug);
+for(const value of offerValues) ensure(f.includes("'"+value+"'"), 'Forms script must match existing contact option: '+value);
+ensure(read('assets/js/main.js').includes("'packages.html': '/packages/'"), 'Packages URL needs canonical navigation mapping');
+ensure(!/৳|\b(?:BDT|USD)\b|(?:US\$|\$)\s*\d/i.test(f), 'Public forms JavaScript must not expose outdated historical rates');
+ensure(f.includes('if (FORM_DELIVERY_READY) recovery.append(recoveryEmail)'), 'Inactive email must not be offered as an available recovery channel');
+for(const file of businessPages) {
+ const html = read(file);
+ ensure(!/href="mailto:/i.test(html), file+' must not advertise unavailable company mailboxes');
+}
+ensure(source['contact.html'].includes('Online form preparation requires JavaScript'), 'Contact must explain disabled JS fallback');
+ensure(source['buyer-growth.html'].includes('Online form preparation requires JavaScript'), 'Buyer Growth must explain disabled JS fallback');
+ensure(read('404.html').includes('<meta name="robots" content="noindex,follow">'), '404 page should not be indexed');
 console.log('MERCOPACT trust-integrity checks passed:',checks);

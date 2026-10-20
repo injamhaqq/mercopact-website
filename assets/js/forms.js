@@ -15,10 +15,10 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
   const params = new URLSearchParams(window.location.search);
   const requestedPackage = params.get('package');
   const packageMap = {
-    'market-proof': 'Export Market Proof — ৳34,900 one-time',
-    'international-pilot': 'International Buyer Development Pilot — scoped proposal',
-    'buyer-development': 'Buyer Development System — ৳64,900/month',
-    'growth-desk': 'Export Growth Desk — ৳109,900/month'
+    'market-proof': 'Export Market Proof — focused one-market pilot',
+    'international-pilot': 'International Buyer Development — recommend a scope',
+    'buyer-development': 'Buyer Development System — ongoing program',
+    'growth-desk': 'Export Growth Desk — coordinated expansion'
   };
   const packageSelect = document.querySelector('#package');
   if (packageSelect && requestedPackage && packageMap[requestedPackage]) {
@@ -52,7 +52,9 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
     recoveryWhatsApp.textContent = 'Continue in WhatsApp →';
     const recoveryEmail = document.createElement('a');
     recoveryEmail.textContent = 'Continue by email →';
-    recovery.append(recoveryIntro, recoveryWhatsApp, recoveryEmail);
+    recovery.append(recoveryIntro, recoveryWhatsApp);
+    // Do not advertise an email delivery path while company MX/inbox activation is unverified.
+    if (FORM_DELIVERY_READY) recovery.append(recoveryEmail);
     if (status) status.insertAdjacentElement('afterend', recovery);
     else form.appendChild(recovery);
 
@@ -96,6 +98,7 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
           encodeURIComponent('MERCOPACT buyer development enquiry') + '&body=' +
           encodeURIComponent(draft);
         recovery.classList.add('is-visible');
+        recoveryWhatsApp.focus();
       };
       const hideRecovery = () => recovery.classList.remove('is-visible');
 

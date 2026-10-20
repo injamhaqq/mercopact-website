@@ -115,6 +115,49 @@ try {
       await pricingPage.close();
     }
   }
+  // Independently inspect every public page in narrow and wide viewports (not just the homepage).
+  const completePublicPages = fs.readdirSync(root).filter(name => name.endsWith('.html') && !name.startsWith('route-'));
+  for(const width of [390,1280]) {
+    const qaPage = await browser.newPage({viewport:{width,height:840},reducedMotion:'reduce'});
+    for(const file of completePublicPages) {
+      const errors=[];
+      const listener=error=>errors.push(error.message);
+      qaPage.on('pageerror',listener);
+      await load(qaPage,file);
+      ensure(await qaPage.locator('h1').count() === 1, 'Exactly one H1 needed: '+file);
+      const sizes=await qaPage.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
+      ensure(sizes.scroll<=sizes.client+2, 'Sitewide overflow '+file+' at '+width+':'+JSON.stringify(sizes));
+      ensure(errors.length===0, 'Page JS error '+file+' at '+width+':'+errors.join('; '));
+      if(file==='packages.html') {
+        ensure((await qaPage.locator('#packages .package-card').count())===3,'Offer cards missing from '+file);
+      }
+      qaPage.off('pageerror',listener);
+    }
+    await qaPage.close();
+  }
+  // Validate that each campaign URL selects the actual published option, never a stale fee label.
+  for(const [slug,label] of [
+    ['market-proof','Export Market Proof — focused one-market pilot'],
+    ['international-pilot','International Buyer Development — recommend a scope'],
+    ['buyer-development','Buyer Development System — ongoing program'],
+    ['growth-desk','Export Growth Desk — coordinated expansion']
+  ]) {
+    const qPage=await browser.newPage({viewport:{width:390,height:844},reducedMotion:'reduce'});
+    await qPage.goto(origin+'/contact.html?package='+slug,{waitUntil:'domcontentloaded'});
+    ensure(await qPage.locator('#package').inputValue()===label,'Wrong offer selected from '+slug+' enquiry URL');
+    ensure(!(await qPage.locator('#package').inputValue()).includes('৳'),'Old rate leaked into selected offer');
+    await qPage.close();
+  }
+  // Do not allow unverified third-party form submission when scripts are disabled.
+  const noJsContext=await browser.newContext({javaScriptEnabled:false});
+  for(const file of ['contact.html','buyer-growth.html']) {
+    const noJs=await noJsContext.newPage();
+    await noJs.goto(origin+'/'+file,{waitUntil:'domcontentloaded'});
+    ensure(!(await noJs.locator('form[data-static-form]').isVisible()),'Unverified direct form POST visible without JS: '+file);
+    ensure(await noJs.locator('a[href^="https://wa.me/"]').count()>0,'No real contact method without JavaScript: '+file);
+    await noJs.close();
+  }
+  await noJsContext.close();
   const page = await browser.newPage({ viewport:{width:390,height:844}, reducedMotion:'reduce' });
   await load(page, 'contact.html');
   await page.locator('#name').fill('Synthetic Browser QA');
