@@ -52,7 +52,7 @@ ensure(read('bangladesh-market-entry.html').includes('wits.worldbank.org'), 'Ban
 for (const page of ['index.html','global-buyer-pilot.html','about.html','how-we-work.html','trust-and-method.html','research-examples.html','contact.html']) {
   ensure(source[page].includes('>30-Day Pilot</a>'), page+' must link to the international pilot in its navigation');
 }
-ensure(read('packages.html').includes('Bangladesh Buyer Development Services'), 'Bangladesh service options must remain available without public pricing');
+ensure(read('packages.html').includes('International Buyer Development Programs | MERCOPACT'), 'Programs must be global-first without public pricing');
 ensure(home.includes('Develop qualified B2B buyers beyond your home market'), 'Global-first homepage hero must be present');
 ensure(!home.includes('aria-labelledby="bd-title"') && !home.includes('aria-labelledby="entry-title"'), 'Global homepage must not feature Bangladesh domestic or entry sections');
 ensure(source['global-buyer-pilot.html'].includes('Europe, North America, Asia'), 'Global source-country positioning missing');
@@ -122,4 +122,16 @@ for (const excluded of ['operations','audits','mercopact-logo-layout-perfect','s
   ensure(pagesConfig.includes('  - '+excluded+'\n'), 'Jekyll exclusion missing: '+excluded);
 }
 ensure(!pagesConfig.includes('include:'), 'Public-site config must not override directory exclusions');
+const offers = read('packages.html');
+ensure(offers.includes('Global-first. Project-specific.'), 'Offers must clearly accept qualified clients from multiple countries');
+ensure(offers.includes('Your company can be headquartered in any commercially eligible country'), 'HQ of paying client cannot be restricted to Bangladesh');
+ensure(offers.includes('the buyer destination is selected separately'), 'Client headquarters and buyer market must be independent');
+ensure(offers.includes('Program details and activity volumes illustrate possible scopes'), 'Quantities must be conditional on a signed project scope');
+ensure(!offers.includes('For export-ready Bangladesh manufacturers') && !offers.includes('Bangladesh-specific buyer-development packages'), 'Offers must not be positioned as Bangladesh-only');
+ensure(['Export Market Proof','Buyer Development System','Export Growth Desk'].every(x=>offers.includes('<h3>'+x+'</h3>')), 'Preserve the three international service levels');
+ensure(offers.includes('30-DAY ENGAGEMENT') && (offers.match(/90-DAY PROGRAM/g)||[]).length === 2, 'Preserve 30-day and both 90-day delivery formats');
+ensure(source['buyer-growth.html'].includes('Looking for relevant B2B buyers in your next international market?'), 'Buyer Growth must be international-client-first');
+ensure(source['buyer-growth.html'].includes('name="Company headquarters country"') && source['buyer-growth.html'].includes('name="Target country or market"'), 'Enquiry must separate customer HQ from buyer destination');
+ensure(!source['buyer-growth.html'].includes('lang="bn"'), 'International landing page should not revert to Bangladesh-only Bangla hero');
+for(const file of businessPages) ensure(!read(file).includes('>Bangladesh Services</a>'), file+' must label its international program nav correctly');
 console.log('MERCOPACT trust-integrity checks passed:',checks);
