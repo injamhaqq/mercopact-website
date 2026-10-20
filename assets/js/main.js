@@ -8,6 +8,7 @@
     'about.html': '/about/',
     'contact.html': '/contact/',
     'buyer-growth.html': '/buyer-growth/',
+    'packages.html': '/packages/',
     'privacy.html': '/privacy/',
     'terms.html': '/terms/',
     'global-buyer-pilot.html': '/global-buyer-pilot.html'
