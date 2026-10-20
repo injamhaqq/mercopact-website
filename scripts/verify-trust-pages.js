@@ -52,7 +52,7 @@ ensure(read('bangladesh-market-entry.html').includes('wits.worldbank.org'), 'Ban
 for (const page of ['index.html','global-buyer-pilot.html','about.html','how-we-work.html','trust-and-method.html','research-examples.html','contact.html']) {
   ensure(source[page].includes('>30-Day Pilot</a>'), page+' must link to the international pilot in its navigation');
 }
-ensure(read('packages.html').includes('Bangladesh Buyer Development Packages'), 'Existing Bangladesh prices must remain a distinct published offer');
+ensure(read('packages.html').includes('Bangladesh Buyer Development Services'), 'Bangladesh service options must remain available without public pricing');
 ensure(home.includes('Develop qualified B2B buyers beyond your home market'), 'Global-first homepage hero must be present');
 ensure(!home.includes('aria-labelledby="bd-title"') && !home.includes('aria-labelledby="entry-title"'), 'Global homepage must not feature Bangladesh domestic or entry sections');
 ensure(source['global-buyer-pilot.html'].includes('Europe, North America, Asia'), 'Global source-country positioning missing');
@@ -89,7 +89,7 @@ ensure(f.includes('showRecovery();'), 'Offline form must preserve WhatsApp hando
 ensure(!read('assets/css/responsive.css').includes('top:calc(100% + 339px)'), 'Brittle mobile CTA offset found');
 ensure(!home.includes('aria-labelledby="paths-title"'), 'Homepage must not reintroduce three competing services');
 ensure((sitemap.match(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g)||[]).length === urls.length, 'All sitemap URLs need valid update-date elements');
-ensure(sitemap.includes('https://mercopact.com/capabilities.html</loc><lastmod>2026-10-15</lastmod>'), 'Capabilities page missing from sitemap or date incorrect');
+ensure(sitemap.includes('https://mercopact.com/capabilities.html</loc><lastmod>2026-10-20</lastmod>'), 'Capabilities page missing from sitemap or date incorrect');
 ensure(home.includes('Your next export market needs more than a list of company names.'), 'Homepage must explain the buyer-development pain');
 ensure(source['global-buyer-pilot.html'].includes('Two starting routes, scoped separately:'), 'Pilot must separate warm enquiry recovery from new account research');
 ensure(source['global-buyer-pilot.html'].includes('where further contact is permitted'), 'Warm contact recovery must have an authorization gate');
@@ -104,4 +104,16 @@ for (const term of ['Professional competence','Quality assurance','Corporate acc
   ensure(source['capabilities.html'].includes('<h3>'+term+'</h3>'), 'Approved assurance characteristic missing: '+term);
 }
 ensure(source['capabilities.html'].includes('not independently certified compliance'), 'Assurance copy must not imply unverified credentials or current staffing');
+// Every live root HTML route and legacy nested HTML file served by GitHub Pages must stay free of published monetary figures.
+const forbiddenPrice = /৳|\b(?:USD|BDT)\b|(?:US\$|\$)\s*\d|\b(?:price|prices|pricing|fee|fees)\b/i;
+for (const htmlFile of businessPages) {
+  const content = read(htmlFile);
+  ensure(!forbiddenPrice.test(content), htmlFile+' exposes pricing or a monetary amount; public site must not display prices');
+  ensure(!content.includes('>Bangladesh Packages</a>'), htmlFile+' must use service navigation, not pricing-style package navigation');
+}
+for(const file of ['packages.html','contact.html']) {
+  const content = read(file);
+  ensure(!/৳\s*\d|\$\s*\d/.test(content), file+' retains a financial amount in public content');
+}
+ensure(!read('packages.html').includes('package-price'), 'Public package cards must not contain hidden numerical fees');
 console.log('MERCOPACT trust-integrity checks passed:',checks);
