@@ -116,4 +116,10 @@ for(const file of ['packages.html','contact.html']) {
   ensure(!/৳\s*\d|\$\s*\d/.test(content), file+' retains a financial amount in public content');
 }
 ensure(!read('packages.html').includes('package-price'), 'Public package cards must not contain hidden numerical fees');
+// Internal estimates and historical HTML must not be copied into the Jekyll website output.
+const pagesConfig = read('_config.yml');
+for (const excluded of ['operations','audits','mercopact-logo-layout-perfect','scripts','README.md','QA-REPORT.md','qa-browser.json','qa-static.json']) {
+  ensure(pagesConfig.includes('  - '+excluded+'\n'), 'Jekyll exclusion missing: '+excluded);
+}
+ensure(!pagesConfig.includes('include:'), 'Public-site config must not override directory exclusions');
 console.log('MERCOPACT trust-integrity checks passed:',checks);

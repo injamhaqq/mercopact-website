@@ -1,0 +1,16 @@
+# MERCOPACT public website build. Preserve source in GitHub, do NOT publish internal workpapers.
+# Route HTML, assets, public research examples and brand files remain publishable.
+exclude:
+  - operations
+  - audits
+  - mercopact-logo-layout-perfect
+  - scripts
+  - README.md
+  - QA-REPORT.md
+  - IMAGE-CREDITS.md
+  - qa-browser.json
+  - qa-static.json
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
