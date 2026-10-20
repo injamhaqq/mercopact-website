@@ -154,7 +154,7 @@ try {
     const noJs=await noJsContext.newPage();
     await noJs.goto(origin+'/'+file,{waitUntil:'domcontentloaded'});
     ensure(!(await noJs.locator('form[data-static-form]').isVisible()),'Unverified direct form POST visible without JS: '+file);
-    ensure(await noJs.getByText('Online form preparation requires JavaScript',{exact:false}).count()>0,'Missing no-JS contact guidance: '+file);
+    ensure(await noJs.locator('a[href^="https://wa.me/"]').count()>0,'No real contact method without JavaScript: '+file);
     await noJs.close();
   }
   await noJsContext.close();
