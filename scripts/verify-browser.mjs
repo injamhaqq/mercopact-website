@@ -71,6 +71,30 @@ try {
     if (width === 390 || width === 1440) await capabilitiesPage.screenshot({path:path.join(screenshots,'capabilities-'+width+'.png'),fullPage:true,timeout:20000});
     await capabilitiesPage.close();
   }
+  for(const width of [390,1440]) {
+    const programPage = await browser.newPage({viewport:{width,height:820},reducedMotion:'reduce'});
+    await load(programPage,'packages.html');
+    ensure(/international buyer-development engagement/i.test(await programPage.locator('h1').innerText()), 'Programs heading must target international clients');
+    ensure((await programPage.locator('.package-card').count())===3, 'Three offer levels missing');
+    ensure((await programPage.locator('.package-card').allInnerTexts()).every(x=>/Export Market Proof|Buyer Development System|Export Growth Desk/.test(x)), 'Program names not correctly rendered');
+    ensure((await programPage.locator('body').innerText()).includes('buyer destination is selected separately'), 'Client HQ and buyer market must be separate');
+    const overflow=await programPage.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
+    ensure(overflow<=2,'International programs overflow at '+width+'px');
+    if(width===390)await programPage.screenshot({path:path.join(screenshots,'international-programs-mobile.png'),fullPage:true,timeout:20000});
+    if(width===1440)await programPage.screenshot({path:path.join(screenshots,'international-programs-desktop.png'),fullPage:true,timeout:20000});
+    await programPage.close();
+  }
+  for(const width of [390,1440]) {
+    const growthPage=await browser.newPage({viewport:{width,height:820},reducedMotion:'reduce'});
+    await load(growthPage,'buyer-growth.html');
+    ensure((await growthPage.locator('h1').innerText()).includes('international market'), 'Buyer Growth header must serve international clients');
+    ensure(await growthPage.locator('#lg-hqcountry').count()===1,'Company HQ field missing');
+    ensure(await growthPage.locator('#lg-market').count()===1,'Target buyer market field missing');
+    ensure(!(await growthPage.locator('body').innerText()).includes('For established Bangladesh'), 'Legacy Bangladesh-specific pitch has returned');
+    const growthOverflow=await growthPage.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
+    ensure(growthOverflow<=2,'International assessment overflow at '+width);
+    await growthPage.close();
+  }
   for (const file of ['packages.html','contact.html','global-buyer-pilot.html']) {
     for (const width of [390,1440]) {
       const pricingPage = await browser.newPage({viewport:{width,height:844},reducedMotion:'reduce'});
