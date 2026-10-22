@@ -1,25 +1,25 @@
-# MERCOPACT — Static Production Website
+# MERCOPACT: Static Production Website
 
 A static, GitHub-Pages-ready corporate website for **MERCOPACT**.
 
 ## Structure
 
-- `index.html` — corporate homepage
-- `buyer-development.html` — Bangladesh / B2B buyer development
-- `international-markets.html` — international buyer development
-- `bangladesh-market-entry.html` — Bangladesh market-entry service
-- `industries.html` — industry focus
-- `how-we-work.html` — operating process
-- `about.html` — company positioning and principles
-- `contact.html` — corporate enquiry page
-- `buyer-growth.html` — focused Meta/Facebook campaign landing page
-- `privacy.html`, `terms.html`, `404.html` — legal and error pages
-- `assets/css/` — design system and responsive styles
-- `assets/js/` — navigation, reveal motion and static-form behavior
-- `assets/images/logo/` — logo assets cropped directly from the supplied official reference artwork
+- `index.html`: corporate homepage
+- `buyer-development.html`: Bangladesh / B2B buyer development
+- `international-markets.html`: international buyer development
+- `bangladesh-market-entry.html`: Bangladesh market-entry service
+- `industries.html`: industry focus
+- `how-we-work.html`: operating process
+- `about.html`: company positioning and principles
+- `contact.html`: corporate enquiry page
+- `buyer-growth.html`: focused Meta/Facebook campaign landing page
+- `privacy.html`, `terms.html`, `404.html`: legal and error pages
+- `assets/css/`: design system and responsive styles
+- `assets/js/`: navigation, reveal motion and static-form behavior
+- `assets/images/logo/`: logo assets cropped directly from the supplied official reference artwork
 - `favicon.svg`, `site.webmanifest`, `robots.txt`, `sitemap.xml`, `CNAME`
-- `IMAGE-CREDITS.md` — photography source record
-- `QA-REPORT.md`, `qa-static.json`, `qa-browser.json` — verification summary and raw QA outputs
+- `IMAGE-CREDITS.md`: photography source record
+- `QA-REPORT.md`, `qa-static.json`, `qa-browser.json`: verification summary and raw QA outputs
 
 ## Preview locally
 
@@ -95,22 +95,22 @@ Photography is loaded from the Unsplash image CDN so this repository remains lig
 
 The selected photographs are real photographs surfaced through Unsplash and marked free to use under the Unsplash License at the time selected. Re-check the source page and current license before major commercial redistribution.
 
-1. **Industrial factory interior** — Ant Rozetsky
+1. **Industrial factory interior**: Ant Rozetsky
    - Source: https://unsplash.com/photos/SLIFI67jv5k
    - Used: primary industrial / hero context
-2. **Container terminal / cargo vessel** — Andy Li
+2. **Container terminal / cargo vessel**: Andy Li
    - Source: https://unsplash.com/photos/CpsTAUPoScw
    - Used: international markets
-3. **Industrial textile factory** — Lalit Kumar
+3. **Industrial textile factory**: Lalit Kumar
    - Source: https://unsplash.com/photos/HpPmiduLDC0
    - Used: Bangladesh manufacturing / industry context
-4. **Business meeting** — Christina @ wocintechchat.com
+4. **Business meeting**: Christina @ wocintechchat.com
    - Source: https://unsplash.com/photos/Q80LYxv_Tbs
    - Used: commercial meeting / market-entry context
-5. **Industrial warehouse** — Alberto Rodríguez
+5. **Industrial warehouse**: Alberto Rodríguez
    - Source: https://unsplash.com/photos/-aCrA9FmT8Y
    - Used: account-development / operations context
-6. **Industrial automation** — Simon Kadula
+6. **Industrial automation**: Simon Kadula
    - Source: https://unsplash.com/photos/8gr6bObQLOI
    - Used: industries / manufacturing context
 

@@ -67,3 +67,36 @@
 .mc-trust-grid.mc-grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
 @media(max-width:1100px){.mc-trust-grid.mc-grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){.mc-trust-grid.mc-grid-4{grid-template-columns:1fr}}
+
+/* v2 hero free-sample offer, hours strip (22 Oct 2026) */
+.mc-hero-grid{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:44px;align-items:start}
+.mc-hero-points{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:9px;color:#DCE7EC;max-width:640px}
+.mc-hero-points li{padding-left:24px;position:relative;line-height:1.55}
+.mc-hero-points li:before{content:"\2713";position:absolute;left:0;color:#EDCB77;font-weight:800}
+.mc-sample-card{background:#fff;color:#0B1F33;padding:28px 26px;border-top:4px solid #C89B3C;box-shadow:0 24px 50px rgba(0,0,0,.25);scroll-margin-top:110px}
+.mc-sample-badge{font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0F766E;margin:0 0 10px}
+.mc-sample-card h2{font-size:clamp(1.35rem,2.1vw,1.7rem);line-height:1.25;margin:0 0 14px;color:#0B1F33}
+.mc-sample-list{list-style:none;padding:0;margin:0 0 16px;display:grid;gap:7px;font-size:.9rem;color:#33475A}
+.mc-sample-list li{padding-left:22px;position:relative;line-height:1.5}
+.mc-sample-list li:before{content:"\2713";position:absolute;left:0;color:#0F766E;font-weight:800}
+.mc-sample-form .mc-sample-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mc-sample-form .field.full{grid-column:1/-1}
+.mc-sample-form .field label{font-size:.68rem}
+.mc-sample-form .field input{min-height:44px;padding:10px 12px}
+.mc-sample-form .btn{width:100%;justify-content:center;margin-top:16px}
+.mc-sample-assure{font-weight:700;color:#0B1F33;font-size:.88rem;margin:12px 0 6px}
+.mc-sample-small{font-size:.8rem;color:#526371;margin:0;line-height:1.55}
+.mc-sample-small a{color:#0A706A;text-decoration:underline}
+.mc-sample-status{font-size:.82rem;color:#0F766E;margin:8px 0 0}
+.mc-sample-status:empty{display:none}
+.offer-hero .offer-note{margin-top:30px}
+.mc-hours{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:22px}
+.mc-hours div{background:#fff;border:1px solid #D9D4C9;padding:18px}
+.mc-hours span{display:block;color:#0F766E;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.mc-hours strong{display:block;color:#0B1F33;font-size:1.02rem}
+.mc-hours p{margin:6px 0 0;font-size:.86rem;color:#526371}
+@media(max-width:960px){.mc-hero-grid{grid-template-columns:1fr;gap:30px}}
+@media(max-width:850px){.mc-hours{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.mc-sample-form .mc-sample-fields{grid-template-columns:1fr}.mc-sample-form .field.full{grid-column:auto}.mc-sample-card{padding:22px 18px}.mc-hours{grid-template-columns:1fr}}
+.mc-note a{color:#0A6663;text-decoration:underline;text-underline-offset:3px}
+@media(min-width:961px){.mc-hero-sample-btn{display:none}}
