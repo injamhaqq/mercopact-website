@@ -7,7 +7,6 @@
     'how-we-work.html': '/how-we-work/',
     'about.html': '/about/',
     'contact.html': '/contact/',
-    'buyer-growth.html': '/buyer-growth/',
     'packages.html': '/packages/',
     'privacy.html': '/privacy/',
     'terms.html': '/terms/',
@@ -105,7 +104,7 @@
   }
 })();
 
-// Public Mercopact phone contact. Added at runtime so the number appears consistently across static pages.
+// Public MERCOPACT phone contact. Added at runtime so the number appears consistently across static pages.
 (() => {
   const phoneHref = 'tel:+8801793122369';
   const phoneLabel = '+880 1793-122369';

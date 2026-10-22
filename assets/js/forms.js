@@ -1,5 +1,5 @@
 /*
-  MERCOPACT — STATIC WEBSITE SUBMISSION ROUTING
+  MERCOPACT: STATIC WEBSITE SUBMISSION ROUTING
   Provider: FormSubmit.co (https://formsubmit.co/documentation)
   This service requires ONE-TIME recipient confirmation in hello@mercopact.com.
   A HTTP 200 is NOT proof that delivery succeeded; success must be literal true.
@@ -15,10 +15,12 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
   const params = new URLSearchParams(window.location.search);
   const requestedPackage = params.get('package');
   const packageMap = {
-    'market-proof': 'Export Market Proof — focused one-market pilot',
-    'international-pilot': 'International Buyer Development — recommend a scope',
-    'buyer-development': 'Buyer Development System — ongoing program',
-    'growth-desk': 'Export Growth Desk — coordinated expansion'
+    'pilot': '30-Day Pilot',
+    'market-proof': '30-Day Pilot',
+    'international-pilot': '30-Day Pilot',
+    'ongoing': 'Ongoing programme',
+    'buyer-development': 'Ongoing programme',
+    'growth-desk': 'Ongoing programme'
   };
   const packageSelect = document.querySelector('#package');
   if (packageSelect && requestedPackage && packageMap[requestedPackage]) {
@@ -87,7 +89,7 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
       const originalMarkup = submit ? submit.innerHTML : '';
 
       const showRecovery = () => {
-        const lines = ['MERCOPACT — website enquiry (not yet submitted)', ''];
+        const lines = ['MERCOPACT website enquiry (not yet submitted)', ''];
         for (const [key, value] of new FormData(form).entries()) {
           if (key.startsWith('_') || !String(value).trim()) continue;
           lines.push(key + ': ' + String(value).trim().slice(0, 320));
