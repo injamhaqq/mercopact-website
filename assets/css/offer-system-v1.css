@@ -1,4 +1,4 @@
-/* MERCOPACT BUYER DEVELOPMENT OFFER SYSTEM — 2026-09-23 */
+/* MERCOPACT BUYER DEVELOPMENT OFFER SYSTEM, 2026-09-23 */
 .offer-hero{background:linear-gradient(135deg,#0B1F33 0%,#0D3342 58%,#0F766E 100%);color:#fff;padding:92px 0 72px;position:relative;overflow:hidden}
 .offer-hero:after{content:"";position:absolute;width:560px;height:560px;border:1px solid rgba(200,155,60,.28);border-radius:50%;right:-180px;top:-245px;box-shadow:0 0 0 86px rgba(255,255,255,.018),0 0 0 170px rgba(255,255,255,.012)}
 .offer-hero .container{position:relative;z-index:1}.offer-hero .eyebrow{color:#E6C979}.offer-hero h1{max-width:980px;color:#fff;margin-bottom:20px}.offer-hero .lead{max-width:880px;color:#DCE7EC}

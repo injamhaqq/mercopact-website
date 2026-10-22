@@ -50,7 +50,7 @@ ensure(source['global-buyer-pilot.html'].includes('id="international-commercial-
 ensure(source['contact.html'].includes('Send an enquiry via WhatsApp') && source['contact.html'].includes('Email routing is under verification'), 'A reachable fallback must be visible during DNS email outage');
 ensure(read('bangladesh-market-entry.html').includes('wits.worldbank.org'), 'Bangladesh machinery corridor source missing');
 for (const page of ['index.html','global-buyer-pilot.html','about.html','how-we-work.html','trust-and-method.html','research-examples.html','contact.html']) {
-  ensure(source[page].includes('>30-Day Pilot</a>'), page+' must link to the international pilot in its navigation');
+  ensure(source[page].includes('href="/global-buyer-pilot.html"'), page+' must link to the international pilot in its navigation');
 }
 ensure(read('packages.html').includes('International Buyer Development Programs | MERCOPACT'), 'Programs must be global-first without public pricing');
 ensure(home.includes('Develop qualified B2B buyers beyond your home market'), 'Global-first homepage hero must be present');
