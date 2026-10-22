@@ -100,3 +100,4 @@
 @media(max-width:520px){.mc-sample-form .mc-sample-fields{grid-template-columns:1fr}.mc-sample-form .field.full{grid-column:auto}.mc-sample-card{padding:22px 18px}.mc-hours{grid-template-columns:1fr}}
 .mc-note a{color:#0A6663;text-decoration:underline;text-underline-offset:3px}
 @media(min-width:961px){.mc-hero-sample-btn{display:none}}
+.mc-founder--text{grid-template-columns:1fr;max-width:820px}
