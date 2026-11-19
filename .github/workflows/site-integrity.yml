@@ -22,6 +22,8 @@ jobs:
 
   browser-qa:
     runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.55.1-noble
     permissions:
       contents: read
     steps:
@@ -32,7 +34,7 @@ jobs:
       - name: Install browser QA runner
         run: |
           npm install --no-save --package-lock=false playwright@1.55.1
-          npx playwright install --with-deps chromium
+          node --input-type=module -e "import { chromium } from 'playwright'; const b=await chromium.launch(); await b.close();"
       - name: Verify responsive browser journeys
         run: node scripts/verify-browser.mjs
       - name: Upload browser QA screenshots

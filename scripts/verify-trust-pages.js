@@ -6,7 +6,7 @@ const read = f => fs.readFileSync(path.join(root,f),'utf8');
 const exists = f => fs.existsSync(path.join(root,f));
 let checks = 0;
 const ensure = (pass, why) => { checks++; if (!pass) throw new Error(why); };
-const nested = ['services/index.html','strategic-sourcing/index.html','commercial-intelligence/index.html','opportunities/index.html'];
+const nested = ['services/index.html','strategic-sourcing/index.html','commercial-intelligence/index.html','opportunities/index.html','managed-export-sales/index.html','opportunity-recovery/index.html'];
 const pages = [...fs.readdirSync(root).filter(f=>f.endsWith('.html')&&!f.startsWith('route-')&&f!=='buyer-growth.html'),...nested];
 const routes = new Map([['/','index.html'],...nested.map(f=>['/'+f.replace('index.html',''),f])]);
 for (const f of fs.readdirSync(root).filter(f=>f.startsWith('route-')&&f.endsWith('.html'))) {
@@ -23,7 +23,7 @@ for(const f of pages) {
   ensure(html.includes('id="primary-navigation"')&&html.includes('aria-controls="primary-navigation"'),f+' missing accessible navigation');
   ensure(html.includes('<footer class="site-footer">'),f+' missing footer');
   const nav=html.match(/<nav id="primary-navigation"[\s\S]*?<\/nav>/)?.[0]||'';
-  for(const href of ['/services/','/opportunities/','/research-examples.html','/packages/','/about/']) ensure(nav.includes('href="'+href+'"'),f+' missing navigation '+href);
+  for(const href of ['/services/','/how-we-work/','/research-examples.html','/packages/','/about/']) ensure(nav.includes('href="'+href+'"'),f+' missing navigation '+href);
   const title=html.match(/<title>([^<]+)<\/title>/i)?.[1]||'';
   const desc=html.match(/<meta name="description" content="([^"]+)"/i)?.[1]||'';
   ensure(title.length>8 && title.length<=85,f+' invalid title');
@@ -47,15 +47,18 @@ for(const f of pages) {
 const redirect=read('buyer-growth.html');
 ensure(/noindex/.test(redirect)&&redirect.includes('location.replace("/contact/"')&&redirect.includes('href="/contact/"'),'Retired buyer-growth route must redirect to contact');
 const home=read('index.html'), pilot=read('global-buyer-pilot.html'), offers=read('packages.html'), contact=read('contact.html'), terms=read('terms.html'), f=read('assets/js/forms.js');
-ensure(home.includes('Turn international commercial opportunities into business growth.'),'Current global hero missing');
-ensure(home.includes('Commercial engagements from $750')&&home.includes('href="/packages/"'),'Homepage entry price and engagements link missing');
-for(const price of ['$750','From $1,500','From $3,500/month','Custom pricing'])ensure(offers.includes(price),'Approved public price missing: '+price);
-for(const label of ['Commercial Opportunity Sprint','International Buyer Development','Commercial Development Desk','Strategic Commercial Mandate'])ensure(offers.includes(label),'Approved engagement missing: '+label);
+ensure(home.includes('You make the product. We help you find the buyers.'),'Current global hero missing');
+ensure(home.includes('$750')&&home.includes('$1,500')&&home.includes('href="/packages/"'),'Homepage entry price and engagements link missing');
+for(const price of ['$750','$1,500','From $2,500/month','Custom pricing'])ensure(offers.includes(price),'Approved public price missing: '+price);
+for(const label of ['Sales Opportunity Recovery','International Buyer Development','Managed Export Sales Desk','Strategic Market Development'])ensure(offers.includes(label),'Approved engagement missing: '+label);
 ensure(pilot.includes('40 researched companies')&&pilot.includes('50% upfront')&&pilot.includes('day 15'),'Pilot scope or payment milestones missing');
 ensure(terms.includes('Existing signed agreements retain their original terms')&&terms.includes('do not guarantee purchase orders'),'Commercial quality boundaries missing');
 for(const report of ['sample-market-access.html','sample-uae-packaging.html','sample-india-packaging.html','sample-eu-us-jute-bags.html','sample-eu-garments-knitwear.html','sample-eu-uk-leather-footwear.html'])ensure(home.includes('href="/'+report+'"'),'Homepage missing research '+report);
 ensure(home.includes('href="/pilot-deliverables.html"'),'Homepage proof CTA missing');
 for(const file of ['index.html','about.html','global-buyer-pilot.html','trust-and-method.html'])ensure(read(file).includes('href="/capabilities.html"'),file+' missing capability review');
+ensure(offers.includes('Up to 25 individually approved initial approaches')&&offers.includes('Up to 15 approved follow-up actions')&&offers.includes('Up to eight tailored follow-up drafts')&&offers.includes('Up to 30 active opportunity records'),'Offer volume boundaries missing');
+ensure(offers.includes('no automatic renewal'),'Renewal boundary missing');
+ensure(exists('assets/examples/mercopact-recovery-example.csv'),'Recovery example missing');
 const capabilities=read('capabilities.html');ensure(capabilities.includes('These are competencies and review responsibilities'),'Do not imply verified staff skills');
 ensure(capabilities.includes('not independently certified compliance'),'Do not imply unverified credentials');
 for(const internal of ['operations/CAPABILITY-AND-SKILLS-FRAMEWORK.md','operations/CORPORATE-CREDENTIALS-AND-DUE-DILIGENCE.md','operations/INTERNATIONAL-PILOT-SOW-TEMPLATE.md','operations/QUALIFICATION-AND-READINESS-TRACKER.md'])ensure(exists(internal),'Missing operational framework '+internal);
@@ -67,7 +70,7 @@ ensure(f.indexOf("recovery.className = 'mc-recovery'")<f.indexOf("form.addEventL
 ensure(f.includes('if (FORM_DELIVERY_READY) recovery.append(recoveryEmail)'),'Unverified email must remain unavailable');
 ensure(contact.includes('type="submit" disabled')&&contact.includes('<noscript>')&&contact.includes('https://wa.me/'),'No-JS form must fail closed and offer WhatsApp');
 for(const id of ['name','company','email','requirement','goal','budget','package'])ensure(contact.includes('id="'+id+'"'),'Enquiry field missing: '+id);
-for(const [slug,label] of [['sprint','Commercial Opportunity Sprint'],['pilot','30-Day Pilot'],['ongoing','Ongoing programme'],['mandate','Strategic Commercial Mandate']])ensure(f.includes("'"+slug+"': '"+label+"'")&&contact.includes('<option>'+label+'</option>'),'Offer preselection mismatch '+slug);
+for(const [slug,label] of [['sprint','Sales Opportunity Recovery'],['pilot','International Buyer Development'],['ongoing','Managed Export Sales Desk'],['mandate','Strategic Market Development']])ensure(f.includes("'"+slug+"': '"+label+"'")&&contact.includes('<option>'+label+'</option>'),'Offer preselection mismatch '+slug);
 const sitemap=read('sitemap.xml'),urls=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);
 ensure(urls.length===new Set(urls).size,'Duplicate sitemap URLs');
 for(const url of urls){const u=new URL(url);ensure(u.hostname==='mercopact.com','Foreign sitemap domain');ensure(exists(routes.get(u.pathname)||u.pathname.slice(1)),'Missing sitemap page '+u.pathname);}
