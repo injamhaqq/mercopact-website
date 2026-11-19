@@ -15,6 +15,8 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
   const params = new URLSearchParams(window.location.search);
   const requestedPackage = params.get('package');
   const packageMap = {
+    'sprint': 'Commercial Opportunity Sprint',
+    'mandate': 'Strategic Commercial Mandate',
     'pilot': '30-Day Pilot',
     'market-proof': '30-Day Pilot',
     'international-pilot': '30-Day Pilot',
@@ -97,7 +99,7 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
         const draft = lines.join('\n').slice(0, 1750);
         recoveryWhatsApp.href = 'https://wa.me/8801793122369?text=' + encodeURIComponent(draft);
         recoveryEmail.href = 'mailto:hello@mercopact.com?subject=' +
-          encodeURIComponent('MERCOPACT buyer development enquiry') + '&body=' +
+          encodeURIComponent('MERCOPACT commercial enquiry') + '&body=' +
           encodeURIComponent(draft);
         recovery.classList.add('is-visible');
         recoveryWhatsApp.focus();
