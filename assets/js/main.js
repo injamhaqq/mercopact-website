@@ -41,7 +41,7 @@
       if (!href || href.startsWith('#') || /^(mailto:|tel:|javascript:|https?:\/\/(?!mercopact\.com))/i.test(href)) return;
       const target = new URL(href, window.location.origin);
       if (target.origin !== window.location.origin ||
-          !/^\/(contact\/|global-buyer-pilot\.html|international-markets\/)/.test(target.pathname)) return;
+          !/^\/(contact\/|global-buyer-pilot\.html|international-markets\/|services\/|packages\/|opportunities\/|strategic-sourcing\/|commercial-intelligence\/)/.test(target.pathname)) return;
       for (const key of campaignKeys) {
         const value = campaign.get(key);
         if (value && /^[a-zA-Z0-9 _.-]{1,80}$/.test(value) && !target.searchParams.has(key))
@@ -128,4 +128,16 @@
     phone.textContent = phoneLabel;
     compactFooter.prepend(phone);
   }
+})();
+
+// Anonymous interaction events only; clicks are not completed bookings or paid engagements.
+(() => {
+  document.addEventListener('click', event => {
+    const link = event.target.closest('a[href]');
+    if (!link || typeof window.clarity !== 'function') return;
+    const url = new URL(link.href, window.location.origin);
+    if (url.origin === window.location.origin && /^\/contact(?:\/|\.html)$/.test(url.pathname)) window.clarity('event','enquiry_click');
+    else if (url.hostname === 'cal.com' && url.pathname === '/injamhaq/mercopact') window.clarity('event','booking_click');
+    else if (url.hostname === 'wa.me') window.clarity('event','whatsapp_click');
+  });
 })();
