@@ -47,7 +47,7 @@ for(const f of pages) {
 const redirect=read('buyer-growth.html');
 ensure(/noindex/.test(redirect)&&redirect.includes('location.replace("/contact/"')&&redirect.includes('href="/contact/"'),'Retired buyer-growth route must redirect to contact');
 const home=read('index.html'), pilot=read('global-buyer-pilot.html'), offers=read('packages.html'), contact=read('contact.html'), terms=read('terms.html'), f=read('assets/js/forms.js');
-ensure(home.includes('Turn international commercial opportunities into business growth.'),'Current global hero missing');
+ensure(home.includes('Find the right buyers, suppliers and international business opportunities.'),'Current global hero missing');
 ensure(home.includes('Commercial engagements from $750')&&home.includes('href="/packages/"'),'Homepage entry price and engagements link missing');
 for(const price of ['$750','From $1,500','From $3,500/month','Custom pricing'])ensure(offers.includes(price),'Approved public price missing: '+price);
 for(const label of ['Commercial Opportunity Sprint','International Buyer Development','Commercial Development Desk','Strategic Commercial Mandate'])ensure(offers.includes(label),'Approved engagement missing: '+label);
@@ -56,6 +56,8 @@ ensure(terms.includes('Existing signed agreements retain their original terms')&
 for(const report of ['sample-market-access.html','sample-uae-packaging.html','sample-india-packaging.html','sample-eu-us-jute-bags.html','sample-eu-garments-knitwear.html','sample-eu-uk-leather-footwear.html'])ensure(home.includes('href="/'+report+'"'),'Homepage missing research '+report);
 ensure(home.includes('href="/pilot-deliverables.html"'),'Homepage proof CTA missing');
 for(const file of ['index.html','about.html','global-buyer-pilot.html','trust-and-method.html'])ensure(read(file).includes('href="/capabilities.html"'),file+' missing capability review');
+ensure((offers.match(/<h4>What you receive<\/h4>/g)||[]).length===4,'Each offer needs an explicit deliverables list');
+ensure(offers.includes('40 researched target companies')&&offers.includes('Weekly opportunity and pipeline reports')&&offers.includes('One live review call'),'Distinct tangible handoffs missing');
 const capabilities=read('capabilities.html');ensure(capabilities.includes('These are competencies and review responsibilities'),'Do not imply verified staff skills');
 ensure(capabilities.includes('not independently certified compliance'),'Do not imply unverified credentials');
 for(const internal of ['operations/CAPABILITY-AND-SKILLS-FRAMEWORK.md','operations/CORPORATE-CREDENTIALS-AND-DUE-DILIGENCE.md','operations/INTERNATIONAL-PILOT-SOW-TEMPLATE.md','operations/QUALIFICATION-AND-READINESS-TRACKER.md'])ensure(exists(internal),'Missing operational framework '+internal);
