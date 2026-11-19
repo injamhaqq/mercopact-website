@@ -15,14 +15,14 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
   const params = new URLSearchParams(window.location.search);
   const requestedPackage = params.get('package');
   const packageMap = {
-    'sprint': 'Commercial Opportunity Sprint',
-    'mandate': 'Strategic Commercial Mandate',
-    'pilot': '30-Day Pilot',
-    'market-proof': '30-Day Pilot',
-    'international-pilot': '30-Day Pilot',
-    'ongoing': 'Ongoing programme',
-    'buyer-development': 'Ongoing programme',
-    'growth-desk': 'Ongoing programme'
+    'sprint': 'Sales Opportunity Recovery',
+    'mandate': 'Strategic Market Development',
+    'pilot': 'International Buyer Development',
+    'market-proof': 'International Buyer Development',
+    'international-pilot': 'International Buyer Development',
+    'ongoing': 'Managed Export Sales Desk',
+    'buyer-development': 'International Buyer Development',
+    'growth-desk': 'Managed Export Sales Desk'
   };
   const packageSelect = document.querySelector('#package');
   if (packageSelect && requestedPackage && packageMap[requestedPackage]) {
@@ -76,7 +76,7 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
       // Honeypot failures are intentionally not sent to the provider.
       const honey = form.querySelector('[name="_honey"]');
       if (honey && honey.value.trim()) {
-        setStatus('This request could not be processed. Please contact hello@mercopact.com.');
+        setStatus('This request could not be processed. Please use our direct WhatsApp contact.');
         return;
       }
 

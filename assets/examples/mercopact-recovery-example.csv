@@ -1,0 +1,4 @@
+example_id,record_type,example_requirement,status,evidence,priority,owner,next_action,external_action,classification
+DEMO-01,Quotation,Cosmetic folding cartons,Revised shipping basis pending,Fictional demonstration only,High,Export manager,Clarify delivery terms and prepare draft,Not sent,Fictional
+DEMO-02,Sample request,Seasonal sample,Expired,Fictional demonstration only,Closed,Account owner,Close unless renewed request confirmed,Not sent,Fictional
+DEMO-03,Distributor enquiry,Product catalogue,Specifications and timing unknown,Fictional demonstration only,Review,Commercial lead,Prepare qualification question,Not sent,Fictional
