@@ -144,5 +144,8 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
         if (submit) { submit.disabled = false; submit.innerHTML = originalMarkup; }
       }
     });
+    // Enable only after the submit handler is installed; non-JS users use the direct WhatsApp link.
+    const readyButton = form.querySelector('[type="submit"]');
+    if (readyButton) readyButton.disabled = false;
   });
 })();
