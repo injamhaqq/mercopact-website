@@ -106,6 +106,7 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
       };
       const hideRecovery = () => recovery.classList.remove('is-visible');
 
+      if (typeof window.clarity === 'function') window.clarity('event', 'enquiry_prepared');
       if (!FORM_DELIVERY_READY) {
         showRecovery();
         setStatus('The website email form is temporarily offline. Select “Continue in WhatsApp” below and press Send there to contact MERCOPACT. Your enquiry has not been submitted.');
@@ -130,6 +131,7 @@ const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
           }
           throw new Error('We could not confirm your enquiry was received. Please email hello@mercopact.com or use WhatsApp instead.');
         }
+        if (typeof window.clarity === 'function') window.clarity('event', 'enquiry_provider_accepted');
         form.reset();
         if (packageSelect && requestedPackage && packageMap[requestedPackage]) {
           packageSelect.value = packageMap[requestedPackage];
