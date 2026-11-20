@@ -14,3 +14,5 @@ The homepage uses a local WebP of the credited Ant Rozetsky industrial photograp
 ## License note
 
 The photographs were surfaced through Unsplash as free-to-use assets when selected. Re-check each source page and the current Unsplash License before major redistribution or if the image usage changes materially.
+
+**Homepage globe:** Original MERCOPACT illustration and motion, using public-domain [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/) 1:110m land polygons. The illuminated arcs are illustrative.

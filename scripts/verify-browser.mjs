@@ -25,10 +25,10 @@ for(const width of [320,375,390,768,1024,1180,1200,1280,1440]){
   bg:getComputedStyle(el).backgroundColor,
   fg:getComputedStyle(el.querySelector('h2')).color
  }));
- ensure(entry.bg==='rgb(247, 244, 235)' && entry.fg==='rgb(11, 31, 51)','Brief section uses unreadable colors');
- const sourceLink=page.locator('.home-proof-preview .proof-fields a');
- ensure((await sourceLink.getAttribute('href'))?.startsWith('https://www.jutebag.co.uk/'),'Hero example lacks a traceable source');
- const photo=page.locator('.home-hero-photo');
+ ensure(entry.bg==='rgb(233, 239, 217)' && entry.fg==='rgb(11, 31, 51)','Brief section uses unreadable colors');
+ const sourceLink=page.locator('#buyer-method .method-step a');
+ ensure((await sourceLink.getAttribute('href'))?.startsWith('https://www.jutebag.co.uk/'),'Buyer example lacks a traceable source');
+ const photo=page.locator('.globe-poster');
  await photo.evaluate(img=>img.decode());
  const hero=await page.locator('.home-hero > .container').evaluate(el=>({
   columns:getComputedStyle(el).gridTemplateColumns.split(' ').length,
@@ -54,7 +54,35 @@ ensure(await page.locator('.pricing-question').first().getAttribute('open')!==nu
 ensure(textColor==='rgb(255, 255, 255)','Pricing card button label must contrast with the dark fill');
 await page.evaluate(()=>window.scrollTo(0,0));
 const body=await page.locator('body').innerText();for(const p of ['$600','$1,800','$3,000/month','fixed project fee'])ensure(body.includes(p),'Missing price '+p);await page.screenshot({path:path.join(shots,'engagements-'+width+'.png'),fullPage:true});}}await ctx.close();}
-const nojs=await context(390,false),np=await nojs.newPage();await load(np,'/contact/');ensure(await np.locator('button[type="submit"]').isDisabled(),'Draft control enabled without JS');ensure(await np.locator('a[href^="https://wa.me/"]').count()>0,'No-JS fallback missing');await load(np,'/packages/');
+const animated=await browser.newContext({viewport:{width:1440,height:900},reducedMotion:'no-preference'});
+await animated.route('**/*',route=>route.request().url().startsWith(origin)?route.continue():route.abort());
+const motionPage=await animated.newPage();
+await load(motionPage,'/');
+const globe=motionPage.locator('[data-trade-globe]');
+await globe.locator('button').waitFor({state:'visible'});
+const globeFrame=()=>globe.locator('canvas').evaluate(canvas=>canvas.toDataURL());
+const firstFrame=await globeFrame();
+await motionPage.waitForFunction(frame=>document.querySelector('[data-trade-globe] canvas').toDataURL()!==frame,firstFrame);
+ensure(await globe.locator('button').innerText()==='Pause globe','Globe playback is not controllable');
+await globe.locator('button').click();
+const pausedFrame=await globeFrame();
+const heldFrame=await globe.locator('canvas').evaluate(canvas=>new Promise(resolve=>setTimeout(()=>resolve(canvas.toDataURL()),125)));
+ensure(pausedFrame===heldFrame,'Globe continued moving after pause');
+await motionPage.getByRole('link',{name:/sample buyer record/i}).click();
+await motionPage.getByText('Check what the listing leaves open',{exact:true}).press('Enter');
+ensure(await motionPage.getByText(/Whether the company wants a new supplier/).isVisible(),'Evidence interaction is not keyboard accessible');
+await animated.close();
+
+const reduced=await context(390),reducedPage=await reduced.newPage();
+await load(reducedPage,'/');
+const reducedControl=reducedPage.getByRole('button',{name:'Play globe'});
+ensure(await reducedControl.isVisible(),'Reduced motion did not leave the globe paused');
+await reduced.close();
+
+const nojs=await context(390,false),np=await nojs.newPage();
+await load(np,'/');
+ensure(await np.locator('.globe-poster').isVisible(),'Globe has no static fallback');
+ensure(await np.getByText('Find a product match',{exact:true}).isVisible(),'Buyer proof requires JavaScript');await load(np,'/contact/');ensure(await np.locator('button[type="submit"]').isDisabled(),'Draft control enabled without JS');ensure(await np.locator('a[href^="https://wa.me/"]').count()>0,'No-JS fallback missing');await load(np,'/packages/');
 await np.locator('.pilot-price-panel .btn-dark').click();
 ensure(np.url().endsWith('#request-scope'),'No-JS pricing jump missing');
 ensure(await np.locator('#request-scope noscript a').isVisible(),'No-JS pricing enquiry fallback missing');
