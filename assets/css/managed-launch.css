@@ -223,3 +223,148 @@ main.contact-layout > .contact-panel {
   .contact-layout > .contact-intro h1 { max-width: 20ch; }
   .pricing-card .pricing-amount { font-size: 2.2rem; }
 }
+
+/* The Brief journey: evidence on the first screen, with one clear next action. */
+main > .home-hero {
+  background: #0b1f33;
+  color: #f8f6f0;
+  border-color: #304353;
+}
+main .home-hero h1 {
+  max-width: 16ch;
+  color: #fffdf7;
+  font-size: clamp(2.55rem, 5.05vw, 4.8rem);
+  line-height: 1.02;
+  text-wrap: balance;
+}
+main .home-hero .lead {
+  max-width: 46ch;
+  color: #d4dfe5;
+}
+.home-hero .btn-primary {
+  background: #e3b95f;
+  border-color: #e3b95f;
+  color: #142637;
+}
+.home-hero .btn-primary:hover { background: #f2cb7c; border-color: #f2cb7c; }
+.home-hero .btn-outline {
+  border-color: #8192a0;
+  color: #fffdfa;
+}
+.home-hero .btn-outline:hover { background: #20364a; }
+.home-hero .home-hero-copy .actions { margin-top: 1.65rem; }
+.home-hero .home-hero-copy a:focus-visible { outline-color: #f4ce78; }
+
+.brief-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(.4rem, 1.8vw, 1.3rem);
+  max-width: 35rem;
+  margin: 1.85rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid #536373;
+}
+.brief-facts dt {
+  font-size: .78rem;
+  line-height: 1.25;
+  color: #bfcdd6;
+}
+.brief-facts dd {
+  color: #fffdfa;
+  margin: .27rem 0 0;
+  font-size: clamp(.99rem, 1.75vw, 1.35rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.home-proof-preview {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #8a8b78;
+  border-radius: .4rem;
+  background: #fffcf5;
+  color: #0b1f33;
+  box-shadow: 0 16px 42px #020c17a3;
+}
+.home-proof-preview .home-hero-photo {
+  width: 100%;
+  height: clamp(7rem, 12vw, 11rem);
+  object-position: center 44%;
+}
+.hero-proof-body { padding: clamp(1rem, 2.4vw, 1.7rem); }
+.hero-proof-body h2, .evidence-card h3 { margin: 0; color: #0b1f33; }
+.hero-proof-body h2 { font-size: clamp(1.65rem, 2.6vw, 2.25rem); }
+.hero-proof-body .record-context {
+  margin: 0 0 .45rem;
+  color: #146359;
+  font-size: .77rem;
+  font-weight: 700;
+  letter-spacing: .035em;
+}
+.record-market { color: #536474; font-size: .9rem; }
+.hero-proof-body .record-market { margin: .28rem 0 0; }
+.proof-fields { margin: .9rem 0; width: 100%; }
+.proof-fields > div {
+  padding: .6rem 0;
+  border-top: 1px solid #e2ded3;
+}
+.proof-fields dt { color: #23384b; font-size: .82rem; font-weight: 720; }
+.proof-fields dd { margin: .2rem 0 0; color: #35495b; font-size: .95rem; line-height: 1.48; }
+.proof-fields a, .sample-records a:not(.btn), .pricing-assurance a, .brief-enquiry-summary a {
+  color: #0e655b;
+  font-weight: 660;
+  text-decoration: underline;
+  text-underline-offset: .22em;
+}
+.hero-proof-body .layout-text-link { gap: .4rem; min-height: 38px; }
+main > .home-entry {
+  background: #f7f4eb;
+  color: #0b1f33;
+  border-bottom: 1px solid #e4e0d5;
+}
+.home-entry h2 { color: #0b1f33; max-width: 19ch; }
+.home-entry p { color: #485765; }
+.home-entry .btn-outline { color: #0b1f33; border-color: #8796a3; background: transparent; }
+.home-entry .btn-outline:hover { background: #eae6dc; border-color: #8796a3; }
+
+.pricing-card .pricing-use { font-weight: 700; color: #18334a; }
+.pricing-card .pricing-features {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: #283e51;
+}
+.pricing-features li + li { margin-top: .35rem; }
+.pricing-card .pricing-timing { color: #4c5e6c; font-size: .86rem; }
+.pricing-card .pricing-sample { min-height: 36px; display: inline-flex; align-items: center; }
+.pricing-card.mp-primary { box-shadow: 0 6px 18px #0b1f3312; }
+.pricing-assurance {
+  margin: 1.6rem 0 0;
+  padding: 1rem 1.15rem;
+  border-left: 3px solid #0f766e;
+  background: #f4f7f3;
+  color: #2c4053;
+}
+.sample-records .evidence-card { border-top: 3px solid #0f766e; }
+.sample-records .evidence-card .proof-fields { margin: .1rem 0 0; }
+.sample-decision { border-left: 3px solid #ba8e3b; padding-left: 1rem; margin-top: 1.5rem; }
+
+.brief-enquiry-summary {
+  margin: 1.25rem 0;
+  background: #f5f4ed;
+  border-left: 3px solid #0f766e;
+  padding: .9rem 1.1rem;
+}
+.brief-enquiry-summary [hidden], .brief-enquiry-summary[hidden], [data-general-enquiry][hidden] { display: none; }
+.brief-enquiry-summary .brief-enquiry-price { margin: 0; font-weight: 740; color: #0b1f33; }
+.brief-enquiry-price span { color: #526271; font-size: .86rem; font-weight: 500; }
+.brief-enquiry-summary ol { padding-left: 1.1rem; margin: .55rem 0; }
+.brief-enquiry-summary li + li { margin-top: .3rem; }
+.brief-enquiry-summary p:last-child { margin-bottom: 0; }
+
+@media (max-width: 760px) {
+  main .home-hero h1 { max-width: 18ch; }
+  .home-hero .home-hero-copy .actions { margin-top: 1.15rem; }
+  .brief-facts { margin-top: 1.2rem; }
+  .hero-proof-body { padding: 1rem; }
+  .home-proof-preview { box-shadow: 0 9px 25px #020c1759; }
+}

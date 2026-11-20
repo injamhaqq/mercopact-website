@@ -50,7 +50,7 @@ for (const [file, target] of [['buyer-growth.html','/contact/'],['bangladesh-mar
   ensure(html.includes('noindex') && html.includes('location.replace("' + target + '"') && html.includes('href="' + target + '"'),file+' has no working redirect');
 }
 const home=read('index.html'), brief=read('buyer-development.html'), sprint=read('global-buyer-pilot.html'), managed=read('managed-export-sales/index.html'), pricing=read('packages.html'), contact=read('contact.html'), terms=read('terms.html'), form=read('assets/js/forms.js');
-ensure(home.replace(/<[^>]+>/g,'').includes('You make the product. We help you find the buyers.'),'Global hero missing');
+ensure(home.replace(/<[^>]+>/g,'').includes('Know which buyers are worth approaching.'),'Global hero missing');
 ensure(home.includes('href="/contact/?package=brief"') && home.includes('href="/research-examples.html"'),'Primary journey missing');
 for (const [name, fee, page, scope] of [
   ['Buyer Development Brief','$600',brief,'12 researched buyer accounts'],
