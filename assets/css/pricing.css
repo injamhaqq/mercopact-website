@@ -1,0 +1,60 @@
+.pricing-layout > .pilot-hero {
+  background: var(--site-ink);
+  color: white;
+  scroll-margin-top: 5.5rem;
+}
+
+.pilot-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+  align-items: center;
+  gap: clamp(1.35rem, 5vw, 5rem);
+}
+
+.pricing-layout .pilot-hero h1 { color: white; max-width: 20ch; }
+.pricing-layout .pilot-hero .lead { color: #dae3eb; }
+.pilot-label {
+  color: #ebc477;
+  font-weight: 700;
+  margin: 0 0 .65rem;
+}
+
+.pilot-price-panel {
+  color: var(--site-ink);
+  background: var(--site-paper);
+  border-top: 4px solid #c89b3c;
+  border-radius: 3px;
+  padding: clamp(1.2rem, 3.2vw, 2.4rem);
+}
+.pilot-price-panel p { margin: 0 0 .85rem; }
+.pilot-price-panel .pilot-fee { line-height: 1.1; }
+.pilot-fee strong { display: block; font-size: clamp(2.4rem, 4.2vw, 3.75rem); }
+.pilot-fee span { display: block; margin-top: .5rem; color: #3e5162; }
+.pilot-price-panel .actions { margin: .9rem 0 .65rem; align-items: center; }
+.pilot-price-panel .btn-dark { color: white; }
+.pilot-price-panel .layout-text-link {
+  color: #075e57;
+  text-decoration: underline;
+}
+.pilot-price-panel .pilot-note { margin: 0; color: #3e5162; font-size: .95rem; }
+
+.pilot-milestones {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 1.6rem 0 0;
+  padding: 1rem clamp(1rem, 2.1vw, 1.7rem);
+  gap: .8rem 1.6rem;
+  border-left: 3px solid var(--site-teal);
+  background: #f3f7f4;
+}
+.pilot-milestones dt { color: var(--site-ink); font-weight: 700; }
+.pilot-milestones dd { margin: .2rem 0 0; }
+.pricing-layout .pricing-assurance p { margin: 0; }
+.pricing-alternatives .pricing-card .actions { margin-top: auto; }
+.pricing-alternatives .pricing-card .fee-period { margin-left: .2em; }
+.pricing-faq .pricing-question summary { min-height: 44px; }
+
+@media (max-width: 760px) {
+  .pilot-hero-grid, .pilot-milestones { grid-template-columns: minmax(0, 1fr); }
+  .pilot-price-panel .layout-text-link { justify-content: center; width: 100%; }
+}

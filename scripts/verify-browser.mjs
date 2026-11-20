@@ -41,17 +41,22 @@ for(const width of [320,375,390,768,1024,1180,1200,1280,1440]){
  ensure(!errors.length,'JS error '+width+' '+errors.join(';'));if([320,390,1440].includes(width))await page.screenshot({path:path.join(shots,'homepage-'+width+'.png'),fullPage:true});await ctx.close();
 }
 const paths=['/','/packages/','/contact/','/global-buyer-pilot.html','/services/','/strategic-sourcing/','/commercial-intelligence/','/opportunities/','/managed-export-sales/','/opportunity-recovery/','/buyer-development/','/international-markets/','/about/','/privacy/','/terms/','/research-examples.html','/capabilities.html','/how-we-work/','/trust-and-method.html','/pilot-deliverables.html','/industries/','/sample-eu-us-jute-bags.html','/sample-eu-garments-knitwear.html','/sample-eu-uk-leather-footwear.html','/sample-market-access.html','/sample-uae-packaging.html','/sample-india-packaging.html'];
-for(const width of [390,1440]){const ctx=await context(width),page=await ctx.newPage();for(const url of paths){const errors=[],listener=e=>errors.push(e.message);page.on('pageerror',listener);await load(page,url);ensure(await page.locator('h1').count()===1,'Exactly one H1 '+url);await layout(page,url+' '+width);ensure(!errors.length,'JS errors '+url+' '+errors.join(';'));page.off('pageerror',listener);if(url==='/pilot-deliverables.html'){ensure(await page.locator('.evidence-card').count()===2,'Sample account cards missing');await page.screenshot({path:path.join(shots,'sample-brief-'+width+'.png'),fullPage:true});}if(url==='/research-examples.html')await page.screenshot({path:path.join(shots,'research-'+width+'.png'),fullPage:true});if(url==='/contact/')await page.screenshot({path:path.join(shots,'contact-'+width+'.png'),fullPage:true});if(url==='/packages/'){ensure(await page.locator('.mp-offer').count()===3,'Three engagement cards required');
+for(const width of [390,1440]){const ctx=await context(width),page=await ctx.newPage();for(const url of paths){const errors=[],listener=e=>errors.push(e.message);page.on('pageerror',listener);await load(page,url);ensure(await page.locator('h1').count()===1,'Exactly one H1 '+url);await layout(page,url+' '+width);ensure(!errors.length,'JS errors '+url+' '+errors.join(';'));page.off('pageerror',listener);if(url==='/pilot-deliverables.html'){ensure(await page.locator('.evidence-card').count()===2,'Sample account cards missing');await page.screenshot({path:path.join(shots,'sample-brief-'+width+'.png'),fullPage:true});}if(url==='/research-examples.html')await page.screenshot({path:path.join(shots,'research-'+width+'.png'),fullPage:true});if(url==='/contact/')await page.screenshot({path:path.join(shots,'contact-'+width+'.png'),fullPage:true});if(url==='/packages/'){ensure(await page.locator('.pricing-alternatives .mp-offer').count()===2,'Brief and monthly options required');
+const pilotAction=page.locator('.pilot-price-panel .btn-dark');
+ensure(await pilotAction.getAttribute('href')==='/contact/?package=development-pilot','Primary pricing action must open the Pilot');
+const pilotActionBounds=await pilotAction.boundingBox();
+ensure(pilotActionBounds && pilotActionBounds.y+pilotActionBounds.height<840,'Primary Pilot action below the first viewport');
+await page.screenshot({path:path.join(shots,'pricing-first-screen-'+width+'.png')});
 const positions=await page.locator('.mp-offer').evaluateAll(cards=>cards.map(card=>card.getBoundingClientRect().top));
-ensure(width===390?positions[0]<positions[1]&&positions[1]<positions[2]:Math.max(...positions)-Math.min(...positions)<1,'Pricing cards do not follow the intended grid');
+ensure(width===390?positions[0]<positions[1]:Math.max(...positions)-Math.min(...positions)<1,'Pricing cards do not follow the intended grid');
 await page.locator('.pricing-question summary').first().click();
 ensure(await page.locator('.pricing-question').first().getAttribute('open')!==null,'Pricing FAQ is not keyboard/click accessible');const textColor=await page.locator('.pricing-card .btn-dark').first().evaluate(el=>getComputedStyle(el).color);
 ensure(textColor==='rgb(255, 255, 255)','Pricing card button label must contrast with the dark fill');
 await page.evaluate(()=>window.scrollTo(0,0));
-const body=await page.locator('body').innerText();for(const p of ['$600','$1,800','$3,000/month'])ensure(body.includes(p),'Missing price '+p);await page.screenshot({path:path.join(shots,'engagements-'+width+'.png'),fullPage:true});}}await ctx.close();}
+const body=await page.locator('body').innerText();for(const p of ['$600','$3,000/month','fixed project fee'])ensure(body.includes(p),'Missing price '+p);await page.screenshot({path:path.join(shots,'engagements-'+width+'.png'),fullPage:true});}}await ctx.close();}
 const nojs=await context(390,false),np=await nojs.newPage();await load(np,'/contact/');ensure(await np.locator('button[type="submit"]').isDisabled(),'Draft control enabled without JS');ensure(await np.locator('a[href^="https://wa.me/"]').count()>0,'No-JS fallback missing');await nojs.close();
 const ctx=await context(390),p=await ctx.newPage();
-for(const [slug,label] of [['brief','Buyer Development Brief'],['outreach-sprint','Buyer Outreach Sprint'],['ongoing','Managed Buyer Development'],['recovery','Sales Opportunity Recovery'],['specialist','Specialist project'],['sprint','Sales Opportunity Recovery'],['pilot','Buyer Development Brief'],['mandate','Specialist project'],['market-proof','Buyer Development Brief'],['international-pilot','Buyer Development Brief'],['buyer-development','Buyer Development Brief'],['growth-desk','Managed Buyer Development']]) {
+for(const [slug,label] of [['brief','Buyer Development Brief'],['development-pilot','Buyer Development Pilot'],['outreach-sprint','Buyer Outreach Sprint'],['ongoing','Managed Buyer Development'],['recovery','Sales Opportunity Recovery'],['specialist','Specialist project'],['sprint','Sales Opportunity Recovery'],['pilot','Buyer Development Brief'],['mandate','Specialist project'],['market-proof','Buyer Development Brief'],['international-pilot','Buyer Development Brief'],['buyer-development','Buyer Development Brief'],['growth-desk','Managed Buyer Development']]) {
   await load(p,'/contact/?package='+slug);
   ensure(await p.locator('#package').inputValue()===label,'Wrong enquiry preselection '+slug);
 }
@@ -66,6 +71,16 @@ await p.locator('#package').selectOption({label:'Buyer Development Brief'});
 ensure(await p.locator('[data-brief-summary]').isVisible(),'Brief context did not return after switching service');
 await load(p,'/contact/?package=outreach-sprint');
 ensure(await p.locator('[data-brief-summary]').isHidden(),'Brief context shown for another service');
+await load(p,'/packages/');
+await p.locator('.pilot-price-panel .btn-dark').click();
+await p.locator('[data-pilot-summary]').waitFor({state:'visible'});
+ensure((await p.locator('h1').innerText())==='Request a Buyer Development Pilot scope','Pilot heading missing');
+ensure(await p.locator('#package').inputValue()==='Buyer Development Pilot','Pilot option was not selected');
+ensure((await p.locator('[data-pilot-summary]').innerText()).includes('$3,000 USD'),'Pilot price missing');
+ensure(await p.locator('[data-brief-summary]').isHidden(),'Brief summary shown alongside Pilot');
+await p.locator('#package').selectOption({label:'Buyer Development Brief'});
+ensure(await p.locator('[data-pilot-summary]').isHidden(),'Pilot summary stayed visible after switching to Brief');
+ensure(await p.locator('[data-brief-summary]').isVisible(),'Brief summary was not restored');
 await load(p,'/contact/?package=brief');
 const requests=[];
 p.on('request',request=>requests.push(request.url()));
