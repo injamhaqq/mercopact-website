@@ -63,6 +63,7 @@ main > .section.bg-paper { background-color: var(--site-paper); }
 }
 .layout-grid-two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .copy-flow > :is(.layout-grid, .layout-steps) { margin-top: 1.35rem; }
+.copy-flow > .layout-grid + .actions { margin-top: 1.2rem; }
 .layout-card {
   display: flex;
   flex-direction: column;
