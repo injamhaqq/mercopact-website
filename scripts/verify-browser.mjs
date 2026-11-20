@@ -19,13 +19,15 @@ async function layout(page,label){const size=await page.evaluate(()=>({scroll:do
 try{
 for(const width of [320,375,390,768,1024,1180,1200,1280,1440]){
  const ctx=await context(width),page=await ctx.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
- await load(page,'/');ensure((await page.locator('h1').innerText()).replace(/\s+/g,' ').includes('You make the product. We help you find the buyers.'),'Current hero missing');
+ await load(page,'/');ensure((await page.locator('h1').innerText()).replace(/\s+/g,' ').includes('Know which buyers are worth approaching.'),'Current hero missing');
  await layout(page,'home '+width);
  const entry=await page.locator('.home-entry').evaluate(el=>({
   bg:getComputedStyle(el).backgroundColor,
   fg:getComputedStyle(el.querySelector('h2')).color
  }));
- ensure(entry.bg==='rgb(11, 31, 51)' && entry.fg==='rgb(255, 255, 255)','Brief section uses unreadable colors');
+ ensure(entry.bg==='rgb(247, 244, 235)' && entry.fg==='rgb(11, 31, 51)','Brief section uses unreadable colors');
+ const sourceLink=page.locator('.home-proof-preview .proof-fields a');
+ ensure((await sourceLink.getAttribute('href'))?.startsWith('https://www.jutebag.co.uk/'),'Hero example lacks a traceable source');
  const photo=page.locator('.home-hero-photo');
  await photo.evaluate(img=>img.decode());
  const hero=await page.locator('.home-hero > .container').evaluate(el=>({
@@ -39,7 +41,7 @@ for(const width of [320,375,390,768,1024,1180,1200,1280,1440]){
  ensure(!errors.length,'JS error '+width+' '+errors.join(';'));if([320,390,1440].includes(width))await page.screenshot({path:path.join(shots,'homepage-'+width+'.png'),fullPage:true});await ctx.close();
 }
 const paths=['/','/packages/','/contact/','/global-buyer-pilot.html','/services/','/strategic-sourcing/','/commercial-intelligence/','/opportunities/','/managed-export-sales/','/opportunity-recovery/','/buyer-development/','/international-markets/','/about/','/privacy/','/terms/','/research-examples.html','/capabilities.html','/how-we-work/','/trust-and-method.html','/pilot-deliverables.html','/industries/','/sample-eu-us-jute-bags.html','/sample-eu-garments-knitwear.html','/sample-eu-uk-leather-footwear.html','/sample-market-access.html','/sample-uae-packaging.html','/sample-india-packaging.html'];
-for(const width of [390,1440]){const ctx=await context(width),page=await ctx.newPage();for(const url of paths){const errors=[],listener=e=>errors.push(e.message);page.on('pageerror',listener);await load(page,url);ensure(await page.locator('h1').count()===1,'Exactly one H1 '+url);await layout(page,url+' '+width);ensure(!errors.length,'JS errors '+url+' '+errors.join(';'));page.off('pageerror',listener);if(url==='/research-examples.html')await page.screenshot({path:path.join(shots,'research-'+width+'.png'),fullPage:true});if(url==='/contact/')await page.screenshot({path:path.join(shots,'contact-'+width+'.png'),fullPage:true});if(url==='/packages/'){ensure(await page.locator('.mp-offer').count()===3,'Three engagement cards required');
+for(const width of [390,1440]){const ctx=await context(width),page=await ctx.newPage();for(const url of paths){const errors=[],listener=e=>errors.push(e.message);page.on('pageerror',listener);await load(page,url);ensure(await page.locator('h1').count()===1,'Exactly one H1 '+url);await layout(page,url+' '+width);ensure(!errors.length,'JS errors '+url+' '+errors.join(';'));page.off('pageerror',listener);if(url==='/pilot-deliverables.html'){ensure(await page.locator('.evidence-card').count()===2,'Sample account cards missing');await page.screenshot({path:path.join(shots,'sample-brief-'+width+'.png'),fullPage:true});}if(url==='/research-examples.html')await page.screenshot({path:path.join(shots,'research-'+width+'.png'),fullPage:true});if(url==='/contact/')await page.screenshot({path:path.join(shots,'contact-'+width+'.png'),fullPage:true});if(url==='/packages/'){ensure(await page.locator('.mp-offer').count()===3,'Three engagement cards required');
 const positions=await page.locator('.mp-offer').evaluateAll(cards=>cards.map(card=>card.getBoundingClientRect().top));
 ensure(width===390?positions[0]<positions[1]&&positions[1]<positions[2]:Math.max(...positions)-Math.min(...positions)<1,'Pricing cards do not follow the intended grid');
 await page.locator('.pricing-question summary').first().click();
@@ -53,6 +55,17 @@ for(const [slug,label] of [['brief','Buyer Development Brief'],['outreach-sprint
   await load(p,'/contact/?package='+slug);
   ensure(await p.locator('#package').inputValue()===label,'Wrong enquiry preselection '+slug);
 }
+await load(p,'/contact/?package=brief');
+ensure((await p.locator('h1').innerText())==='Check fit for your product','Brief request heading missing');
+ensure(await p.locator('[data-brief-summary]').isVisible(),'Brief request summary missing');
+ensure((await p.locator('[data-brief-summary]').innerText()).includes('$600 USD'),'Brief request pricing missing');
+await p.locator('#package').selectOption({label:'Buyer Outreach Sprint'});
+ensure(await p.locator('[data-brief-summary]').isHidden(),'Brief context remained after switching service');
+ensure((await p.locator('h1').innerText())==='Tell us what you want to sell abroad','General heading not restored');
+await p.locator('#package').selectOption({label:'Buyer Development Brief'});
+ensure(await p.locator('[data-brief-summary]').isVisible(),'Brief context did not return after switching service');
+await load(p,'/contact/?package=outreach-sprint');
+ensure(await p.locator('[data-brief-summary]').isHidden(),'Brief context shown for another service');
 await load(p,'/contact/?package=brief');
 const requests=[];
 p.on('request',request=>requests.push(request.url()));

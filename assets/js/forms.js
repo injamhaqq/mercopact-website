@@ -20,6 +20,22 @@
   const option = new URLSearchParams(location.search).get('package');
   if (Object.hasOwn(options, option)) interest.value = options[option];
 
+  const enquiryHeading = document.querySelector('[data-enquiry-heading]');
+  const panelHeading = document.querySelector('[data-enquiry-panel-heading]');
+  const generalEnquiry = document.querySelector('[data-general-enquiry]');
+  const briefSummary = document.querySelector('[data-brief-summary]');
+  const generalHeadingText = enquiryHeading.textContent;
+  const generalPanelText = panelHeading.textContent;
+  const updateEnquiryContext = () => {
+    const isBrief = interest.value === options.brief;
+    enquiryHeading.textContent = isBrief ? 'Check fit for your product' : generalHeadingText;
+    panelHeading.textContent = isBrief ? 'Tell us what you sell' : generalPanelText;
+    generalEnquiry.hidden = isBrief;
+    briefSummary.hidden = !isBrief;
+  };
+  updateEnquiryContext();
+  interest.addEventListener('change', updateEnquiryContext);
+
   const draftLink = document.querySelector('#whatsapp-draft');
   const status = form.querySelector('.form-status');
   const inputs = [
