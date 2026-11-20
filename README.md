@@ -17,7 +17,7 @@ A static, GitHub-Pages-ready corporate website for **MERCOPACT**.
 - `assets/css/`: design system and responsive styles
 - `assets/js/`: navigation, reveal motion and static-form behavior
 - `assets/images/logo/`: logo assets cropped directly from the supplied official reference artwork
-- `favicon.svg`, `site.webmanifest`, `robots.txt`, `sitemap.xml`, `CNAME`
+- `favicon.ico`, `site.webmanifest`, `robots.txt`, `sitemap.xml`, `CNAME`
 - `IMAGE-CREDITS.md`: photography source record
 - `QA-REPORT.md`, `qa-static.json`, `qa-browser.json`: verification summary and raw QA outputs
 
@@ -42,9 +42,7 @@ Then open `http://localhost:8000/`.
 
 ## Verification
 
-The final source was checked at 1440 px desktop and 390 px mobile using a local Chromium/Playwright render, plus static HTML/asset/link validation. See `QA-REPORT.md` for the full verification record.
-
-The local QA environment intentionally blocked external network requests, so remote Unsplash photography and Google Fonts do not appear in the exported QA screenshots. The production files retain those live URLs.
+Run `node scripts/verify-trust-pages.js` for structural, link, metadata and offer checks. The GitHub browser workflow checks all 27 public routes at 320, 390 and 1440 CSS pixels, plus the register, navigation and enquiry journeys. The renderer blocks external requests during tests.
 
 ## Custom domain
 
@@ -62,56 +60,21 @@ The enquiry form prepares a WhatsApp draft in the visitor’s browser. It has no
 
 ## Replacing photography
 
-Photography is loaded from the Unsplash image CDN so this repository remains light. To self-host later:
+The homepage photo is served as a local WebP. When replacing it, use a relevant manufacturing or trade photograph and preserve the photographer, original source and license in `IMAGE-CREDITS.md`. Keep illustrative photography separate from claims about real clients or buyers.
 
-1. Download the chosen image from its source page under the applicable Unsplash license.
-2. Export optimized WebP/JPEG variants.
-3. Put them in `assets/images/photography/`.
-4. Replace the corresponding remote URL in the HTML.
-5. Preserve credits/source records below.
+## MERCOPACT brand on the web
 
-## Photography sources / license notes
+- The promise is **Across Markets. With Confidence.** MERCOPACT serves export-ready manufacturers and specialist B2B suppliers evaluating buyers in international markets.
+- Confidence means a traceable reason for choosing an account, client approval before contact, and a buyer register the client can continue using.
+- The transparent v7 lockup is the approved header, footer and structured-data logo. Browser icons use the original standalone emblem from the approved artwork, centered on ivory with padding at small sizes. Keep the original proportions, color and clear space.
+- Use navy `#0B1F33` for the wordmark, ink and main dark surfaces, teal `#0F766E` for links and active states, brass `#C89B3C` for accents and high-emphasis actions, and ivory `#F7F4ED` for paper surfaces. The components live in `assets/css/mercopact-brand.css`.
+- Use the local Manrope face for UI and reading text and Georgia for editorial headings. Keep photography about manufacturing or trade and maintain its attribution. Approved social artwork lives in `assets/images/og`.
+- Before shipping, check the wordmark, favicon and share card. Verify page hierarchy, keyboard navigation, contrast and the route from a public evidence example to a written scope. Only publish supportable claims, current commercial terms and permissioned customer proof.
 
-The selected photographs are real photographs surfaced through Unsplash and marked free to use under the Unsplash License at the time selected. Re-check the source page and current license before major commercial redistribution.
+## Release checklist
 
-1. **Industrial factory interior**: Ant Rozetsky
-   - Source: https://unsplash.com/photos/SLIFI67jv5k
-   - Used: primary industrial / hero context
-2. **Container terminal / cargo vessel**: Andy Li
-   - Source: https://unsplash.com/photos/CpsTAUPoScw
-   - Used: international markets
-3. **Industrial textile factory**: Lalit Kumar
-   - Source: https://unsplash.com/photos/HpPmiduLDC0
-   - Used: Bangladesh manufacturing / industry context
-4. **Business meeting**: Christina @ wocintechchat.com
-   - Source: https://unsplash.com/photos/Q80LYxv_Tbs
-   - Used: commercial meeting / market-entry context
-5. **Industrial warehouse**: Alberto Rodríguez
-   - Source: https://unsplash.com/photos/-aCrA9FmT8Y
-   - Used: account-development / operations context
-6. **Industrial automation**: Simon Kadula
-   - Source: https://unsplash.com/photos/8gr6bObQLOI
-   - Used: industries / manufacturing context
-
-## Logo note
-
-The supplied reference image contained the official Mercopact horizontal logo. This build crops that exact artwork for web use rather than redrawing or reinterpreting the mark. If you later provide a transparent master SVG/PNG, replace `assets/images/logo/mercopact-horizontal.png` and `mercopact-mark.png` with the master files while keeping the same filenames or updating references.
-
-## Launch checklist
-
-Before launch, supply or verify:
-
-- A standalone master logo file if available (recommended for maximum sharpness).
-- Formspree/Web3Forms endpoint if you want in-page submissions instead of email fallback.
-- Meta Pixel ID if advertising measurement is required.
-- GA4 Measurement ID and/or Google Tag Manager container ID.
-- Confirm the exact LinkedIn company URL if it differs from `/company/mercopact/`.
-- Confirm privacy/cookie requirements for the jurisdictions where tracking will run.
-
-## Brand / content rules preserved
-
-- No invented clients, testimonials, awards, revenue claims or success rates.
-- No “Mercopact Ltd.” wording.
-- No unverified establishment year.
-- No guaranteed buyers, sales or revenue claims.
-- Public contact details use only the approved corporate emails.
+- Confirm that each offer states the intended customer, deliverables, timeframe, price and next step.
+- Read the main pages in order as a buyer. Check that the research, sample register, Pricing, written scope request and founder identity agree.
+- Verify the named contact destinations and the enquiry draft on mobile and desktop.
+- Keep public claims tied to evidence or client-approved proof. Match commercial terms to the signed scope template before changing commitments.
+- Run the static and browser checks, then verify the live custom domain and share assets after deployment.

@@ -4,7 +4,7 @@ The homepage uses a local WebP of the credited Ant Rozetsky industrial photograp
 
 | Use | Photographer / source | Original page |
 |---|---|---|
-| Primary industrial / homepage hero | Ant Rozetsky | https://unsplash.com/photos/SLIFI67jv5k |
+| Manufacturing context / homepage hero | Ant Rozetsky | https://unsplash.com/photos/SLIFI67jv5k |
 | International markets / port | Andy Li | https://unsplash.com/photos/CpsTAUPoScw |
 | Textile / manufacturing context | Lalit Kumar | https://unsplash.com/photos/HpPmiduLDC0 |
 | Commercial meeting / Bangladesh market entry | Christina @ wocintechchat.com | https://unsplash.com/photos/Q80LYxv_Tbs |
