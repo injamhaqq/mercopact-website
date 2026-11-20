@@ -42,6 +42,8 @@ for(const f of pages) {
   }
   ensure(!/we keep working at no extra cost|up to 30 more days|fast-start bonus/i.test(html),f+' retains retired guarantee or bonus');
   ensure(!/Bangladesh|Dhaka/i.test(html),f+' retains origin-specific positioning');
+  ensure(html.includes('href="/assets/images/logo/tab-32.png"') && html.includes('rel="apple-touch-icon"'),f+' is missing the tab icons');
+  ensure(!/<video\b|data-trade-globe|trade-globe\.js/i.test(html),f+' contains video or the retired globe');
   ensure(!/clarity\.ms|formsubmit\.co/i.test(html),f+' loads a retired provider');
   ensure(!/href="mailto:/i.test(html),f+' advertises unverified mailbox');
 }
@@ -51,7 +53,7 @@ for (const [file, target] of [['buyer-growth.html','/contact/'],['bangladesh-mar
 }
 const home=read('index.html'), brief=read('buyer-development.html'), sprint=read('global-buyer-pilot.html'), managed=read('managed-export-sales/index.html'), pricing=read('packages.html'), contact=read('contact.html'), terms=read('terms.html'), form=read('assets/js/forms.js');
 ensure(home.replace(/<[^>]+>/g,'').includes('Know which buyers are worth approaching.'),'Global hero missing');
-ensure(home.includes('href="/contact/?package=brief"') && home.includes('href="/research-examples.html"'),'Primary journey missing');
+ensure(home.includes('href="/packages/#pilot"') && home.includes('href="/research-examples.html"'),'Primary journey missing');
 for (const [name, fee, page, scope] of [
   ['Buyer Development Brief','$600',brief,'12 researched buyer accounts'],
   ['Managed Buyer Development','$3,000',managed,'Up to 25 approved outreach or follow-up actions']
@@ -76,6 +78,11 @@ ensure(sprint.includes('$900 at kickoff') && sprint.includes('day-seven mileston
 ensure(terms.includes('the agreement applies'),'Signed agreement boundary missing');
 for(const report of ['sample-market-access.html','sample-uae-packaging.html','sample-india-packaging.html','sample-eu-us-jute-bags.html','sample-eu-garments-knitwear.html','sample-eu-uk-leather-footwear.html'])ensure(read('research-examples.html').includes('href="/'+report+'"'),'Research hub missing '+report);
 ensure(exists('assets/examples/mercopact-recovery-example.csv'),'Recovery example missing');
+ensure(read('about.html').includes('href="https://www.linkedin.com/in/injamhaq/"'),'Founder LinkedIn missing');
+const manifest = JSON.parse(read('site.webmanifest'));
+for (const icon of manifest.icons) ensure(exists(icon.src.replace(/^\//,'')),'Manifest icon missing '+icon.src);
+const handoff = read('assets/examples/mercopact-pilot-handoff-example.csv');
+ensure(handoff.trim().split(/\r?\n/).length===3 && handoff.includes('Outreach approval,Latest response,Example owner,Next action,Due'),'Pilot handoff sample fields missing');
 const csv = read('assets/examples/mercopact-account-register-example.csv');
 ensure(csv.trim().split(/\r?\n/).length===3 && /JuteBag.*https:\/\/www\.jutebag/.test(csv) && /Jutexpo.*https:\/\/www\.jutexpo/.test(csv),'Sample account register does not match the preview');
 ensure(!/fetch\s*\(|XMLHttpRequest|sendBeacon|formsubmit/i.test(form),'Draft preparation must not transmit data');
