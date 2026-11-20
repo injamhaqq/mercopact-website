@@ -155,6 +155,7 @@ main > .pricing-offers { padding-top: clamp(1.35rem, 3vw, 2.5rem); }
 }
 .pricing-question summary { cursor: pointer; min-height: 32px; font-weight: 650; }
 .pricing-question p { margin: .35rem 0; }
+.pricing-faq { scroll-margin-top: 6.5rem; }
 .pricing-faq .actions { margin-top: 1.2rem; }
 
 .contact-layout {
