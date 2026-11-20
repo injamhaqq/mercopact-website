@@ -67,6 +67,11 @@ for (const [label, html] of [['pricing',pricing],['terms',terms],['enquiry',cont
   ensure((html.match(/\$1,500/g)||[]).length===2,label+' Pilot split payment mismatch');
 }
 ensure(pricing.includes('$1,800 Buyer Outreach Sprint') && sprint.includes('$1,800'),'Existing Sprint scope mismatch');
+ensure(pricing.includes('$2,400 for the Brief plus Sprint') && pricing.includes('Rank 20 buyer accounts'),'Pilot comparison must explain the added scope');
+for (const [label, html] of [['home',home],['pricing',pricing],['terms',terms],['enquiry',contact]]) {
+  ensure(/20(?:-account| ranked| buyer)/.test(html) && html.includes('eight reserve'),label+' missing Pilot account scope');
+}
+
 ensure(sprint.includes('$900 at kickoff') && sprint.includes('day-seven milestone'),'Sprint milestone mismatch');
 ensure(terms.includes('the agreement applies'),'Signed agreement boundary missing');
 for(const report of ['sample-market-access.html','sample-uae-packaging.html','sample-india-packaging.html','sample-eu-us-jute-bags.html','sample-eu-garments-knitwear.html','sample-eu-uk-leather-footwear.html'])ensure(read('research-examples.html').includes('href="/'+report+'"'),'Research hub missing '+report);

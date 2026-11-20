@@ -84,6 +84,11 @@ ensure(p.url().endsWith('/packages/#request-scope'),'Header enquiry left pricing
 await p.getByRole('link',{name:'See a sample buyer record',exact:true}).click();
 ensure(p.url().endsWith('/packages/#sample-buyer-record'),'Sample did not stay on pricing');
 ensure(await p.locator('#sample-buyer-record a[download]').count()===1,'Sample download missing');
+const walkthrough=p.locator('#sample-walkthrough');
+await walkthrough.locator('summary').press('Enter');
+ensure(await walkthrough.locator('blockquote').isVisible(),'Sample outreach draft is inaccessible');
+ensure((await walkthrough.innerText()).includes('illustrative draft and was never sent'),'Sample draft is missing its label');
+
 for (const [offer,label] of [['development-pilot','Buyer Development Pilot'],['brief','Buyer Development Brief'],['outreach-sprint','Buyer Outreach Sprint'],['ongoing','Managed Buyer Development'],['recovery','Sales Opportunity Recovery'],['specialist','Specialist project']]) {
   await p.locator('main [data-enquiry-package="'+offer+'"]').click();
   ensure(p.url().endsWith('/packages/#request-scope'),'Enquiry left pricing for '+offer);
