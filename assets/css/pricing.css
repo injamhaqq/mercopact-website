@@ -110,3 +110,21 @@
 @media (max-width: 760px) {
   .pricing-enquiry-grid { grid-template-columns: minmax(0, 1fr); }
 }
+
+.pricing-layout .pilot-comparison {
+  max-width: 75ch;
+  margin-top: 1rem;
+  padding: .8rem 1rem;
+  border-left: 3px solid var(--site-teal);
+  background: white;
+}
+
+.pricing-walkthrough { margin-top: .75rem; }
+.pricing-walkthrough .pricing-draft {
+  margin: .8rem 0;
+  padding: .8rem 1rem;
+  border-left: 3px solid var(--site-teal);
+  background: var(--site-paper);
+  color: var(--site-ink);
+}
+.pricing-walkthrough .pricing-draft p { margin: 0; }
