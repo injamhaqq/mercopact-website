@@ -19,13 +19,16 @@ async function layout(page,label){const size=await page.evaluate(()=>({scroll:do
 try{
 for(const width of [320,375,390,768,1024,1180,1200,1280,1440]){
  const ctx=await context(width),page=await ctx.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
- await load(page,'/');ensure((await page.locator('h1').innerText()).replace(/\s+/g,' ').includes('Know which buyers are worth approaching.'),'Current hero missing');
+ await load(page,'/');ensure((await page.locator('h1').innerText()).replace(/\s+/g,' ').includes('Find buyers worth approaching.'),'Current hero missing');
  await layout(page,'home '+width);
  const entry=await page.locator('.home-entry').evaluate(el=>({
   bg:getComputedStyle(el).backgroundColor,
   fg:getComputedStyle(el.querySelector('h2')).color
  }));
- ensure(entry.bg==='rgb(233, 239, 217)' && entry.fg==='rgb(11, 31, 51)','Brief section uses unreadable colors');
+ ensure(entry.bg==='rgb(247, 244, 237)' && entry.fg==='rgb(11, 31, 51)','Brief section must use the brand ivory and navy');
+ const action=await page.locator('.home-hero .btn-primary').evaluate(el=>({bg:getComputedStyle(el).backgroundColor,fg:getComputedStyle(el).color}));
+ ensure(action.bg==='rgb(200, 155, 60)' && action.fg==='rgb(11, 31, 51)','Primary home action must use brass and navy');
+ await page.locator('.home-hero-photo').evaluate(img=>img.decode());
  const sourceLink=page.locator('#buyer-method .method-step a');
  ensure((await sourceLink.getAttribute('href'))?.startsWith('https://www.jutebag.co.uk/'),'Buyer example lacks a traceable source');
  ensure(await page.getByRole('complementary',{name:'Sample buyer register'}).isVisible(),'Buyer register preview missing');
@@ -53,6 +56,12 @@ ensure(await page.locator('.pricing-question').first().getAttribute('open')!==nu
 ensure(textColor==='rgb(255, 255, 255)','Pricing card button label must contrast with the dark fill');
 await page.evaluate(()=>window.scrollTo(0,0));
 const body=await page.locator('body').innerText();for(const p of ['$600','$1,800','$3,000/month','fixed project fee'])ensure(body.includes(p),'Missing price '+p);await page.screenshot({path:path.join(shots,'engagements-'+width+'.png'),fullPage:true});}}await ctx.close();}
+const aboutContext=await context(390),aboutPage=await aboutContext.newPage();
+await load(aboutPage,'/about/');
+ensure(await aboutPage.getByRole('heading',{name:'Across Markets. With Confidence.'}).isVisible(),'Brand promise is missing from About');
+await aboutPage.locator('.about-brand-mark img').evaluate(img=>img.decode());
+ensure(await aboutPage.getByRole('link',{name:'Injam Haq on LinkedIn'}).getAttribute('href')==='https://www.linkedin.com/in/injamhaq/','Founder profile link is incorrect');
+await aboutContext.close();
 const animated=await browser.newContext({viewport:{width:1440,height:900},reducedMotion:'no-preference'});
 await animated.route('**/*',route=>route.request().url().startsWith(origin)?route.continue():route.abort());
 const motionPage=await animated.newPage();

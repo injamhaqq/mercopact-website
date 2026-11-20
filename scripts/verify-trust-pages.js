@@ -42,7 +42,9 @@ for(const f of pages) {
   }
   ensure(!/we keep working at no extra cost|up to 30 more days|fast-start bonus/i.test(html),f+' retains retired guarantee or bonus');
   ensure(!/Bangladesh|Dhaka/i.test(html),f+' retains origin-specific positioning');
-  ensure(html.includes('href="/assets/images/logo/tab-32.png"') && html.includes('rel="apple-touch-icon"'),f+' is missing the tab icons');
+  ensure(html.includes('href="/assets/images/logo/mercopact-tab-32.png"') && html.includes('rel="apple-touch-icon"'),f+' is missing the tab icons');
+  ensure(html.includes('/assets/css/mercopact-brand.css') && /name="theme-color" content="#0b1f33"/i.test(html),f+' is missing the shared brand styles or navy theme color');
+  ensure(html.includes('mercopact-og-1200x630.png'),f+' is missing the branded social preview');
   ensure(!/<video\b|data-trade-globe|trade-globe\.js/i.test(html),f+' contains video or the retired globe');
   ensure(!/clarity\.ms|formsubmit\.co/i.test(html),f+' loads a retired provider');
   ensure(!/href="mailto:/i.test(html),f+' advertises unverified mailbox');
@@ -52,7 +54,7 @@ for (const [file, target] of [['buyer-growth.html','/contact/'],['bangladesh-mar
   ensure(html.includes('noindex') && html.includes('location.replace("' + target + '"') && html.includes('href="' + target + '"'),file+' has no working redirect');
 }
 const home=read('index.html'), brief=read('buyer-development.html'), sprint=read('global-buyer-pilot.html'), managed=read('managed-export-sales/index.html'), pricing=read('packages.html'), contact=read('contact.html'), terms=read('terms.html'), form=read('assets/js/forms.js');
-ensure(home.replace(/<[^>]+>/g,'').includes('Know which buyers are worth approaching.'),'Global hero missing');
+ensure(home.replace(/<[^>]+>/g,'').includes('Find buyers worth approaching.'),'Global hero missing');
 ensure(home.includes('href="/packages/#pilot"') && home.includes('href="/research-examples.html"'),'Primary journey missing');
 for (const [name, fee, page, scope] of [
   ['Buyer Development Brief','$600',brief,'12 researched buyer accounts'],
@@ -78,6 +80,7 @@ ensure(sprint.includes('$900 at kickoff') && sprint.includes('day-seven mileston
 ensure(terms.includes('the agreement applies'),'Signed agreement boundary missing');
 for(const report of ['sample-market-access.html','sample-uae-packaging.html','sample-india-packaging.html','sample-eu-us-jute-bags.html','sample-eu-garments-knitwear.html','sample-eu-uk-leather-footwear.html'])ensure(read('research-examples.html').includes('href="/'+report+'"'),'Research hub missing '+report);
 ensure(exists('assets/examples/mercopact-recovery-example.csv'),'Recovery example missing');
+ensure(read('about.html').includes('<h1>Across Markets. With Confidence.</h1>') && read('about.html').includes('mercopact-emblem.webp'),'About is missing the original brand promise or emblem');
 ensure(read('about.html').includes('href="https://www.linkedin.com/in/injamhaq/"'),'Founder LinkedIn missing');
 const manifest = JSON.parse(read('site.webmanifest'));
 for (const icon of manifest.icons) ensure(exists(icon.src.replace(/^\//,'')),'Manifest icon missing '+icon.src);
