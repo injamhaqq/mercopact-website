@@ -4,6 +4,7 @@
 
   const options = {
     brief: 'Buyer Development Brief',
+    'development-pilot': 'Buyer Development Pilot',
     pilot: 'Buyer Development Brief',
     'market-proof': 'Buyer Development Brief',
     'international-pilot': 'Buyer Development Brief',
@@ -24,14 +25,19 @@
   const panelHeading = document.querySelector('[data-enquiry-panel-heading]');
   const generalEnquiry = document.querySelector('[data-general-enquiry]');
   const briefSummary = document.querySelector('[data-brief-summary]');
+  const pilotSummary = document.querySelector('[data-pilot-summary]');
   const generalHeadingText = enquiryHeading.textContent;
   const generalPanelText = panelHeading.textContent;
   const updateEnquiryContext = () => {
     const isBrief = interest.value === options.brief;
-    enquiryHeading.textContent = isBrief ? 'Check fit for your product' : generalHeadingText;
-    panelHeading.textContent = isBrief ? 'Tell us what you sell' : generalPanelText;
-    generalEnquiry.hidden = isBrief;
+    const isPilot = interest.value === options['development-pilot'];
+    enquiryHeading.textContent = generalHeadingText;
+    if (isPilot) enquiryHeading.textContent = 'Request a Buyer Development Pilot scope';
+    if (isBrief) enquiryHeading.textContent = 'Check fit for your product';
+    panelHeading.textContent = isBrief || isPilot ? 'Tell us what you sell' : generalPanelText;
+    generalEnquiry.hidden = isBrief || isPilot;
     briefSummary.hidden = !isBrief;
+    pilotSummary.hidden = !isPilot;
   };
   updateEnquiryContext();
   interest.addEventListener('change', updateEnquiryContext);

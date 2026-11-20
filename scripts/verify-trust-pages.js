@@ -54,12 +54,19 @@ ensure(home.replace(/<[^>]+>/g,'').includes('Know which buyers are worth approac
 ensure(home.includes('href="/contact/?package=brief"') && home.includes('href="/research-examples.html"'),'Primary journey missing');
 for (const [name, fee, page, scope] of [
   ['Buyer Development Brief','$600',brief,'12 researched buyer accounts'],
-  ['Buyer Outreach Sprint','$1,800',sprint,'up to 20 approved initial approaches'],
   ['Managed Buyer Development','$3,000',managed,'Up to 25 approved outreach or follow-up actions']
 ]) {
   for (const [label, html] of [['home',home],['pricing',pricing],['terms',terms],['service detail',page]]) ensure(html.includes(name) && html.replace(/<[^>]+>/g,'').includes(fee),label+' offer mismatch: '+name);
   ensure(page.includes(scope),'Missing scope: '+name);
 }
+for (const [label, html] of [['home',home],['pricing',pricing],['terms',terms],['enquiry',contact]]) {
+  ensure(html.includes('Buyer Development Pilot') && html.includes('$3,000'),label+' missing fixed-price Pilot');
+}
+ensure(pricing.includes('fixed project fee') && pricing.includes('id="pilot"') && pricing.includes('id="buyer-questions"'),'Pilot price or pricing anchors missing');
+for (const [label, html] of [['pricing',pricing],['terms',terms],['enquiry',contact]]) {
+  ensure((html.match(/\$1,500/g)||[]).length===2,label+' Pilot split payment mismatch');
+}
+ensure(pricing.includes('$1,800 Buyer Outreach Sprint') && sprint.includes('$1,800'),'Existing Sprint scope mismatch');
 ensure(sprint.includes('$900 at kickoff') && sprint.includes('day-seven milestone'),'Sprint milestone mismatch');
 ensure(terms.includes('the agreement applies'),'Signed agreement boundary missing');
 for(const report of ['sample-market-access.html','sample-uae-packaging.html','sample-india-packaging.html','sample-eu-us-jute-bags.html','sample-eu-garments-knitwear.html','sample-eu-uk-leather-footwear.html'])ensure(read('research-examples.html').includes('href="/'+report+'"'),'Research hub missing '+report);
@@ -70,7 +77,7 @@ ensure(!/fetch\s*\(|XMLHttpRequest|sendBeacon|formsubmit/i.test(form),'Draft pre
 ensure(contact.includes('data-prepare disabled') && contact.includes('<noscript>') && contact.includes('https://wa.me/'),'No-JS contact fallback missing');
 ensure(!/<form[^>]+(?:action|method)=/i.test(contact),'Contact form must have no submission endpoint');
 for(const id of ['name','company','website','product','market','package'])ensure(contact.includes('id="'+id+'"'),'Enquiry field missing: '+id);
-for(const [slug,label] of [['brief','Buyer Development Brief'],['outreach-sprint','Buyer Outreach Sprint'],['ongoing','Managed Buyer Development'],['recovery','Sales Opportunity Recovery'],['specialist','Specialist project']]) {
+for(const [slug,label] of [['brief','Buyer Development Brief'],['development-pilot','Buyer Development Pilot'],['outreach-sprint','Buyer Outreach Sprint'],['ongoing','Managed Buyer Development'],['recovery','Sales Opportunity Recovery'],['specialist','Specialist project']]) {
   ensure(form.includes(slug) && contact.includes('<option>'+label+'</option>'),'Offer preselection mismatch '+slug);
 }
 const sitemap=read('sitemap.xml'),urls=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);
