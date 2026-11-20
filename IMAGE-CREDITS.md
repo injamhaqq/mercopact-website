@@ -1,6 +1,6 @@
 # Mercopact Photography Credits
 
-The live build uses real photography from Unsplash through the Unsplash image CDN. These records correspond to the images referenced in the HTML at the time of delivery.
+The homepage uses a local WebP of the credited Ant Rozetsky industrial photograph. The other entries record previously selected Unsplash images.
 
 | Use | Photographer / source | Original page |
 |---|---|---|

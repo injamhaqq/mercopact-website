@@ -50,14 +50,14 @@ for (const [file, target] of [['buyer-growth.html','/contact/'],['bangladesh-mar
   ensure(html.includes('noindex') && html.includes('location.replace("' + target + '"') && html.includes('href="' + target + '"'),file+' has no working redirect');
 }
 const home=read('index.html'), brief=read('buyer-development.html'), sprint=read('global-buyer-pilot.html'), managed=read('managed-export-sales/index.html'), pricing=read('packages.html'), contact=read('contact.html'), terms=read('terms.html'), form=read('assets/js/forms.js');
-ensure(home.includes('You make the product. We help you find the buyers.'),'Global hero missing');
+ensure(home.replace(/<[^>]+>/g,'').includes('You make the product. We help you find the buyers.'),'Global hero missing');
 ensure(home.includes('href="/contact/?package=brief"') && home.includes('href="/research-examples.html"'),'Primary journey missing');
 for (const [name, fee, page, scope] of [
   ['Buyer Development Brief','$600',brief,'12 researched buyer accounts'],
   ['Buyer Outreach Sprint','$1,800',sprint,'up to 20 approved initial approaches'],
   ['Managed Buyer Development','$3,000',managed,'Up to 25 approved outreach or follow-up actions']
 ]) {
-  for (const [label, html] of [['home',home],['pricing',pricing],['terms',terms],['service detail',page]]) ensure(html.includes(name) && html.includes(fee),label+' offer mismatch: '+name);
+  for (const [label, html] of [['home',home],['pricing',pricing],['terms',terms],['service detail',page]]) ensure(html.includes(name) && html.replace(/<[^>]+>/g,'').includes(fee),label+' offer mismatch: '+name);
   ensure(page.includes(scope),'Missing scope: '+name);
 }
 ensure(sprint.includes('$900 at kickoff') && sprint.includes('day-seven milestone'),'Sprint milestone mismatch');

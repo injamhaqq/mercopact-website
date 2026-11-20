@@ -19,13 +19,34 @@ async function layout(page,label){const size=await page.evaluate(()=>({scroll:do
 try{
 for(const width of [320,375,390,768,1024,1180,1200,1280,1440]){
  const ctx=await context(width),page=await ctx.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
- await load(page,'/');ensure((await page.locator('h1').innerText()).includes('You make the product. We help you find the buyers.'),'Current hero missing');
+ await load(page,'/');ensure((await page.locator('h1').innerText()).replace(/\s+/g,' ').includes('You make the product. We help you find the buyers.'),'Current hero missing');
  await layout(page,'home '+width);
+ const entry=await page.locator('.home-entry').evaluate(el=>({
+  bg:getComputedStyle(el).backgroundColor,
+  fg:getComputedStyle(el.querySelector('h2')).color
+ }));
+ ensure(entry.bg==='rgb(11, 31, 51)' && entry.fg==='rgb(255, 255, 255)','Brief section uses unreadable colors');
+ const photo=page.locator('.home-hero-photo');
+ await photo.evaluate(img=>img.decode());
+ const hero=await page.locator('.home-hero > .container').evaluate(el=>({
+  columns:getComputedStyle(el).gridTemplateColumns.split(' ').length,
+  cta:el.querySelector('.actions a').getBoundingClientRect().bottom
+ }));
+ ensure(hero.columns===(width<=760?1:2),'Homepage hero columns overlap '+width);
+ ensure(hero.cta<840,'Homepage primary action below the first viewport at '+width);
+ if([390,1440].includes(width))await page.screenshot({path:path.join(shots,'home-first-screen-'+width+'.png')});
  if(width<=1180){const toggle=page.locator('.menu-toggle');ensure(await toggle.isVisible(),'Mobile toggle missing '+width);await toggle.click();ensure(await toggle.getAttribute('aria-expanded')==='true','Menu failed');ensure(await page.locator('#primary-navigation').isVisible(),'Nav not visible');ensure(await page.locator('.header-cta .btn').isVisible(),'CTA not visible');await page.keyboard.press('Escape');ensure(await toggle.getAttribute('aria-expanded')==='false','Escape failed');}else ensure(await page.locator('.site-nav').isVisible(),'Desktop nav missing');
  ensure(!errors.length,'JS error '+width+' '+errors.join(';'));if([320,390,1440].includes(width))await page.screenshot({path:path.join(shots,'homepage-'+width+'.png'),fullPage:true});await ctx.close();
 }
 const paths=['/','/packages/','/contact/','/global-buyer-pilot.html','/services/','/strategic-sourcing/','/commercial-intelligence/','/opportunities/','/managed-export-sales/','/opportunity-recovery/','/buyer-development/','/international-markets/','/about/','/privacy/','/terms/','/research-examples.html','/capabilities.html','/how-we-work/','/trust-and-method.html','/pilot-deliverables.html','/industries/','/sample-eu-us-jute-bags.html','/sample-eu-garments-knitwear.html','/sample-eu-uk-leather-footwear.html','/sample-market-access.html','/sample-uae-packaging.html','/sample-india-packaging.html'];
-for(const width of [390,1440]){const ctx=await context(width),page=await ctx.newPage();for(const url of paths){const errors=[],listener=e=>errors.push(e.message);page.on('pageerror',listener);await load(page,url);ensure(await page.locator('h1').count()===1,'Exactly one H1 '+url);await layout(page,url+' '+width);ensure(!errors.length,'JS errors '+url+' '+errors.join(';'));page.off('pageerror',listener);if(url==='/packages/'){ensure(await page.locator('.mp-offer').count()===3,'Three engagement cards required');const body=await page.locator('body').innerText();for(const p of ['$600','$1,800','$3,000/month'])ensure(body.includes(p),'Missing price '+p);await page.screenshot({path:path.join(shots,'engagements-'+width+'.png'),fullPage:true});}}await ctx.close();}
+for(const width of [390,1440]){const ctx=await context(width),page=await ctx.newPage();for(const url of paths){const errors=[],listener=e=>errors.push(e.message);page.on('pageerror',listener);await load(page,url);ensure(await page.locator('h1').count()===1,'Exactly one H1 '+url);await layout(page,url+' '+width);ensure(!errors.length,'JS errors '+url+' '+errors.join(';'));page.off('pageerror',listener);if(url==='/research-examples.html')await page.screenshot({path:path.join(shots,'research-'+width+'.png'),fullPage:true});if(url==='/contact/')await page.screenshot({path:path.join(shots,'contact-'+width+'.png'),fullPage:true});if(url==='/packages/'){ensure(await page.locator('.mp-offer').count()===3,'Three engagement cards required');
+const positions=await page.locator('.mp-offer').evaluateAll(cards=>cards.map(card=>card.getBoundingClientRect().top));
+ensure(width===390?positions[0]<positions[1]&&positions[1]<positions[2]:Math.max(...positions)-Math.min(...positions)<1,'Pricing cards do not follow the intended grid');
+await page.locator('.pricing-question summary').first().click();
+ensure(await page.locator('.pricing-question').first().getAttribute('open')!==null,'Pricing FAQ is not keyboard/click accessible');const textColor=await page.locator('.pricing-card .btn-dark').first().evaluate(el=>getComputedStyle(el).color);
+ensure(textColor==='rgb(255, 255, 255)','Pricing card button label must contrast with the dark fill');
+await page.evaluate(()=>window.scrollTo(0,0));
+const body=await page.locator('body').innerText();for(const p of ['$600','$1,800','$3,000/month'])ensure(body.includes(p),'Missing price '+p);await page.screenshot({path:path.join(shots,'engagements-'+width+'.png'),fullPage:true});}}await ctx.close();}
 const nojs=await context(390,false),np=await nojs.newPage();await load(np,'/contact/');ensure(await np.locator('button[type="submit"]').isDisabled(),'Draft control enabled without JS');ensure(await np.locator('a[href^="https://wa.me/"]').count()>0,'No-JS fallback missing');await nojs.close();
 const ctx=await context(390),p=await ctx.newPage();
 for(const [slug,label] of [['brief','Buyer Development Brief'],['outreach-sprint','Buyer Outreach Sprint'],['ongoing','Managed Buyer Development'],['recovery','Sales Opportunity Recovery'],['specialist','Specialist project'],['sprint','Sales Opportunity Recovery'],['pilot','Buyer Development Brief'],['mandate','Specialist project'],['market-proof','Buyer Development Brief'],['international-pilot','Buyer Development Brief'],['buyer-development','Buyer Development Brief'],['growth-desk','Managed Buyer Development']]) {
