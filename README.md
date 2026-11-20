@@ -5,14 +5,14 @@ A static, GitHub-Pages-ready corporate website for **MERCOPACT**.
 ## Structure
 
 - `index.html`: corporate homepage
-- `buyer-development.html`: Bangladesh / B2B buyer development
+- `buyer-development.html`: Buyer Development Brief
 - `international-markets.html`: international buyer development
-- `bangladesh-market-entry.html`: Bangladesh market-entry service
+- `bangladesh-market-entry.html`: legacy redirect to international market development
 - `industries.html`: industry focus
 - `how-we-work.html`: operating process
 - `about.html`: company positioning and principles
 - `contact.html`: corporate enquiry page
-- `buyer-growth.html`: focused Meta/Facebook campaign landing page
+- `buyer-growth.html`: legacy campaign redirect to contact
 - `privacy.html`, `terms.html`, `404.html`: legal and error pages
 - `assets/css/`: design system and responsive styles
 - `assets/js/`: navigation, reveal motion and static-form behavior
@@ -58,28 +58,7 @@ No rebuild is required when deploying the supplied files.
 
 ## Contact-form setup
 
-GitHub Pages has no server-side forms. The build is intentionally honest about that.
-
-`assets/js/forms.js` contains:
-
-```js
-const FORM_ENDPOINT = '';
-```
-
-- Leave it empty: forms open the visitor’s email application with the form data prepared for `hello@mercopact.com`.
-- To use Formspree or another compatible hosted endpoint, replace the empty value with the real endpoint URL and test submission before launch.
-- Do not publish secret API keys in this static repository.
-
-## Meta Pixel / GA4 / Google Tag Manager
-
-Tracking is **disabled** until valid IDs are supplied. Every HTML page contains comments showing where the approved snippets should be added.
-
-Recommended production approach:
-
-1. Configure Google Tag Manager with the real `GTM-...` ID.
-2. Manage GA4 through GTM with the real `G-...` Measurement ID.
-3. Add Meta Pixel through GTM or the official snippet using the real Pixel ID.
-4. Verify consent/privacy requirements before enabling advertising or analytics tags.
+The enquiry form prepares a WhatsApp draft in the visitor’s browser. It has no submission endpoint. The visitor opens the draft in WhatsApp and sends it there. The page also offers direct WhatsApp and Cal.com links, including when JavaScript is disabled. Public email and website analytics are disabled in this release. Verify mailbox receipt and update the privacy notice before introducing a new service that receives enquiry data or analytics.
 
 ## Replacing photography
 

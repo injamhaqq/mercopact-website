@@ -1,1 +1,15 @@
 .mp-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1.5rem 0}.mp-grid>*{min-width:0}.mp-hero .lead{max-width:68ch}.mp-offer{display:flex;flex-direction:column;padding:clamp(1rem,3vw,2rem);gap:.5rem;height:100%;box-sizing:border-box}.mp-primary{border:2px solid #0f766e}.mp-offer .actions{margin-top:auto;flex-wrap:wrap}.mp-price{font-size:clamp(1.8rem,4vw,2.5rem);line-height:1.15;font-weight:700;color:#0b1f33;margin:.25rem 0;overflow-wrap:anywhere}.mp-period,.mp-payment{color:#475569;font-size:.95rem}.mp-check{list-style:none;padding:0;margin:1rem 0;display:grid;gap:.55rem}.mp-check li{position:relative;padding-left:1.55rem}.mp-check li:before{content:"✓";position:absolute;left:0;color:#0f766e;font-weight:700}.mp-faq details{border-bottom:1px solid #d9e0dc;padding:1rem 0}.mp-faq summary{cursor:pointer;font-weight:600}.mp-faq summary:focus-visible{outline:2px solid #0f766e;outline-offset:3px}@media(max-width:760px){.mp-grid{grid-template-columns:minmax(0,1fr)}.mp-offer .actions .btn{width:100%;white-space:normal;text-align:center}}
+/* Shared page copy and enquiry layout. Tables scroll independently on small screens. */
+.copy-flow > :where(p, ul, ol) { max-width: 75ch; }
+.copy-flow > :where(p, ul, ol, .actions, .copy-table) + :where(p, ul, ol, .actions, .copy-table) { margin-top: 1rem; }
+.copy-flow > .actions { flex-wrap: wrap; }
+.copy-flow > .actions .btn { white-space: normal; }
+.copy-table { overflow-x: auto; max-width: 100%; margin: 1.25rem 0; }
+.copy-table:focus-visible { outline: 2px solid #0f766e; outline-offset: 3px; }
+.copy-table table { border-collapse: collapse; width: 100%; min-width: 38rem; }
+.copy-table :is(th, td) { padding: .75rem; text-align: left; vertical-align: top; border-bottom: 1px solid #d9e0dc; }
+.copy-table th { background: #eef2ef; color: #0b1f33; }
+.copy-flow .section-form { margin-top: 1.25rem; }
+.section-form .form-error { display: block; color: #8a311c; }
+.section-form :is(input, textarea)[aria-invalid="true"] { border-color: #8a311c; }
+.section-form [hidden] { display: none !important; }

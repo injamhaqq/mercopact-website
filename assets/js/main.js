@@ -2,7 +2,6 @@
   const cleanRoutes = {
     'buyer-development.html': '/buyer-development/',
     'international-markets.html': '/international-markets/',
-    'bangladesh-market-entry.html': '/bangladesh-market-entry/',
     'industries.html': '/industries/',
     'how-we-work.html': '/how-we-work/',
     'about.html': '/about/',
@@ -102,42 +101,4 @@
   } else {
     reveals.forEach((el) => el.classList.add('is-visible'));
   }
-})();
-
-// Public MERCOPACT phone contact. Added at runtime so the number appears consistently across static pages.
-(() => {
-  const phoneHref = 'tel:+8801793122369';
-  const phoneLabel = '+880 1793-122369';
-
-  document.querySelectorAll('.site-footer .footer-label').forEach((label) => {
-    if (label.textContent.trim().toLowerCase() !== 'contact') return;
-    const links = label.parentElement?.querySelector('.footer-links');
-    if (!links || links.querySelector(`a[href="${phoneHref}"]`)) return;
-    const phone = document.createElement('a');
-    phone.href = phoneHref;
-    phone.textContent = phoneLabel;
-    const partnership = links.querySelector('a[href^="mailto:partnerships@"]');
-    if (partnership) partnership.insertAdjacentElement('afterend', phone);
-    else links.appendChild(phone);
-  });
-
-  const compactFooter = document.querySelector('.site-footer .footer-legal');
-  if (compactFooter && !compactFooter.querySelector(`a[href="${phoneHref}"]`) && !document.querySelector('.site-footer .footer-label')) {
-    const phone = document.createElement('a');
-    phone.href = phoneHref;
-    phone.textContent = phoneLabel;
-    compactFooter.prepend(phone);
-  }
-})();
-
-// Anonymous interaction events only; clicks are not completed bookings or paid engagements.
-(() => {
-  document.addEventListener('click', event => {
-    const link = event.target.closest('a[href]');
-    if (!link || typeof window.clarity !== 'function') return;
-    const url = new URL(link.href, window.location.origin);
-    if (url.origin === window.location.origin && /^\/contact(?:\/|\.html)$/.test(url.pathname)) window.clarity('event','enquiry_click');
-    else if (url.hostname === 'cal.com' && url.pathname === '/injamhaq/mercopact') window.clarity('event','booking_click');
-    else if (url.hostname === 'wa.me') window.clarity('event','whatsapp_click');
-  });
 })();
