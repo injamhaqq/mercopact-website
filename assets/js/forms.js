@@ -1,153 +1,98 @@
-/*
-  MERCOPACT: STATIC WEBSITE SUBMISSION ROUTING
-  Provider: FormSubmit.co (https://formsubmit.co/documentation)
-  This service requires ONE-TIME recipient confirmation in hello@mercopact.com.
-  A HTTP 200 is NOT proof that delivery succeeded; success must be literal true.
-  No CRM storage, private keys, Formspree account or silent emails are implied.
-  For non-JS users, form[action] uses the provider's normal form POST.
-*/
-const FORM_AJAX_ENDPOINT = 'https://formsubmit.co/ajax/hello@mercopact.com';
- // A working MX record, activated FormSubmit recipient and inbox receipt test must all pass before enabling.
- // Keep this false during the verified email DNS outage. Do not infer delivery from a website deploy.
- const FORM_DELIVERY_READY = false;
-
 (() => {
-  const params = new URLSearchParams(window.location.search);
-  const requestedPackage = params.get('package');
-  const packageMap = {
-    'sprint': 'Sales Opportunity Recovery',
-    'mandate': 'Strategic Market Development',
-    'pilot': 'International Buyer Development',
-    'market-proof': 'International Buyer Development',
-    'international-pilot': 'International Buyer Development',
-    'ongoing': 'Managed Export Sales Desk',
-    'buyer-development': 'International Buyer Development',
-    'growth-desk': 'Managed Export Sales Desk'
+  const form = document.querySelector('#enquiry-form');
+  if (!form) return;
+
+  const options = {
+    brief: 'Buyer Development Brief',
+    pilot: 'Buyer Development Brief',
+    'market-proof': 'Buyer Development Brief',
+    'international-pilot': 'Buyer Development Brief',
+    'buyer-development': 'Buyer Development Brief',
+    'outreach-sprint': 'Buyer Outreach Sprint',
+    ongoing: 'Managed Buyer Development',
+    'growth-desk': 'Managed Buyer Development',
+    recovery: 'Sales Opportunity Recovery',
+    sprint: 'Sales Opportunity Recovery',
+    specialist: 'Specialist project',
+    mandate: 'Specialist project'
   };
-  const packageSelect = document.querySelector('#package');
-  if (packageSelect && requestedPackage && packageMap[requestedPackage]) {
-    packageSelect.value = packageMap[requestedPackage];
+  const interest = form.elements.namedItem('package');
+  const option = new URLSearchParams(location.search).get('package');
+  if (Object.hasOwn(options, option)) interest.value = options[option];
+
+  const draftLink = document.querySelector('#whatsapp-draft');
+  const status = form.querySelector('.form-status');
+  const inputs = [
+    ['name', 'Your name', 'Enter your name.'],
+    ['company', 'Company name', 'Enter your company name.'],
+    ['website', 'Company website', 'Enter a valid website address, including https://, or leave the field blank.'],
+    ['product', 'Product or requirement', 'Describe your product or requirement.'],
+    ['market', 'Target country', 'Enter your target country.']
+  ].map(([id, label, error]) => ({
+    field: form.elements.namedItem(id),
+    feedback: document.getElementById(id + '-error'),
+    label,
+    error
+  }));
+
+  function clearDraft() {
+    draftLink.hidden = true;
+    draftLink.removeAttribute('href');
+    status.textContent = '';
   }
 
-  document.querySelectorAll('form[data-static-form]').forEach((form) => {
-    // Context stays in this request only; no cookies, external tracking pixels or long-term storage.
-    for (const key of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content']) {
-      const value = params.get(key);
-      if (value && /^[a-zA-Z0-9 _.-]{1,80}$/.test(value)) {
-        const field = document.createElement('input');
-        field.type = 'hidden';
-        field.name = key;
-        field.value = value;
-        form.appendChild(field);
+  function valid(field) {
+    const value = field.value.trim();
+    if (field.required && !value) return false;
+    if (field.type === 'url' && value && !/^https?:\/\/[^/\s]+/i.test(value)) return false;
+    return field.validity.valid;
+  }
+
+  form.addEventListener('input', event => {
+    clearDraft();
+    const row = inputs.find(input => input.field === event.target);
+    if (row && valid(row.field)) {
+      row.field.removeAttribute('aria-invalid');
+      row.feedback.textContent = '';
+    }
+  });
+
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    clearDraft();
+    let firstInvalid;
+    for (const { field, feedback, error } of inputs) {
+      if (!valid(field)) {
+        field.setAttribute('aria-invalid', 'true');
+        feedback.textContent = error;
+        firstInvalid ??= field;
+      } else {
+        field.removeAttribute('aria-invalid');
+        feedback.textContent = '';
       }
     }
-    // Construct the fallback panel ONCE; repeated failed attempts must not
-    // duplicate controls or create misleading stacks of stale draft links.
-    const status = form.querySelector('.form-status');
-    const recovery = document.createElement('div');
-    recovery.className = 'mc-recovery';
-    recovery.setAttribute('role', 'region');
-    recovery.setAttribute('aria-label', 'Other ways to send this enquiry');
-    const recoveryIntro = document.createElement('p');
-    recoveryIntro.textContent = 'Online delivery was not confirmed. Your details are still in the form. Choose a direct channel; you must press Send in your email app or WhatsApp.';
-    const recoveryWhatsApp = document.createElement('a');
-    recoveryWhatsApp.target = '_blank';
-    recoveryWhatsApp.rel = 'noopener noreferrer';
-    recoveryWhatsApp.textContent = 'Continue in WhatsApp →';
-    const recoveryEmail = document.createElement('a');
-    recoveryEmail.textContent = 'Continue by email →';
-    recovery.append(recoveryIntro, recoveryWhatsApp);
-    // Do not advertise an email delivery path while company MX/inbox activation is unverified.
-    if (FORM_DELIVERY_READY) recovery.append(recoveryEmail);
-    if (status) status.insertAdjacentElement('afterend', recovery);
-    else form.appendChild(recovery);
+    if (firstInvalid) {
+      firstInvalid.focus();
+      return;
+    }
 
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      if (!form.reportValidity()) return;
-      const submit = form.querySelector('[type="submit"]');
-      const setStatus = (message, ok = false) => {
-        if (!status) return;
-        status.textContent = message;
-        status.setAttribute('role', ok ? 'status' : 'alert');
-        status.style.color = ok ? '#0F766E' : '#8A3A19';
-      };
+    const lines = ['Hello MERCOPACT, I’d like to discuss an enquiry.', ''];
+    for (const { field, label } of inputs) {
+      const value = field.value.trim();
+      if (value) lines.push(label + ': ' + value);
+    }
+    if (interest.value) lines.push('Interested in: ' + interest.value);
 
-      // Honeypot failures are intentionally not sent to the provider.
-      const honey = form.querySelector('[name="_honey"]');
-      if (honey && honey.value.trim()) {
-        setStatus('This request could not be processed. Please use our direct WhatsApp contact.');
-        return;
-      }
-
-      const data = new FormData(form);
-      const payload = Object.fromEntries(data.entries());
-      payload.name = data.get('Name') || '';
-      payload.email = data.get('email') || data.get('Business email') || '';
-      payload._replyto = payload.email;
-      payload._subject = form.dataset.subject || 'MERCOPACT website enquiry';
-      payload._url = window.location.href;
-      payload._honey = '';
-      const originalMarkup = submit ? submit.innerHTML : '';
-
-      const showRecovery = () => {
-        const lines = ['MERCOPACT website enquiry (not yet submitted)', ''];
-        for (const [key, value] of new FormData(form).entries()) {
-          if (key.startsWith('_') || !String(value).trim()) continue;
-          lines.push(key + ': ' + String(value).trim().slice(0, 320));
-        }
-        const draft = lines.join('\n').slice(0, 1750);
-        recoveryWhatsApp.href = 'https://wa.me/8801793122369?text=' + encodeURIComponent(draft);
-        recoveryEmail.href = 'mailto:hello@mercopact.com?subject=' +
-          encodeURIComponent('MERCOPACT commercial enquiry') + '&body=' +
-          encodeURIComponent(draft);
-        recovery.classList.add('is-visible');
-        recoveryWhatsApp.focus();
-      };
-      const hideRecovery = () => recovery.classList.remove('is-visible');
-
-      if (typeof window.clarity === 'function') window.clarity('event', 'enquiry_prepared');
-      if (!FORM_DELIVERY_READY) {
-        showRecovery();
-        setStatus('The website email form is temporarily offline. Select “Continue in WhatsApp” below and press Send there to contact MERCOPACT. Your enquiry has not been submitted.');
-        return;
-      }
-
-      try {
-        if (submit) { submit.disabled = true; submit.textContent = 'Sending enquiry…'; }
-        hideRecovery();
-        setStatus('Submitting your enquiry…', true);
-        const response = await fetch(FORM_AJAX_ENDPOINT, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-          body: JSON.stringify(payload)
-        });
-        const result = await response.json();
-        const delivered = response.ok && (result.success === true || result.success === 'true');
-        if (!delivered) {
-          const message = String(result.message || '');
-          if (/activat|confirm.*email|verify.*email/i.test(message)) {
-            throw new Error('The website submission inbox has not yet been activated. Please send your enquiry directly to hello@mercopact.com or contact us via WhatsApp. Your enquiry is not confirmed.');
-          }
-          throw new Error('We could not confirm your enquiry was received. Please email hello@mercopact.com or use WhatsApp instead.');
-        }
-        if (typeof window.clarity === 'function') window.clarity('event', 'enquiry_provider_accepted');
-        form.reset();
-        if (packageSelect && requestedPackage && packageMap[requestedPackage]) {
-          packageSelect.value = packageMap[requestedPackage];
-        }
-        hideRecovery();
-        setStatus('Your enquiry was accepted by the submission service. We will review it at our business inbox.', true);
-      } catch (err) {
-        setStatus(err.message && /inbox has not yet been activated|We could not confirm/.test(err.message) ? err.message :
-          'We could not verify delivery. Please email hello@mercopact.com or use WhatsApp. No successful submission has been confirmed.');
-        showRecovery();
-      } finally {
-        if (submit) { submit.disabled = false; submit.innerHTML = originalMarkup; }
-      }
-    });
-    // Enable only after the submit handler is installed; non-JS users use the direct WhatsApp link.
-    const readyButton = form.querySelector('[type="submit"]');
-    if (readyButton) readyButton.disabled = false;
+    try {
+      draftLink.href = 'https://wa.me/8801793122369?text=' + encodeURIComponent(lines.join('\n'));
+      draftLink.hidden = false;
+      status.textContent = 'Your draft is ready. Open WhatsApp and press Send when you’re ready.';
+      draftLink.focus();
+    } catch {
+      status.textContent = 'We couldn’t prepare your draft. Your details are still here. You can message us directly on WhatsApp or book a call.';
+    }
   });
+
+  form.noValidate = true;
+  form.querySelector('[data-prepare]').disabled = false;
 })();

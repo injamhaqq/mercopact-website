@@ -7,7 +7,7 @@ const exists = f => fs.existsSync(path.join(root,f));
 let checks = 0;
 const ensure = (pass, why) => { checks++; if (!pass) throw new Error(why); };
 const nested = ['services/index.html','strategic-sourcing/index.html','commercial-intelligence/index.html','opportunities/index.html','managed-export-sales/index.html','opportunity-recovery/index.html'];
-const pages = [...fs.readdirSync(root).filter(f=>f.endsWith('.html')&&!f.startsWith('route-')&&f!=='buyer-growth.html'),...nested];
+const pages = [...fs.readdirSync(root).filter(f=>f.endsWith('.html')&&!f.startsWith('route-')&&!['buyer-growth.html','bangladesh-market-entry.html'].includes(f)),...nested];
 const routes = new Map([['/','index.html'],...nested.map(f=>['/'+f.replace('index.html',''),f])]);
 for (const f of fs.readdirSync(root).filter(f=>f.startsWith('route-')&&f.endsWith('.html'))) {
   const html=read(f), route=html.match(/^permalink:\s*(\S+)/m)?.[1];
@@ -23,7 +23,7 @@ for(const f of pages) {
   ensure(html.includes('id="primary-navigation"')&&html.includes('aria-controls="primary-navigation"'),f+' missing accessible navigation');
   ensure(html.includes('<footer class="site-footer">'),f+' missing footer');
   const nav=html.match(/<nav id="primary-navigation"[\s\S]*?<\/nav>/)?.[0]||'';
-  for(const href of ['/services/','/how-we-work/','/research-examples.html','/packages/','/about/']) ensure(nav.includes('href="'+href+'"'),f+' missing navigation '+href);
+  for(const href of ['/buyer-development/','/how-we-work/','/research-examples.html','/packages/','/about/']) ensure(nav.includes('href="'+href+'"'),f+' missing navigation '+href);
   const title=html.match(/<title>([^<]+)<\/title>/i)?.[1]||'';
   const desc=html.match(/<meta name="description" content="([^"]+)"/i)?.[1]||'';
   ensure(title.length>8 && title.length<=85,f+' invalid title');
@@ -41,39 +41,42 @@ for(const f of pages) {
     if(fragment && mapped.endsWith('.html')){const target=read(mapped);const inc=target.match(/include_relative\s+(\S+)\s*%}/)?.[1];ensure((inc?read(inc):target).includes('id="'+fragment+'"'),f+' broken target anchor '+value);}
   }
   ensure(!/we keep working at no extra cost|up to 30 more days|fast-start bonus/i.test(html),f+' retains retired guarantee or bonus');
-  ensure(!/Built for Bangladesh manufacturers|We help Bangladeshi manufacturers/i.test(html),f+' retains restrictive global positioning');
+  ensure(!/Bangladesh|Dhaka/i.test(html),f+' retains origin-specific positioning');
+  ensure(!/clarity\.ms|formsubmit\.co/i.test(html),f+' loads a retired provider');
   ensure(!/href="mailto:/i.test(html),f+' advertises unverified mailbox');
 }
-const redirect=read('buyer-growth.html');
-ensure(/noindex/.test(redirect)&&redirect.includes('location.replace("/contact/"')&&redirect.includes('href="/contact/"'),'Retired buyer-growth route must redirect to contact');
-const home=read('index.html'), pilot=read('global-buyer-pilot.html'), offers=read('packages.html'), contact=read('contact.html'), terms=read('terms.html'), f=read('assets/js/forms.js');
-ensure(home.includes('You make the product. We help you find the buyers.'),'Current global hero missing');
-ensure(home.includes('$750')&&home.includes('$1,500')&&home.includes('href="/packages/"'),'Homepage entry price and engagements link missing');
-for(const price of ['$750','$1,500','From $2,500/month','Custom pricing'])ensure(offers.includes(price),'Approved public price missing: '+price);
-for(const label of ['Sales Opportunity Recovery','International Buyer Development','Managed Export Sales Desk','Strategic Market Development'])ensure(offers.includes(label),'Approved engagement missing: '+label);
-ensure(pilot.includes('40 researched companies')&&pilot.includes('50% upfront')&&pilot.includes('day 15'),'Pilot scope or payment milestones missing');
-ensure(terms.includes('Existing signed agreements retain their original terms')&&terms.includes('do not guarantee purchase orders'),'Commercial quality boundaries missing');
-for(const report of ['sample-market-access.html','sample-uae-packaging.html','sample-india-packaging.html','sample-eu-us-jute-bags.html','sample-eu-garments-knitwear.html','sample-eu-uk-leather-footwear.html'])ensure(home.includes('href="/'+report+'"'),'Homepage missing research '+report);
-ensure(home.includes('href="/pilot-deliverables.html"'),'Homepage proof CTA missing');
-for(const file of ['index.html','about.html','global-buyer-pilot.html','trust-and-method.html'])ensure(read(file).includes('href="/capabilities.html"'),file+' missing capability review');
-ensure(offers.includes('Up to 25 individually approved initial approaches')&&offers.includes('Up to 15 approved follow-up actions')&&offers.includes('Up to eight tailored follow-up drafts')&&offers.includes('Up to 30 active opportunity records'),'Offer volume boundaries missing');
-ensure(offers.includes('no automatic renewal'),'Renewal boundary missing');
+for (const [file, target] of [['buyer-growth.html','/contact/'],['bangladesh-market-entry.html','/international-markets/'],['route-global-buyer-pilot.html','/global-buyer-pilot.html']]) {
+  const html = read(file);
+  ensure(html.includes('noindex') && html.includes('location.replace("' + target + '"') && html.includes('href="' + target + '"'),file+' has no working redirect');
+}
+const home=read('index.html'), brief=read('buyer-development.html'), sprint=read('global-buyer-pilot.html'), managed=read('managed-export-sales/index.html'), pricing=read('packages.html'), contact=read('contact.html'), terms=read('terms.html'), form=read('assets/js/forms.js');
+ensure(home.includes('You make the product. We help you find the buyers.'),'Global hero missing');
+ensure(home.includes('href="/contact/?package=brief"') && home.includes('href="/research-examples.html"'),'Primary journey missing');
+for (const [name, fee, page, scope] of [
+  ['Buyer Development Brief','$600',brief,'12 researched buyer accounts'],
+  ['Buyer Outreach Sprint','$1,800',sprint,'up to 20 approved initial approaches'],
+  ['Managed Buyer Development','$3,000',managed,'Up to 25 approved outreach or follow-up actions']
+]) {
+  for (const [label, html] of [['home',home],['pricing',pricing],['terms',terms],['service detail',page]]) ensure(html.includes(name) && html.includes(fee),label+' offer mismatch: '+name);
+  ensure(page.includes(scope),'Missing scope: '+name);
+}
+ensure(sprint.includes('$900 at kickoff') && sprint.includes('day-seven milestone'),'Sprint milestone mismatch');
+ensure(terms.includes('the agreement applies'),'Signed agreement boundary missing');
+for(const report of ['sample-market-access.html','sample-uae-packaging.html','sample-india-packaging.html','sample-eu-us-jute-bags.html','sample-eu-garments-knitwear.html','sample-eu-uk-leather-footwear.html'])ensure(read('research-examples.html').includes('href="/'+report+'"'),'Research hub missing '+report);
 ensure(exists('assets/examples/mercopact-recovery-example.csv'),'Recovery example missing');
-const capabilities=read('capabilities.html');ensure(capabilities.includes('These are competencies and review responsibilities'),'Do not imply verified staff skills');
-ensure(capabilities.includes('not independently certified compliance'),'Do not imply unverified credentials');
-for(const internal of ['operations/CAPABILITY-AND-SKILLS-FRAMEWORK.md','operations/CORPORATE-CREDENTIALS-AND-DUE-DILIGENCE.md','operations/INTERNATIONAL-PILOT-SOW-TEMPLATE.md','operations/QUALIFICATION-AND-READINESS-TRACKER.md'])ensure(exists(internal),'Missing operational framework '+internal);
-ensure(f.includes('const FORM_DELIVERY_READY = false'),'Do not enable mailbox until end-to-end verification');
-ensure(f.includes("result.success === true")&&f.includes("result.success === 'true'"),'Explicit delivery success required');
-ensure(f.includes('showRecovery();')&&f.includes('recoveryWhatsApp.href')&&f.includes('new FormData(form)'),'Form must preserve typed details via fallback');
-ensure((f.match(/recovery.className = 'mc-recovery'/g)||[]).length===1,'Recovery panel must be created once');
-ensure(f.indexOf("recovery.className = 'mc-recovery'")<f.indexOf("form.addEventListener('submit'"),'Recovery must be initialized before submit');
-ensure(f.includes('if (FORM_DELIVERY_READY) recovery.append(recoveryEmail)'),'Unverified email must remain unavailable');
-ensure(contact.includes('type="submit" disabled')&&contact.includes('<noscript>')&&contact.includes('https://wa.me/'),'No-JS form must fail closed and offer WhatsApp');
-for(const id of ['name','company','email','requirement','goal','budget','package'])ensure(contact.includes('id="'+id+'"'),'Enquiry field missing: '+id);
-for(const [slug,label] of [['sprint','Sales Opportunity Recovery'],['pilot','International Buyer Development'],['ongoing','Managed Export Sales Desk'],['mandate','Strategic Market Development']])ensure(f.includes("'"+slug+"': '"+label+"'")&&contact.includes('<option>'+label+'</option>'),'Offer preselection mismatch '+slug);
+const csv = read('assets/examples/mercopact-account-register-example.csv');
+ensure(csv.trim().split(/\r?\n/).length===3 && /JuteBag.*https:\/\/www\.jutebag/.test(csv) && /Jutexpo.*https:\/\/www\.jutexpo/.test(csv),'Sample account register does not match the preview');
+ensure(!/fetch\s*\(|XMLHttpRequest|sendBeacon|formsubmit/i.test(form),'Draft preparation must not transmit data');
+ensure(contact.includes('data-prepare disabled') && contact.includes('<noscript>') && contact.includes('https://wa.me/'),'No-JS contact fallback missing');
+ensure(!/<form[^>]+(?:action|method)=/i.test(contact),'Contact form must have no submission endpoint');
+for(const id of ['name','company','website','product','market','package'])ensure(contact.includes('id="'+id+'"'),'Enquiry field missing: '+id);
+for(const [slug,label] of [['brief','Buyer Development Brief'],['outreach-sprint','Buyer Outreach Sprint'],['ongoing','Managed Buyer Development'],['recovery','Sales Opportunity Recovery'],['specialist','Specialist project']]) {
+  ensure(form.includes(slug) && contact.includes('<option>'+label+'</option>'),'Offer preselection mismatch '+slug);
+}
 const sitemap=read('sitemap.xml'),urls=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);
+ensure(urls.length===27,'Offer release must retain all 27 canonical routes');
 ensure(urls.length===new Set(urls).size,'Duplicate sitemap URLs');
-for(const url of urls){const u=new URL(url);ensure(u.hostname==='mercopact.com','Foreign sitemap domain');ensure(exists(routes.get(u.pathname)||u.pathname.slice(1)),'Missing sitemap page '+u.pathname);}
+for(const url of urls){const u=new URL(url);ensure(u.hostname==='mercopact.com','Foreign sitemap domain');const mapped = routes.get(u.pathname)||u.pathname.slice(1); ensure(exists(mapped),'Missing sitemap page '+u.pathname);const wrapper=read(mapped); const include=wrapper.match(/include_relative\s+(\S+)/)?.[1];ensure((include?read(include):wrapper).includes('rel="canonical" href="'+url+'"'),'Canonical mismatch '+u.pathname);}
 for(const page of nested)ensure(urls.includes('https://mercopact.com/'+page.replace('index.html','')),'Missing nested sitemap '+page);
 ensure((sitemap.match(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g)||[]).length===urls.length,'Invalid lastmod values');
 const config=read('_config.yml');for(const excluded of ['operations','audits','mercopact-logo-layout-perfect','scripts','README.md','QA-REPORT.md','qa-browser.json','qa-static.json'])ensure(config.includes('  - '+excluded+'\n'),'Internal files must remain excluded: '+excluded);
