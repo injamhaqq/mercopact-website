@@ -22,25 +22,27 @@
   if (Object.hasOwn(options, option)) interest.value = options[option];
 
   const enquiryHeading = document.querySelector('[data-enquiry-heading]');
-  const panelHeading = document.querySelector('[data-enquiry-panel-heading]');
-  const generalEnquiry = document.querySelector('[data-general-enquiry]');
-  const briefSummary = document.querySelector('[data-brief-summary]');
-  const pilotSummary = document.querySelector('[data-pilot-summary]');
-  const generalHeadingText = enquiryHeading.textContent;
-  const generalPanelText = panelHeading.textContent;
-  const updateEnquiryContext = () => {
-    const isBrief = interest.value === options.brief;
-    const isPilot = interest.value === options['development-pilot'];
-    enquiryHeading.textContent = generalHeadingText;
-    if (isPilot) enquiryHeading.textContent = 'Request a Buyer Development Pilot scope';
-    if (isBrief) enquiryHeading.textContent = 'Check fit for your product';
-    panelHeading.textContent = isBrief || isPilot ? 'Tell us what you sell' : generalPanelText;
-    generalEnquiry.hidden = isBrief || isPilot;
-    briefSummary.hidden = !isBrief;
-    pilotSummary.hidden = !isPilot;
-  };
-  updateEnquiryContext();
-  interest.addEventListener('change', updateEnquiryContext);
+  if (enquiryHeading) {
+    const panelHeading = document.querySelector('[data-enquiry-panel-heading]');
+    const generalEnquiry = document.querySelector('[data-general-enquiry]');
+    const briefSummary = document.querySelector('[data-brief-summary]');
+    const pilotSummary = document.querySelector('[data-pilot-summary]');
+    const generalHeadingText = enquiryHeading.textContent;
+    const generalPanelText = panelHeading.textContent;
+    const updateEnquiryContext = () => {
+      const isBrief = interest.value === options.brief;
+      const isPilot = interest.value === options['development-pilot'];
+      enquiryHeading.textContent = generalHeadingText;
+      if (isPilot) enquiryHeading.textContent = 'Request a Buyer Development Pilot scope';
+      if (isBrief) enquiryHeading.textContent = 'Check fit for your product';
+      panelHeading.textContent = isBrief || isPilot ? 'Tell us what you sell' : generalPanelText;
+      generalEnquiry.hidden = isBrief || isPilot;
+      briefSummary.hidden = !isBrief;
+      pilotSummary.hidden = !isPilot;
+    };
+    updateEnquiryContext();
+    interest.addEventListener('change', updateEnquiryContext);
+  }
 
   const draftLink = document.querySelector('#whatsapp-draft');
   const status = form.querySelector('.form-status');
@@ -61,6 +63,16 @@
     draftLink.hidden = true;
     draftLink.removeAttribute('href');
     status.textContent = '';
+  }
+
+  interest.addEventListener('change', clearDraft);
+  for (const link of document.querySelectorAll('[data-enquiry-package]')) {
+    link.addEventListener('click', () => {
+      const offer = link.dataset.enquiryPackage;
+      if (!Object.hasOwn(options, offer)) return;
+      interest.value = options[offer];
+      interest.dispatchEvent(new Event('change', { bubbles: true }));
+    });
   }
 
   function valid(field) {

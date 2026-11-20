@@ -71,6 +71,7 @@
     nav.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', () => setMenu(false));
     });
+    headerCta?.querySelector('a')?.addEventListener('click', () => setMenu(false));
 
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && menuToggle.getAttribute('aria-expanded') === 'true') {

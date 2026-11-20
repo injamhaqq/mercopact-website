@@ -41,20 +41,24 @@ for(const width of [320,375,390,768,1024,1180,1200,1280,1440]){
  ensure(!errors.length,'JS error '+width+' '+errors.join(';'));if([320,390,1440].includes(width))await page.screenshot({path:path.join(shots,'homepage-'+width+'.png'),fullPage:true});await ctx.close();
 }
 const paths=['/','/packages/','/contact/','/global-buyer-pilot.html','/services/','/strategic-sourcing/','/commercial-intelligence/','/opportunities/','/managed-export-sales/','/opportunity-recovery/','/buyer-development/','/international-markets/','/about/','/privacy/','/terms/','/research-examples.html','/capabilities.html','/how-we-work/','/trust-and-method.html','/pilot-deliverables.html','/industries/','/sample-eu-us-jute-bags.html','/sample-eu-garments-knitwear.html','/sample-eu-uk-leather-footwear.html','/sample-market-access.html','/sample-uae-packaging.html','/sample-india-packaging.html'];
-for(const width of [390,1440]){const ctx=await context(width),page=await ctx.newPage();for(const url of paths){const errors=[],listener=e=>errors.push(e.message);page.on('pageerror',listener);await load(page,url);ensure(await page.locator('h1').count()===1,'Exactly one H1 '+url);await layout(page,url+' '+width);ensure(!errors.length,'JS errors '+url+' '+errors.join(';'));page.off('pageerror',listener);if(url==='/pilot-deliverables.html'){ensure(await page.locator('.evidence-card').count()===2,'Sample account cards missing');await page.screenshot({path:path.join(shots,'sample-brief-'+width+'.png'),fullPage:true});}if(url==='/research-examples.html')await page.screenshot({path:path.join(shots,'research-'+width+'.png'),fullPage:true});if(url==='/contact/')await page.screenshot({path:path.join(shots,'contact-'+width+'.png'),fullPage:true});if(url==='/packages/'){ensure(await page.locator('.pricing-alternatives .mp-offer').count()===2,'Brief and monthly options required');
+for(const width of [390,1440]){const ctx=await context(width),page=await ctx.newPage();for(const url of paths){const errors=[],listener=e=>errors.push(e.message);page.on('pageerror',listener);await load(page,url);ensure(await page.locator('h1').count()===1,'Exactly one H1 '+url);await layout(page,url+' '+width);ensure(!errors.length,'JS errors '+url+' '+errors.join(';'));page.off('pageerror',listener);if(url==='/pilot-deliverables.html'){ensure(await page.locator('.evidence-card').count()===2,'Sample account cards missing');await page.screenshot({path:path.join(shots,'sample-brief-'+width+'.png'),fullPage:true});}if(url==='/research-examples.html')await page.screenshot({path:path.join(shots,'research-'+width+'.png'),fullPage:true});if(url==='/contact/')await page.screenshot({path:path.join(shots,'contact-'+width+'.png'),fullPage:true});if(url==='/packages/'){ensure(await page.locator('.pricing-alternatives .mp-offer').count()===3,'Brief, Sprint and monthly options required');
 const pilotAction=page.locator('.pilot-price-panel .btn-dark');
-ensure(await pilotAction.getAttribute('href')==='/contact/?package=development-pilot','Primary pricing action must open the Pilot');
+ensure(await pilotAction.getAttribute('href')==='#request-scope','Primary pricing action must stay on the pricing page');
 const pilotActionBounds=await pilotAction.boundingBox();
 ensure(pilotActionBounds && pilotActionBounds.y+pilotActionBounds.height<840,'Primary Pilot action below the first viewport');
 await page.screenshot({path:path.join(shots,'pricing-first-screen-'+width+'.png')});
 const positions=await page.locator('.mp-offer').evaluateAll(cards=>cards.map(card=>card.getBoundingClientRect().top));
-ensure(width===390?positions[0]<positions[1]:Math.max(...positions)-Math.min(...positions)<1,'Pricing cards do not follow the intended grid');
+ensure(width===390?positions[0]<positions[1]&&positions[1]<positions[2]:Math.max(...positions)-Math.min(...positions)<1,'Pricing cards do not follow the intended grid');
 await page.locator('.pricing-question summary').first().click();
 ensure(await page.locator('.pricing-question').first().getAttribute('open')!==null,'Pricing FAQ is not keyboard/click accessible');const textColor=await page.locator('.pricing-card .btn-dark').first().evaluate(el=>getComputedStyle(el).color);
 ensure(textColor==='rgb(255, 255, 255)','Pricing card button label must contrast with the dark fill');
 await page.evaluate(()=>window.scrollTo(0,0));
-const body=await page.locator('body').innerText();for(const p of ['$600','$3,000/month','fixed project fee'])ensure(body.includes(p),'Missing price '+p);await page.screenshot({path:path.join(shots,'engagements-'+width+'.png'),fullPage:true});}}await ctx.close();}
-const nojs=await context(390,false),np=await nojs.newPage();await load(np,'/contact/');ensure(await np.locator('button[type="submit"]').isDisabled(),'Draft control enabled without JS');ensure(await np.locator('a[href^="https://wa.me/"]').count()>0,'No-JS fallback missing');await nojs.close();
+const body=await page.locator('body').innerText();for(const p of ['$600','$1,800','$3,000/month','fixed project fee'])ensure(body.includes(p),'Missing price '+p);await page.screenshot({path:path.join(shots,'engagements-'+width+'.png'),fullPage:true});}}await ctx.close();}
+const nojs=await context(390,false),np=await nojs.newPage();await load(np,'/contact/');ensure(await np.locator('button[type="submit"]').isDisabled(),'Draft control enabled without JS');ensure(await np.locator('a[href^="https://wa.me/"]').count()>0,'No-JS fallback missing');await load(np,'/packages/');
+await np.locator('.pilot-price-panel .btn-dark').click();
+ensure(np.url().endsWith('#request-scope'),'No-JS pricing jump missing');
+ensure(await np.locator('#request-scope noscript a').isVisible(),'No-JS pricing enquiry fallback missing');
+await nojs.close();
 const ctx=await context(390),p=await ctx.newPage();
 for(const [slug,label] of [['brief','Buyer Development Brief'],['development-pilot','Buyer Development Pilot'],['outreach-sprint','Buyer Outreach Sprint'],['ongoing','Managed Buyer Development'],['recovery','Sales Opportunity Recovery'],['specialist','Specialist project'],['sprint','Sales Opportunity Recovery'],['pilot','Buyer Development Brief'],['mandate','Specialist project'],['market-proof','Buyer Development Brief'],['international-pilot','Buyer Development Brief'],['buyer-development','Buyer Development Brief'],['growth-desk','Managed Buyer Development']]) {
   await load(p,'/contact/?package='+slug);
@@ -72,7 +76,36 @@ ensure(await p.locator('[data-brief-summary]').isVisible(),'Brief context did no
 await load(p,'/contact/?package=outreach-sprint');
 ensure(await p.locator('[data-brief-summary]').isHidden(),'Brief context shown for another service');
 await load(p,'/packages/');
-await p.locator('.pilot-price-panel .btn-dark').click();
+const pricingMenu=p.locator('.menu-toggle');
+await pricingMenu.click();
+await p.locator('.header-cta a').click();
+ensure(await pricingMenu.getAttribute('aria-expanded')==='false','Mobile menu covered the inline enquiry');
+ensure(p.url().endsWith('/packages/#request-scope'),'Header enquiry left pricing');
+await p.getByRole('link',{name:'See a sample buyer record',exact:true}).click();
+ensure(p.url().endsWith('/packages/#sample-buyer-record'),'Sample did not stay on pricing');
+ensure(await p.locator('#sample-buyer-record a[download]').count()===1,'Sample download missing');
+for (const [offer,label] of [['development-pilot','Buyer Development Pilot'],['brief','Buyer Development Brief'],['outreach-sprint','Buyer Outreach Sprint'],['ongoing','Managed Buyer Development'],['recovery','Sales Opportunity Recovery'],['specialist','Specialist project']]) {
+  await p.locator('main [data-enquiry-package="'+offer+'"]').click();
+  ensure(p.url().endsWith('/packages/#request-scope'),'Enquiry left pricing for '+offer);
+  ensure(await p.locator('#package').inputValue()===label,'Pricing selected the wrong offer '+offer);
+}
+const pricingRequests=[];
+p.on('request',request=>pricingRequests.push(request.url()));
+await p.screenshot({path:path.join(shots,'pricing-enquiry-390.png')});
+await p.locator('#name').fill('Synthetic Pricing QA');
+await p.locator('#company').fill('Example Supply Co');
+await p.locator('#product').fill('Reusable bags');
+await p.locator('#market').fill('United Kingdom');
+await p.getByRole('button',{name:'Prepare WhatsApp draft'}).click();
+const pricingDraft=p.locator('#whatsapp-draft');
+ensure(await pricingDraft.isVisible(),'Inline draft link missing');
+ensure(new URL(await pricingDraft.getAttribute('href')).searchParams.get('text').includes('Specialist project'),'Inline draft omitted the selected offer');
+ensure(pricingRequests.length===0,'Inline draft preparation sent a network request');
+await p.locator('main [data-enquiry-package="brief"]').click();
+ensure(await pricingDraft.isHidden() && !await pricingDraft.getAttribute('href'),'Changing offers left a stale inline draft');
+ensure(await p.locator('#company').inputValue()==='Example Supply Co','Changing offers lost the prospect’s inputs');
+
+await load(p,'/contact/?package=development-pilot');
 await p.locator('[data-pilot-summary]').waitFor({state:'visible'});
 ensure((await p.locator('h1').innerText())==='Request a Buyer Development Pilot scope','Pilot heading missing');
 ensure(await p.locator('#package').inputValue()==='Buyer Development Pilot','Pilot option was not selected');
