@@ -28,8 +28,7 @@ for(const width of [320,375,390,768,1024,1180,1200,1280,1440]){
  ensure(entry.bg==='rgb(233, 239, 217)' && entry.fg==='rgb(11, 31, 51)','Brief section uses unreadable colors');
  const sourceLink=page.locator('#buyer-method .method-step a');
  ensure((await sourceLink.getAttribute('href'))?.startsWith('https://www.jutebag.co.uk/'),'Buyer example lacks a traceable source');
- const photo=page.locator('.globe-poster');
- await photo.evaluate(img=>img.decode());
+ ensure(await page.getByRole('complementary',{name:'Sample buyer register'}).isVisible(),'Buyer register preview missing');
  const hero=await page.locator('.home-hero > .container').evaluate(el=>({
   columns:getComputedStyle(el).gridTemplateColumns.split(' ').length,
   cta:el.querySelector('.actions a').getBoundingClientRect().bottom
@@ -41,14 +40,14 @@ for(const width of [320,375,390,768,1024,1180,1200,1280,1440]){
  ensure(!errors.length,'JS error '+width+' '+errors.join(';'));if([320,390,1440].includes(width))await page.screenshot({path:path.join(shots,'homepage-'+width+'.png'),fullPage:true});await ctx.close();
 }
 const paths=['/','/packages/','/contact/','/global-buyer-pilot.html','/services/','/strategic-sourcing/','/commercial-intelligence/','/opportunities/','/managed-export-sales/','/opportunity-recovery/','/buyer-development/','/international-markets/','/about/','/privacy/','/terms/','/research-examples.html','/capabilities.html','/how-we-work/','/trust-and-method.html','/pilot-deliverables.html','/industries/','/sample-eu-us-jute-bags.html','/sample-eu-garments-knitwear.html','/sample-eu-uk-leather-footwear.html','/sample-market-access.html','/sample-uae-packaging.html','/sample-india-packaging.html'];
-for(const width of [390,1440]){const ctx=await context(width),page=await ctx.newPage();for(const url of paths){const errors=[],listener=e=>errors.push(e.message);page.on('pageerror',listener);await load(page,url);ensure(await page.locator('h1').count()===1,'Exactly one H1 '+url);await layout(page,url+' '+width);ensure(!errors.length,'JS errors '+url+' '+errors.join(';'));page.off('pageerror',listener);if(url==='/pilot-deliverables.html'){ensure(await page.locator('.evidence-card').count()===2,'Sample account cards missing');await page.screenshot({path:path.join(shots,'sample-brief-'+width+'.png'),fullPage:true});}if(url==='/research-examples.html')await page.screenshot({path:path.join(shots,'research-'+width+'.png'),fullPage:true});if(url==='/contact/')await page.screenshot({path:path.join(shots,'contact-'+width+'.png'),fullPage:true});if(url==='/packages/'){ensure(await page.locator('.pricing-alternatives .mp-offer').count()===3,'Brief, Sprint and monthly options required');
+for(const width of [320,390,1440]){const ctx=await context(width),page=await ctx.newPage();for(const url of paths){const errors=[],listener=e=>errors.push(e.message);page.on('pageerror',listener);await load(page,url);ensure(await page.locator('h1').count()===1,'Exactly one H1 '+url);await layout(page,url+' '+width);ensure(!errors.length,'JS errors '+url+' '+errors.join(';'));page.off('pageerror',listener);if(url==='/pilot-deliverables.html'){ensure(await page.locator('.evidence-card').count()===2,'Sample account cards missing');await page.screenshot({path:path.join(shots,'sample-brief-'+width+'.png'),fullPage:true});}if(url==='/research-examples.html')await page.screenshot({path:path.join(shots,'research-'+width+'.png'),fullPage:true});if(url==='/contact/')await page.screenshot({path:path.join(shots,'contact-'+width+'.png'),fullPage:true});if(url==='/packages/'){ensure(await page.locator('.pricing-alternatives .mp-offer').count()===3,'Brief, Sprint and monthly options required');
 const pilotAction=page.locator('.pilot-price-panel .btn-dark');
 ensure(await pilotAction.getAttribute('href')==='#request-scope','Primary pricing action must stay on the pricing page');
 const pilotActionBounds=await pilotAction.boundingBox();
 ensure(pilotActionBounds && pilotActionBounds.y+pilotActionBounds.height<840,'Primary Pilot action below the first viewport');
 await page.screenshot({path:path.join(shots,'pricing-first-screen-'+width+'.png')});
 const positions=await page.locator('.mp-offer').evaluateAll(cards=>cards.map(card=>card.getBoundingClientRect().top));
-ensure(width===390?positions[0]<positions[1]&&positions[1]<positions[2]:Math.max(...positions)-Math.min(...positions)<1,'Pricing cards do not follow the intended grid');
+ensure(width<=760?positions[0]<positions[1]&&positions[1]<positions[2]:Math.max(...positions)-Math.min(...positions)<1,'Pricing cards do not follow the intended grid');
 await page.locator('.pricing-question summary').first().click();
 ensure(await page.locator('.pricing-question').first().getAttribute('open')!==null,'Pricing FAQ is not keyboard/click accessible');const textColor=await page.locator('.pricing-card .btn-dark').first().evaluate(el=>getComputedStyle(el).color);
 ensure(textColor==='rgb(255, 255, 255)','Pricing card button label must contrast with the dark fill');
@@ -58,30 +57,17 @@ const animated=await browser.newContext({viewport:{width:1440,height:900},reduce
 await animated.route('**/*',route=>route.request().url().startsWith(origin)?route.continue():route.abort());
 const motionPage=await animated.newPage();
 await load(motionPage,'/');
-const globe=motionPage.locator('[data-trade-globe]');
-await globe.locator('button').waitFor({state:'visible'});
-const globeFrame=()=>globe.locator('canvas').evaluate(canvas=>canvas.toDataURL());
-const firstFrame=await globeFrame();
-await motionPage.waitForFunction(frame=>document.querySelector('[data-trade-globe] canvas').toDataURL()!==frame,firstFrame);
-ensure(await globe.locator('button').innerText()==='Pause globe','Globe playback is not controllable');
-await globe.locator('button').click();
-const pausedFrame=await globeFrame();
-const heldFrame=await globe.locator('canvas').evaluate(canvas=>new Promise(resolve=>setTimeout(()=>resolve(canvas.toDataURL()),125)));
-ensure(pausedFrame===heldFrame,'Globe continued moving after pause');
-await motionPage.getByRole('link',{name:/sample buyer record/i}).click();
+await motionPage.getByRole('link',{name:'Preview the buyer register'}).press('Enter');
+ensure(motionPage.url().endsWith('#buyer-register'),'Preview link did not open the register');
+await motionPage.getByRole('link',{name:'See how we assess this buyer'}).press('Enter');
+ensure(motionPage.url().endsWith('#buyer-method'),'Register did not lead to the buyer walkthrough');
 await motionPage.getByText('Check what the listing leaves open',{exact:true}).press('Enter');
 ensure(await motionPage.getByText(/Whether the company wants a new supplier/).isVisible(),'Evidence interaction is not keyboard accessible');
 await animated.close();
 
-const reduced=await context(390),reducedPage=await reduced.newPage();
-await load(reducedPage,'/');
-const reducedControl=reducedPage.getByRole('button',{name:'Play globe'});
-ensure(await reducedControl.isVisible(),'Reduced motion did not leave the globe paused');
-await reduced.close();
-
 const nojs=await context(390,false),np=await nojs.newPage();
 await load(np,'/');
-ensure(await np.locator('.globe-poster').isVisible(),'Globe has no static fallback');
+ensure(await np.getByRole('complementary',{name:'Sample buyer register'}).isVisible(),'Buyer register preview requires JavaScript');
 ensure(await np.getByText('Find a product match',{exact:true}).isVisible(),'Buyer proof requires JavaScript');await load(np,'/contact/');ensure(await np.locator('button[type="submit"]').isDisabled(),'Draft control enabled without JS');ensure(await np.locator('a[href^="https://wa.me/"]').count()>0,'No-JS fallback missing');await load(np,'/packages/');
 await np.locator('.pilot-price-panel .btn-dark').click();
 ensure(np.url().endsWith('#request-scope'),'No-JS pricing jump missing');
@@ -111,7 +97,11 @@ ensure(await pricingMenu.getAttribute('aria-expanded')==='false','Mobile menu co
 ensure(p.url().endsWith('/packages/#request-scope'),'Header enquiry left pricing');
 await p.getByRole('link',{name:'See a sample buyer record',exact:true}).click();
 ensure(p.url().endsWith('/packages/#sample-buyer-record'),'Sample did not stay on pricing');
-ensure(await p.locator('#sample-buyer-record a[download]').count()===1,'Sample download missing');
+const sample = p.getByRole('link',{name:'Download the sample buyer register (CSV)'});
+const downloadPromise = p.waitForEvent('download');
+await sample.click();
+const download = await downloadPromise;
+ensure(download.suggestedFilename()==='mercopact-pilot-handoff-example.csv','Wrong sample downloaded');
 const walkthrough=p.locator('#sample-walkthrough');
 await walkthrough.locator('summary').press('Enter');
 ensure(await walkthrough.locator('blockquote').isVisible(),'Sample outreach draft is inaccessible');
