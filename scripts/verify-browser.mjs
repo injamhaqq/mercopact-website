@@ -21,6 +21,11 @@ for(const width of [320,375,390,768,1024,1180,1200,1280,1440]){
  const ctx=await context(width),page=await ctx.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
  await load(page,'/');ensure((await page.locator('h1').innerText()).replace(/\s+/g,' ').includes('You make the product. We help you find the buyers.'),'Current hero missing');
  await layout(page,'home '+width);
+ const entry=await page.locator('.home-entry').evaluate(el=>({
+  bg:getComputedStyle(el).backgroundColor,
+  fg:getComputedStyle(el.querySelector('h2')).color
+ }));
+ ensure(entry.bg==='rgb(11, 31, 51)' && entry.fg==='rgb(255, 255, 255)','Brief section uses unreadable colors');
  const photo=page.locator('.home-hero-photo');
  await photo.evaluate(img=>img.decode());
  const hero=await page.locator('.home-hero > .container').evaluate(el=>({
@@ -38,7 +43,10 @@ for(const width of [390,1440]){const ctx=await context(width),page=await ctx.new
 const positions=await page.locator('.mp-offer').evaluateAll(cards=>cards.map(card=>card.getBoundingClientRect().top));
 ensure(width===390?positions[0]<positions[1]&&positions[1]<positions[2]:Math.max(...positions)-Math.min(...positions)<1,'Pricing cards do not follow the intended grid');
 await page.locator('.pricing-question summary').first().click();
-ensure(await page.locator('.pricing-question').first().getAttribute('open')!==null,'Pricing FAQ is not keyboard/click accessible');const body=await page.locator('body').innerText();for(const p of ['$600','$1,800','$3,000/month'])ensure(body.includes(p),'Missing price '+p);await page.screenshot({path:path.join(shots,'engagements-'+width+'.png'),fullPage:true});}}await ctx.close();}
+ensure(await page.locator('.pricing-question').first().getAttribute('open')!==null,'Pricing FAQ is not keyboard/click accessible');const textColor=await page.locator('.pricing-card .btn-dark').first().evaluate(el=>getComputedStyle(el).color);
+ensure(textColor==='rgb(255, 255, 255)','Pricing card button label must contrast with the dark fill');
+await page.evaluate(()=>window.scrollTo(0,0));
+const body=await page.locator('body').innerText();for(const p of ['$600','$1,800','$3,000/month'])ensure(body.includes(p),'Missing price '+p);await page.screenshot({path:path.join(shots,'engagements-'+width+'.png'),fullPage:true});}}await ctx.close();}
 const nojs=await context(390,false),np=await nojs.newPage();await load(np,'/contact/');ensure(await np.locator('button[type="submit"]').isDisabled(),'Draft control enabled without JS');ensure(await np.locator('a[href^="https://wa.me/"]').count()>0,'No-JS fallback missing');await nojs.close();
 const ctx=await context(390),p=await ctx.newPage();
 for(const [slug,label] of [['brief','Buyer Development Brief'],['outreach-sprint','Buyer Outreach Sprint'],['ongoing','Managed Buyer Development'],['recovery','Sales Opportunity Recovery'],['specialist','Specialist project'],['sprint','Sales Opportunity Recovery'],['pilot','Buyer Development Brief'],['mandate','Specialist project'],['market-proof','Buyer Development Brief'],['international-pilot','Buyer Development Brief'],['buyer-development','Buyer Development Brief'],['growth-desk','Managed Buyer Development']]) {

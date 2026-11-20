@@ -57,7 +57,7 @@ for (const [name, fee, page, scope] of [
   ['Buyer Outreach Sprint','$1,800',sprint,'up to 20 approved initial approaches'],
   ['Managed Buyer Development','$3,000',managed,'Up to 25 approved outreach or follow-up actions']
 ]) {
-  for (const [label, html] of [['home',home],['pricing',pricing],['terms',terms],['service detail',page]]) ensure(html.includes(name) && html.includes(fee),label+' offer mismatch: '+name);
+  for (const [label, html] of [['home',home],['pricing',pricing],['terms',terms],['service detail',page]]) ensure(html.includes(name) && html.replace(/<[^>]+>/g,'').includes(fee),label+' offer mismatch: '+name);
   ensure(page.includes(scope),'Missing scope: '+name);
 }
 ensure(sprint.includes('$900 at kickoff') && sprint.includes('day-seven milestone'),'Sprint milestone mismatch');

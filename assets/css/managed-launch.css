@@ -100,10 +100,10 @@ main .home-hero { padding-block: clamp(2.15rem, 4.8vw, 4.5rem); }
 }
 main .home-hero h1 {
   font-size: clamp(2.45rem, 4.3vw, 4.2rem);
-  max-width: 17ch;
-  text-wrap: initial;
+  max-width: none;
+  text-wrap: balance;
 }
-.home-hero h1 span { display: block; }
+.home-hero h1 span { display: block; text-wrap: balance; }
 .home-hero-copy .lead { max-width: 55ch; }
 .home-hero-copy .actions { margin-top: 1.45rem; }
 .home-hero-photo {
@@ -135,6 +135,9 @@ main > .home-entry {
 .pricing-layout .page-hero h1 { max-width: 21ch; }
 main > .pricing-offers { padding-top: clamp(1.35rem, 3vw, 2.5rem); }
 .pricing-card.mp-offer { height: auto; gap: .85rem; }
+.pricing-card p { flex: none; }
+.pricing-card .btn-dark { color: #fff; text-decoration: none; }
+.pricing-card .fee-period { font-size: .55em; }
 .pricing-card h2 { font-size: clamp(1.28rem, 2vw, 1.8rem); }
 .pricing-card .pricing-amount {
   color: var(--site-ink);
@@ -151,6 +154,7 @@ main > .pricing-offers { padding-top: clamp(1.35rem, 3vw, 2.5rem); }
 }
 .pricing-question summary { cursor: pointer; min-height: 32px; font-weight: 650; }
 .pricing-question p { margin: .35rem 0; }
+.pricing-faq .actions { margin-top: 1.2rem; }
 
 .contact-layout {
   display: grid;
@@ -181,7 +185,16 @@ main.contact-layout > .contact-panel {
 .contact-panel .form-status { margin-top: .75rem; }
 
 .research-category h2 { font-size: clamp(1.4rem, 2.25vw, 1.9rem); }
-.research-category a { text-underline-offset: .22em; }
+.research-collection > .layout-grid { align-items: start; }
+.research-category p a {
+  display: table;
+  margin-top: .12rem;
+  color: var(--site-teal);
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: .22em;
+}
+.contact-panel p a { text-decoration: underline; text-underline-offset: .2em; }
 .research-category p + p { padding-top: .75rem; border-top: 1px solid var(--site-line); }
 .process-step {
   display: grid;
