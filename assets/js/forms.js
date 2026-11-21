@@ -12,8 +12,9 @@
     'outreach-sprint': 'Buyer Outreach Sprint',
     ongoing: 'Managed Buyer Development',
     'growth-desk': 'Managed Buyer Development',
-    recovery: 'Sales Opportunity Recovery',
-    sprint: 'Sales Opportunity Recovery',
+    'quote-follow-up': 'Export Quote & Sample Sprint',
+    recovery: 'Export Quote & Sample Sprint',
+    sprint: 'Export Quote & Sample Sprint',
     specialist: 'Specialist project',
     mandate: 'Specialist project'
   };
@@ -21,22 +22,45 @@
   const option = new URLSearchParams(location.search).get('package');
   if (Object.hasOwn(options, option)) interest.value = options[option];
 
+  const market = form.elements.namedItem('market');
+  const product = form.elements.namedItem('product');
+  const optionalMarket = form.querySelector('[data-market-optional]');
+  const productHint = product.placeholder;
+
+  function updateScopeFields() {
+    const hasOpenQuotes = interest.value === options['quote-follow-up'];
+    market.required = !hasOpenQuotes;
+    if (optionalMarket) optionalMarket.hidden = !hasOpenQuotes;
+    product.placeholder = hasOpenQuotes ? 'e.g. Printed cartons, six open quotes, one revised price pending' : productHint;
+    if (hasOpenQuotes && !market.value.trim()) {
+      market.removeAttribute('aria-invalid');
+      document.getElementById('market-error').textContent = '';
+    }
+  }
+  updateScopeFields();
+  interest.addEventListener('change', updateScopeFields);
+
   const enquiryHeading = document.querySelector('[data-enquiry-heading]');
   if (enquiryHeading) {
     const panelHeading = document.querySelector('[data-enquiry-panel-heading]');
     const generalEnquiry = document.querySelector('[data-general-enquiry]');
     const briefSummary = document.querySelector('[data-brief-summary]');
     const pilotSummary = document.querySelector('[data-pilot-summary]');
+    const quoteSummary = document.querySelector('[data-quote-summary]');
     const generalHeadingText = enquiryHeading.textContent;
     const generalPanelText = panelHeading.textContent;
     const updateEnquiryContext = () => {
       const isBrief = interest.value === options.brief;
       const isPilot = interest.value === options['development-pilot'];
+      const isQuote = interest.value === options['quote-follow-up'];
       enquiryHeading.textContent = generalHeadingText;
       if (isPilot) enquiryHeading.textContent = 'Request a Buyer Development Pilot scope';
       if (isBrief) enquiryHeading.textContent = 'Check fit for your product';
+      if (isQuote) enquiryHeading.textContent = 'Discuss your open quotes or samples';
       panelHeading.textContent = isBrief || isPilot ? 'Tell us what you sell' : generalPanelText;
-      generalEnquiry.hidden = isBrief || isPilot;
+      if (isQuote) panelHeading.textContent = 'Tell us where the conversation stopped';
+      generalEnquiry.hidden = isBrief || isPilot || isQuote;
+      if (quoteSummary) quoteSummary.hidden = !isQuote;
       briefSummary.hidden = !isBrief;
       pilotSummary.hidden = !isPilot;
     };

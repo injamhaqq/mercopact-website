@@ -70,8 +70,12 @@ ensure(pricing.includes('fixed project fee') && pricing.includes('id="pilot"') &
 for (const [label, html] of [['pricing',pricing],['terms',terms],['enquiry',contact]]) {
   ensure((html.match(/\$1,500/g)||[]).length===2,label+' Pilot split payment mismatch');
 }
-ensure(pricing.includes('$1,800 Buyer Outreach Sprint') && sprint.includes('$1,800'),'Existing Sprint scope mismatch');
-ensure(pricing.includes('$2,400 for the Brief plus Sprint') && pricing.includes('Rank 20 buyer accounts'),'Pilot comparison must explain the added scope');
+const outreachOption=pricing.match(/<details[^>]+id="outreach-sprint"[\s\S]*?<\/details>/)?.[0] || '';
+ensure(outreachOption.includes('Buyer Outreach Sprint') && outreachOption.includes('$1,800') && sprint.includes('$1,800'),'Existing Sprint scope mismatch');
+ensure(outreachOption.includes('$2,400 for the Brief plus Sprint') && outreachOption.includes('researches 20 to select the best 12'),'Pilot comparison must explain the added scope');
+const quoteSection=pricing.match(/<section[^>]+id="quote-follow-up"[\s\S]*?<\/section>/)?.[0] || '';
+for(const detail of ['Export Quote &amp; Sample Sprint','10 open','10 business days','fixed fee','data-enquiry-package="quote-follow-up"','Fictional example']) ensure(quoteSection.includes(detail),'Quote Sprint detail missing: '+detail);
+ensure(!/\$[\d,]+/.test(quoteSection),'Quote follow-up fee belongs in the individual scope');
 for (const [label, html] of [['home',home],['pricing',pricing],['terms',terms],['enquiry',contact]]) {
   ensure(/20(?:-account| ranked| buyer)/.test(html) && html.includes('eight reserve'),label+' missing Pilot account scope');
 }
@@ -92,7 +96,7 @@ ensure(!/fetch\s*\(|XMLHttpRequest|sendBeacon|formsubmit/i.test(form),'Draft pre
 ensure(contact.includes('data-prepare disabled') && contact.includes('<noscript>') && contact.includes('https://wa.me/'),'No-JS contact fallback missing');
 ensure(!/<form[^>]+(?:action|method)=/i.test(contact),'Contact form must have no submission endpoint');
 for(const id of ['name','company','website','product','market','package'])ensure(contact.includes('id="'+id+'"'),'Enquiry field missing: '+id);
-for(const [slug,label] of [['brief','Buyer Development Brief'],['development-pilot','Buyer Development Pilot'],['outreach-sprint','Buyer Outreach Sprint'],['ongoing','Managed Buyer Development'],['recovery','Sales Opportunity Recovery'],['specialist','Specialist project']]) {
+for(const [slug,label] of [['brief','Buyer Development Brief'],['development-pilot','Buyer Development Pilot'],['outreach-sprint','Buyer Outreach Sprint'],['ongoing','Managed Buyer Development'],['quote-follow-up','Export Quote &amp; Sample Sprint'],['recovery','Export Quote &amp; Sample Sprint'],['specialist','Specialist project']]) {
   ensure(form.includes(slug) && contact.includes('<option>'+label+'</option>'),'Offer preselection mismatch '+slug);
 }
 const sitemap=read('sitemap.xml'),urls=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);
