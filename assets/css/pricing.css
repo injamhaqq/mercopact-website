@@ -15,13 +15,13 @@
 }
 .pricing-layout .pilot-hero h1 {
   margin: 0;
-  max-width: 19ch;
+  max-width: 23ch;
   font-size: clamp(2.55rem, 4.8vw, 4.6rem);
   line-height: 1.05;
   color: var(--mp-surface);
   text-wrap: balance;
 }
-.pricing-intro h1 span { color: #ecd39b; }
+.pricing-intro h1 > span { display: block; color: #ecd39b; }
 .pricing-layout .pilot-hero .lead {
   max-width: 48ch;
   margin: 1.15rem 0 0;
@@ -107,6 +107,7 @@
   color: var(--mp-navy);
   font-weight: 750;
 }
+.pricing-section-intro .pilot-fit-note { font-size: .92rem; color: var(--site-muted); }
 .pilot-milestones dd, .quote-facts dd, .pricing-record-fields dd { margin: .15rem 0 0; line-height: 1.55; }
 .pilot-delivery { list-style: none; margin: 0; padding: 0; counter-reset: phase; }
 .pilot-delivery li {
