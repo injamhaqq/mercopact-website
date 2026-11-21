@@ -51,6 +51,8 @@ ensure(await pilotAction.getAttribute('href')==='#request-scope','Primary pricin
 const pilotActionBounds=await pilotAction.boundingBox();
 ensure(pilotActionBounds && pilotActionBounds.y+pilotActionBounds.height<840,'Primary Pilot action below the first viewport');
 await page.screenshot({path:path.join(shots,'pricing-first-screen-'+width+'.png')});
+const paymentStages=await page.locator('.pilot-price-panel .pilot-milestones dt').allTextContents();
+ensure(paymentStages.length===2 && paymentStages[0].includes('$1,500 at kickoff') && paymentStages[1].includes('$1,500 at shortlist delivery'),'Pilot must show both payment milestones with its price');
 const positions=await options.evaluateAll(rows=>rows.map(row=>row.getBoundingClientRect().top));
 ensure(positions[0]<positions[1] && positions[1]<positions[2],'Secondary prices must stay in reading order');
 const briefOption=options.first();
@@ -131,13 +133,21 @@ ensure(await walkthrough.locator('blockquote').isVisible(),'Sample outreach draf
 ensure((await walkthrough.innerText()).includes('illustrative draft and was never sent'),'Sample draft is missing its label');
 
 for (const [offer,label] of [['development-pilot','Buyer Development Pilot'],['brief','Buyer Development Brief'],['outreach-sprint','Buyer Outreach Sprint'],['ongoing','Managed Buyer Development'],['quote-follow-up','Export Quote & Sample Sprint'],['specialist','Specialist project']]) {
-  const offerLink=p.locator('main [data-enquiry-package="'+offer+'"]');
-  const option=offerLink.locator('xpath=ancestor::details');
-  if(await option.count() && !await offerLink.isVisible()) await option.locator('summary').press('Enter');
-  await offerLink.click();
-  ensure(p.url().endsWith('/packages/#request-scope'),'Enquiry left pricing for '+offer);
-  ensure(await p.locator('#package').inputValue()===label,'Pricing selected the wrong offer '+offer);
-  ensure(await p.locator('#market').evaluate(field=>field.required)===(offer!=='quote-follow-up'),'Wrong market requirement for '+offer);
+  const links=p.locator('main [data-enquiry-package="'+offer+'"]');
+  ensure(await links.count()>0,'Missing enquiry action for '+offer);
+  for (const link of await links.all()) {
+    const option=link.locator('xpath=ancestor::details');
+    if(await option.count() && !await link.isVisible()) await option.locator('summary').press('Enter');
+    await link.click();
+    ensure(p.url().endsWith('/packages/#request-scope'),'Enquiry left pricing for '+offer);
+    ensure(await p.locator('#package').inputValue()===label,'Pricing selected the wrong offer '+offer);
+    ensure(await p.locator('#market').evaluate(field=>field.required)===(offer!=='quote-follow-up'),'Wrong market requirement for '+offer);
+  }
+  if (offer==='quote-follow-up') {
+    await pricingMenu.click();
+    await p.locator('.header-cta a').click();
+    ensure(await p.locator('#package').inputValue()===label,'The general scope link overwrote the quote enquiry');
+  }
 }
 const pricingRequests=[];
 p.on('request',request=>pricingRequests.push(request.url()));
