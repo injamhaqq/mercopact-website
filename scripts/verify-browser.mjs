@@ -89,6 +89,10 @@ const nojs=await context(390,false),np=await nojs.newPage();
 await load(np,'/');
 ensure(await np.getByRole('complementary',{name:'Sample buyer register'}).isVisible(),'Buyer register preview requires JavaScript');
 ensure(await np.getByText('Find a product match',{exact:true}).isVisible(),'Buyer proof requires JavaScript');await load(np,'/contact/');ensure(await np.locator('button[type="submit"]').isDisabled(),'Draft control enabled without JS');ensure(await np.locator('a[href^="https://wa.me/"]').count()>0,'No-JS fallback missing');await load(np,'/packages/');
+await load(np,'/');
+await np.getByRole('link',{name:'See the sample outreach draft'}).click();
+ensure(await np.locator('#sample-first-message').isVisible(),'Sample draft link must open the message without JavaScript');
+await load(np,'/packages/');
 await np.locator('.pricing-routes a[href="#quote-follow-up"]').click();
 ensure(np.url().endsWith('#quote-follow-up') && await np.locator('#quote-follow-up h2').isVisible(),'Quote follow-up needs a working no-JS route');
 await np.locator('.pilot-price-panel .btn-dark').click();
@@ -96,6 +100,22 @@ ensure(np.url().endsWith('#request-scope'),'No-JS pricing jump missing');
 ensure(await np.locator('#request-scope noscript a').isVisible(),'No-JS pricing enquiry fallback missing');
 await nojs.close();
 const ctx=await context(390),p=await ctx.newPage();
+for (const [service, expected] of [
+  ['/global-buyer-pilot.html', 'Buyer Outreach Sprint'],
+  ['/opportunity-recovery/', 'Export Quote & Sample Sprint'],
+  ['/managed-export-sales/', 'Managed Buyer Development'],
+  ['/strategic-sourcing/', 'Specialist project']
+]) {
+  await load(p,service);
+  await p.locator('.menu-toggle').click();
+  await p.locator('.header-cta a').click();
+  await p.waitForURL(url=>url.pathname==='/contact/',{waitUntil:'load'});
+  ensure(await p.locator('#package').inputValue()===expected, 'Header selected the wrong service from '+service);
+}
+await load(p,'/?utm_source=linkedin');
+await p.locator('.home-close').getByRole('link',{name:'Request a Pilot scope'}).click();
+await p.waitForURL(url=>url.pathname==='/packages/' && url.hash==='#request-scope',{waitUntil:'load'});
+ensure(await p.locator('#package').inputValue()==='Buyer Development Pilot' && p.url().includes('utm_source=linkedin'), 'Campaign Pilot enquiry lost its offer or source');
 for(const [slug,label] of [['brief','Buyer Development Brief'],['development-pilot','Buyer Development Pilot'],['outreach-sprint','Buyer Outreach Sprint'],['ongoing','Managed Buyer Development'],['quote-follow-up','Export Quote & Sample Sprint'],['recovery','Export Quote & Sample Sprint'],['specialist','Specialist project'],['sprint','Export Quote & Sample Sprint'],['pilot','Buyer Development Brief'],['mandate','Specialist project'],['market-proof','Buyer Development Brief'],['international-pilot','Buyer Development Brief'],['buyer-development','Buyer Development Brief'],['growth-desk','Managed Buyer Development']]) {
   await load(p,'/contact/?package='+slug);
   ensure(await p.locator('#package').inputValue()===label,'Wrong enquiry preselection '+slug);
@@ -109,7 +129,7 @@ ensure(await p.locator('[data-brief-summary]').isVisible(),'Brief request summar
 ensure((await p.locator('[data-brief-summary]').innerText()).includes('$600 USD'),'Brief request pricing missing');
 await p.locator('#package').selectOption({label:'Buyer Outreach Sprint'});
 ensure(await p.locator('[data-brief-summary]').isHidden(),'Brief context remained after switching service');
-ensure((await p.locator('h1').innerText())==='Tell us what you want to sell abroad','General heading not restored');
+ensure((await p.locator('h1').innerText())==='Request a written project scope','General heading not restored');
 await p.locator('#package').selectOption({label:'Buyer Development Brief'});
 ensure(await p.locator('[data-brief-summary]').isVisible(),'Brief context did not return after switching service');
 await load(p,'/contact/?package=outreach-sprint');

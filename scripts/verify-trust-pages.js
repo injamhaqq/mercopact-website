@@ -23,7 +23,7 @@ for(const f of pages) {
   ensure(html.includes('id="primary-navigation"')&&html.includes('aria-controls="primary-navigation"'),f+' missing accessible navigation');
   ensure(html.includes('<footer class="site-footer">'),f+' missing footer');
   const nav=html.match(/<nav id="primary-navigation"[\s\S]*?<\/nav>/)?.[0]||'';
-  for(const href of ['/buyer-development/','/how-we-work/','/research-examples.html','/packages/','/about/']) ensure(nav.includes('href="'+href+'"'),f+' missing navigation '+href);
+  for(const href of ['/services/','/how-we-work/','/research-examples.html','/packages/','/about/']) ensure(nav.includes('href="'+href+'"'),f+' missing navigation '+href);
   const title=html.match(/<title>([^<]+)<\/title>/i)?.[1]||'';
   const desc=html.match(/<meta name="description" content="([^"]+)"/i)?.[1]||'';
   ensure(title.length>8 && title.length<=85,f+' invalid title');
@@ -100,6 +100,23 @@ for(const [slug,label] of [['brief','Buyer Development Brief'],['development-pil
   ensure(form.includes(slug) && contact.includes('<option>'+label+'</option>'),'Offer preselection mismatch '+slug);
 }
 const sitemap=read('sitemap.xml'),urls=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);
+const pageLinks = new Map();
+for (const url of urls) {
+  const pathname = new URL(url).pathname;
+  const file = routes.get(pathname) || pathname.slice(1);
+  const source = read(file);
+  const included = source.match(/include_relative\s+(\S+)\s*%}/)?.[1];
+  const html = included ? read(included) : source;
+  const links = Array.from(html.matchAll(/<a\b[^>]*?\shref="([^"]+)"/gi), match => new URL(match[1], url));
+  pageLinks.set(pathname, links.filter(link => link.origin === 'https://mercopact.com').map(link => link.pathname));
+}
+const reachable = new Set(['/']);
+for (const pathname of reachable) {
+  for (const target of pageLinks.get(pathname) || []) {
+    if (pageLinks.has(target)) reachable.add(target);
+  }
+}
+for (const pathname of pageLinks.keys()) ensure(reachable.has(pathname), 'No visitor link from the homepage to '+pathname);
 ensure(urls.length===27,'Offer release must retain all 27 canonical routes');
 ensure(urls.length===new Set(urls).size,'Duplicate sitemap URLs');
 for(const url of urls){const u=new URL(url);ensure(u.hostname==='mercopact.com','Foreign sitemap domain');const mapped = routes.get(u.pathname)||u.pathname.slice(1); ensure(exists(mapped),'Missing sitemap page '+u.pathname);const wrapper=read(mapped); const include=wrapper.match(/include_relative\s+(\S+)/)?.[1];ensure((include?read(include):wrapper).includes('rel="canonical" href="'+url+'"'),'Canonical mismatch '+u.pathname);}

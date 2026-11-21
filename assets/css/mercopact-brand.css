@@ -138,6 +138,14 @@ main .home-hero h1 {
 
 main .home-hero .lead { color: #dce5ed; font-size: clamp(1rem, 1.45vw, 1.16rem); }
 
+.home-hero .home-quote-route { margin: .75rem 0 0; color: #dce5ed; font-size: .94rem; }
+.home-quote-route a { color: #ecd39b; font-weight: 700; text-decoration: underline; text-underline-offset: .22em; }
+.home-quote-route a:focus-visible { outline-color: #ecd39b; }
+
+main .copy-flow :is(p, li) a:not(.btn) { text-decoration: underline; text-underline-offset: .22em; }
+
+#enquiry-form, #research-corrections, #sample-recovery-register { scroll-margin-top: 6.5rem; }
+
 .home-hero .btn-primary {
   color: var(--mp-navy);
   background: var(--mp-brass);
