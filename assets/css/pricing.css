@@ -187,6 +187,19 @@
 .pricing-walkthrough .pricing-draft { margin: .25rem 0 .8rem; padding: .8rem 1rem; background: var(--mp-ivory); }
 .pricing-draft p { margin: 0; }
 .pricing-evidence > .layout-text-link { border-top: 1px solid var(--mp-stroke); width: 100%; padding-top: .6rem; }
+.pilot-example {
+  margin-top: clamp(2rem, 4vw, 3.5rem);
+  padding-top: clamp(1.25rem, 3vw, 2rem);
+  border-top: 2px solid var(--mp-brass);
+}
+.pilot-example h3 {
+  max-width: 24ch;
+  margin: .5rem 0 .75rem;
+  font: 400 clamp(1.65rem, 3vw, 2.65rem)/1.1 var(--mp-editorial);
+  color: var(--mp-navy);
+}
+.pilot-example p { max-width: 51ch; margin: .65rem 0 0; }
+.pilot-example .pilot-example-label { margin: 0; color: #075e57; font-size: .95rem; font-weight: 750; }
 .pilot-assurance {
   display: flex;
   justify-content: space-between;

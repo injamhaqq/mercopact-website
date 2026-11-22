@@ -67,6 +67,9 @@ for (const [label, html] of [['home',home],['pricing',pricing],['terms',terms],[
   ensure(html.includes('Buyer Development Pilot') && html.includes('$3,000'),label+' missing fixed-price Pilot');
 }
 ensure(pricing.includes('fixed project fee') && pricing.includes('id="pilot"') && pricing.includes('id="buyer-questions"'),'Pilot price or pricing anchors missing');
+const pilotExample = pricing.match(/<article[^>]+id="pilot-example"[\s\S]*?<\/article>/)?.[0] || '';
+ensure(pilotExample.includes('id="pilot-example-label">Fictional Pilot example</p>') && pilotExample.includes('aria-labelledby="pilot-example-label pilot-example-title"'), 'The fictional Pilot must carry its label with the example');
+ensure(read('research-examples.html').includes('href="/packages/#pilot-example">see how a fictional Pilot'), 'The research link must identify the fictional Pilot');
 for (const [label, html] of [['pricing',pricing],['terms',terms],['enquiry',contact]]) {
   ensure((html.match(/\$1,500/g)||[]).length===2,label+' Pilot split payment mismatch');
 }
